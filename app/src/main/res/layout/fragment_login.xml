@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginFragment">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/login_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="64dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+            <View style="@style/view_divider_style" />
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email"
+                style="@style/text_input_style"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password"
+                style="@style/text_input_style"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_lock"
+                android:hint="@string/password"
+                android:drawableEnd="@drawable/ic_visibility_off"
+                android:inputType="textPassword" />
+
+            <View style="@style/view_divider_style" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_btn"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="32dp"
+                android:padding="16dp"
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">School App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="home">Home</string>
+    <string name="admin">Admin</string>
+    <string name="help">Help</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+
+    <string name="name">Username</string>
+    <string name="teacher_name">Teacher Name</string>
+
+    <string name="subject_name">Subject</string>
+    <string name="cannot_be_empty">Cannot Be Empty</string>
+    <string name="login_info">Login Info</string>
+    <string name="copied">Copied</string>
+    <string name="grade">Grade</string>
+    <string name="done">Done</string>
+
+    <string name="teacher">Teacher</string>
+    <string name="student">student</string>
+    <string name="profile">Profile</string>
+
+    <string name="classes">Classes</string>
+    <string name="assignments">Assignments</string>
+    <string name="chat">Chat</string>
+    <string name="settings">Settings</string>
+
+
+    <string name="add_teacher">Add Teacher</string>
+    <string name="teacher_added">Teacher Added</string>
+    <string name="student_name">Student Name</string>
+
+
+    <string name="add_student">Add Student</string>
+    <string name="student_added">Student Added</string>
+
+
+    <string name="add_classroom">Create Class</string>
+    <string name="classroom_added">Classroom Created</string>
+
+    <string name="view_teachers">View Teachers</string>
+    <string name="view_students">View Students</string>
+    <string name="view_classes">View Classes</string>
+
+    <string name="manage_classes">Manage Classes</string>
+    <string name="create_classroom">Create Classroom</string>
+    <string name="classroom_created">Classroom Created</string>
+    <string name="classroom_name">Classroom Name</string>
+    <string name="description">Description</string>
+    <string name="description_arg">Description: %1$s</string>
+    <string name="classroom_name_arg">Classroom Name: %1$s</string>
+    <string name="members_count">Members Count: %1$d</string>
+    <string name="instructor">Instructor: %1$s</string>
+    <string name="no_instructor">No Instructor</string>
+
+    <string name="user_classes">Classes this user is in</string>
+    <string name="all_classes">All Classes</string>
+
+
+    <string name="invalid_user">Invalid Login</string>
+    <string name="invalid_email">Invalid Login</string>
+
+
+    <string name="text_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="logout">Logout</string>
+    <string name="logout_confirm">Are you sure you want to logout?</string>
+
+    <string name="delete_user">Delete User</string>
+    <string name="view_users">View Users</string>
+    <string name="delete_user_confirm">Are you sure you want to delete %1$s?</string>
+    <string name="delete_classroom">Delete Class</string>
+
+    <string name="name_details">Name: %1$s</string>
+    <string name="subject_details">Subject: %1$s</string>
+    <string name="grade_details">Grade: %1$s</string>
+    <string name="email_details">Email: %1$s</string>
+    <string name="password_details">Password: %1$s</string>
+    <string name="teachers_count">Number of Teachers: %1$d</string>
+    <string name="students_count">Number of Students: %1$d</string>
+    <string name="classes_count">Number of Classes: %1$d</string>
+
+    <string name="empty_teachers">No teachers found! Consider adding some.</string>
+    <string name="empty_students">No students found! Consider adding some.</string>
+    <string name="empty_classes">No Classes found! Consider adding some.</string>
+
+    <string name="login_details">Email: %1$s \n Password: %2$s</string>
+
+
+    <string name="uploading_pic">Uploading Image</string>
+    <string name="cannot_upload">Cannot Upload</string>
+    <string name="status_available">Available</string>
+
+    <string name="change_img">Change Picture</string>
+    <string name="change_img_confirm">Are you sure you want to change your profile picture?</string>
+    <string name="single_letter_sample">A</string>
+
+
+</resources>

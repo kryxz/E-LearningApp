@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ViewUsersFragment">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/view_users_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/users_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/name"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <View style="@style/view_divider_style" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/admin_users_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

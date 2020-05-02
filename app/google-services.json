@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "775604196273",
+    "firebase_url": "https://e-learningapp-88818.firebaseio.com",
+    "project_id": "e-learningapp-88818",
+    "storage_bucket": "e-learningapp-88818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775604196273:android:6e8c3fd57245ba40622390",
+        "android_client_info": {
+          "package_name": "com.myclass.school"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775604196273-7t7gjb21qb59lqs27qipv8jg7dvl1dqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxRV1hwf8laWlfTikgJWV6Cu6hqn9Z180"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775604196273-7t7gjb21qb59lqs27qipv8jg7dvl1dqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/classroom_item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/classroom_name"
+        android:textColor="@color/black"
+        android:textSize="17sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/classroom_item_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/classroom_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/description"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/classroom_item_instructor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/instructor"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/classroom_item_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/members_count"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/classroom_delete_item"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_delete"
+            android:text="@string/delete"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View style="@style/view_divider_style" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
