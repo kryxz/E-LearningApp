@@ -12,6 +12,8 @@
     <string name="help">Help</string>
 
     <string name="confirm">Confirm</string>
+    <string name="upload">Upload</string>
+    <string name="choose_file">Choose File</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -19,6 +21,7 @@
 
     <string name="name">Username</string>
     <string name="teacher_name">Teacher Name</string>
+    <string name="file_name">File Name</string>
 
     <string name="subject_name">Subject</string>
     <string name="cannot_be_empty">Cannot Be Empty</string>
@@ -30,6 +33,7 @@
     <string name="teacher">Teacher</string>
     <string name="student">student</string>
     <string name="profile">Profile</string>
+    <string name="cannot_read_file">Cannot Read File</string>
 
     <string name="classes">Classes</string>
     <string name="assignments">Assignments</string>
@@ -41,6 +45,7 @@
     <string name="teacher_added">Teacher Added</string>
     <string name="student_name">Student Name</string>
 
+    <string name="upload_file">Upload File</string>
 
     <string name="add_student">Add Student</string>
     <string name="student_added">Student Added</string>
@@ -52,15 +57,26 @@
     <string name="view_teachers">View Teachers</string>
     <string name="view_students">View Students</string>
     <string name="view_classes">View Classes</string>
+    <string name="send">Send</string>
+    <string name="send_message">Write a new message</string>
 
     <string name="manage_classes">Manage Classes</string>
     <string name="create_classroom">Create Classroom</string>
     <string name="classroom_created">Classroom Created</string>
     <string name="classroom_name">Classroom Name</string>
+    <string name="classroom">Classroom</string>
     <string name="description">Description</string>
     <string name="description_arg">Description: %1$s</string>
     <string name="classroom_name_arg">Classroom Name: %1$s</string>
     <string name="members_count">Members Count: %1$d</string>
+
+    <string name="files">Files</string>
+
+    <string name="members_arg">%1$d Members</string>
+    <string name="one_member">1 Member</string>
+    <string name="ago_sample">3m ago</string>
+
+
     <string name="instructor">Instructor: %1$s</string>
     <string name="no_instructor">No Instructor</string>
 
@@ -98,8 +114,11 @@
 
 
     <string name="uploading_pic">Uploading Image</string>
+    <string name="uploading_file">Uploading File</string>
     <string name="cannot_upload">Cannot Upload</string>
     <string name="status_available">Available</string>
+    <string name="file_sent">File Sent</string>
+    <string name="classroom_files">Classroom Files</string>
 
     <string name="change_img">Change Picture</string>
     <string name="change_img_confirm">Are you sure you want to change your profile picture?</string>

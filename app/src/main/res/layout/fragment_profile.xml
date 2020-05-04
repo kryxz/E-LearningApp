@@ -7,62 +7,73 @@
     android:orientation="vertical"
     tools:context=".ProfileFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:strokeColor="?colorAccent"
+        app:strokeWidth="2dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="192dp"
-            android:layout_height="192dp"
-            android:src="@drawable/ic_person"
-            app:civ_border_width="1dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            app:civ_border_color="#FF000000"/>
-
-        <View style="@style/view_divider_style" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/profile_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableEnd="@drawable/ic_edit"
-            android:drawablePadding="8dp"
-            android:text="@string/name"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/profile_user_type"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/teacher"
-            android:textColor="@color/gray"
-            android:textSize="17sp" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/profile_user_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableEnd="@drawable/colored_circle"
-            android:drawablePadding="4dp"
-            android:drawableTint="@color/green"
-            android:padding="4dp"
-            android:text="@string/status_available"
-            android:textColor="@color/grayDark"
-            android:textSize="14sp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_person"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp" />
 
-        <View style="@style/view_divider_style" />
+            <View style="@style/view_divider_style" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/profile_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawablePadding="8dp"
+                android:text="@string/name"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/profile_user_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/teacher"
+                android:textColor="@color/gray"
+                android:textSize="17sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/profile_user_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableEnd="@drawable/colored_circle"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/green"
+                android:padding="4dp"
+                android:text="@string/status_available"
+                android:textColor="@color/grayDark"
+                android:textSize="14sp" />
+
+            <View style="@style/view_divider_style" />
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 
     <com.google.android.material.textfield.TextInputLayout

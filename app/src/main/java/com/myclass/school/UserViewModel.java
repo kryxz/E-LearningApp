@@ -1,6 +1,7 @@
 package com.myclass.school;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,9 +9,14 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.myclass.school.data.Classroom;
+import com.myclass.school.data.ClassroomFile;
+import com.myclass.school.data.ClassroomPost;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
@@ -18,15 +24,16 @@ import com.myclass.school.data.User;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 // must be public
 public class UserViewModel extends ViewModel {
     private final DatabaseRepository repo = new DatabaseRepository();
 
-    private MutableLiveData<User> user = new MutableLiveData<>();
+    private final MutableLiveData<User> user = new MutableLiveData<>();
 
-    private MutableLiveData<List<Classroom>> classes = new MutableLiveData<>();
+    private final MutableLiveData<List<Classroom>> classes = new MutableLiveData<>();
 
 
     LiveData<List<Classroom>> getMyClasses() {
@@ -113,6 +120,8 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    private final MutableLiveData<Classroom> classroom = new MutableLiveData<>();
+
 
     void updateUser(User user) {
         String id = user.getEmail().substring(0, user.getEmail().indexOf('@'));
@@ -143,5 +152,109 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    void uploadFile(Uri file, String classroomId, String fileName, String description,
+                    String fileType, Runnable completeAction) {
+
+        String email = getAuthUser().getEmail();
+        if (email == null) return;
+
+        String userId = email.substring(0, email.indexOf('@'));
+
+        String fileId = UUID.randomUUID().toString().substring(0, 10);
+        StorageReference fileRef = repo.getClassFiles(classroomId).child(fileId);
+
+        ClassroomFile classroomFile = new ClassroomFile();
+
+        classroomFile.setAuthor(userId);
+        classroomFile.setId(fileId);
+
+        classroomFile.setName(fileName);
+        classroomFile.setDate(System.currentTimeMillis());
+        classroomFile.setDescription(description);
+        classroomFile.setType(fileType);
+
+        UploadTask uploadTask = fileRef.putFile(file);
+        uploadTask.addOnSuccessListener(result ->
+                fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    classroomFile.setDownloadUrl(uri.toString());
+
+                    repo.getClassFilesRef(classroomId).document(fileId).set(classroomFile);
+                    completeAction.run();
+                }));
+
+
+    }
+
+    LiveData<String> getNameById(String id) {
+
+        MutableLiveData<String> name = new MutableLiveData<>();
+
+        CollectionReference ref = repo.getTeachersRef();
+
+        if (id.charAt(0) == 's')
+            ref = repo.getStudentsRef();
+
+        ref.document(id).get().addOnSuccessListener(query ->
+                name.setValue(query.get("name", String.class)));
+        return name;
+    }
+
+    LiveData<Classroom> getClassById(String id) {
+
+
+        repo.getClassroomsRef().document(id).
+                get().addOnSuccessListener(query ->
+                classroom.setValue(query.toObject(Classroom.class))
+        );
+
+
+        return classroom;
+    }
+
+    void postToClassroom(String classId, ClassroomPost post) {
+        repo.getClassPosts(classId).document(post.getId()).set(post);
+
+    }
+
+    LiveData<List<ClassroomPost>> getClassPosts(String id) {
+        MutableLiveData<List<ClassroomPost>> posts = new MutableLiveData<>();
+
+        repo.getClassPosts(id).orderBy("date", Query.Direction.ASCENDING).
+                addSnapshotListener((query, exception) -> {
+                    if (exception != null || query == null) return;
+                    ArrayList<ClassroomPost> allPosts = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : query.getDocuments()) {
+                        ClassroomPost post = doc.toObject(ClassroomPost.class);
+                        allPosts.add(post);
+                    }
+
+                    posts.setValue(allPosts);
+
+                });
+
+        return posts;
+    }
+
+
+    LiveData<List<ClassroomFile>> getClassFiles(String id) {
+        MutableLiveData<List<ClassroomFile>> files = new MutableLiveData<>();
+
+        repo.getClassFilesRef(id).orderBy("date", Query.Direction.DESCENDING).
+                addSnapshotListener((query, exception) -> {
+                    if (exception != null || query == null) return;
+                    ArrayList<ClassroomFile> allFiles = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : query.getDocuments()) {
+                        ClassroomFile file = doc.toObject(ClassroomFile.class);
+                        allFiles.add(file);
+                    }
+
+                    files.setValue(allFiles);
+
+                });
+
+        return files;
+    }
 
 }

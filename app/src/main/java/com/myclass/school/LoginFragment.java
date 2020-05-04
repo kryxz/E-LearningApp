@@ -1,21 +1,18 @@
 package com.myclass.school;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.TaskStackBuilder;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LoginFragment extends Fragment {
@@ -43,12 +40,6 @@ public class LoginFragment extends Fragment {
 
     }
 
-    // shows a toast message
-    private void showMessage(int id) {
-        Toast.makeText(getContext(), getString(id), Toast.LENGTH_SHORT).show();
-    }
-
-
     private void init() {
         final DatabaseRepository repo = new DatabaseRepository();
 
@@ -57,6 +48,7 @@ public class LoginFragment extends Fragment {
         final TextInputEditText emailEd = view.findViewById(R.id.login_email);
 
         Common.passwordView(passwordEd);
+
         // handle user tap login button
         view.findViewById(R.id.login_btn).setOnClickListener(v -> {
 
@@ -65,14 +57,15 @@ public class LoginFragment extends Fragment {
                 return;
 
             final String pass = passwordEd.getText().toString();
-            final String email = emailEd.getText().toString().trim().replaceAll("\\s", "");
+            final String email = emailEd.getText().toString()
+                    .trim().replaceAll("\\s", "");
 
             // check email pattern
             final boolean isValidEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
 
 
             if (!isValidEmail) {
-                showMessage(R.string.invalid_email);
+                Common.showMessage(view.getContext(), R.string.invalid_email);
                 return;
             }
             // show progress bar
@@ -80,17 +73,17 @@ public class LoginFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
 
             Common.hideKeypad(view);
-            repo.getUsers().document(email.substring(0, email.indexOf('@')))
+            String id = email.substring(0, email.indexOf('@'));
+            repo.getUsers().document(id)
                     .get().addOnCompleteListener(task -> {
 
                 // true if user is in the database
                 final boolean isValid = task.isSuccessful();
-
                 if (isValid)
                     // login
-                    repo.getAuth().signInWithEmailAndPassword(email, pass).addOnCompleteListener(loginTask -> {
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass).addOnCompleteListener(loginTask -> {
                         if (loginTask.isSuccessful())
-                            restartApp();
+                            Common.restartApp(getActivity());
                         else // invalid email or password
                             invalidLogin();
                     });
@@ -108,18 +101,9 @@ public class LoginFragment extends Fragment {
 
     private void invalidLogin() {
         // user doesn't exist
-        showMessage(R.string.invalid_user);
+        Common.showMessage(view.getContext(), R.string.invalid_user);
         // hide progress bar
         view.findViewById(R.id.login_progress_bar).setVisibility(View.GONE);
-    }
-
-    private void restartApp() {
-        Activity activity = getActivity();
-        if (activity == null) return;
-        TaskStackBuilder.create(activity)
-                .addNextIntent(new Intent(activity, MainActivity.class))
-                .addNextIntent(activity.getIntent())
-                .startActivities();
     }
 
 

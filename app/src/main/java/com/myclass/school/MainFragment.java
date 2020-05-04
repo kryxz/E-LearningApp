@@ -12,7 +12,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -33,7 +32,6 @@ public class MainFragment extends Fragment {
     }
 
     private View view;
-    private UserViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,14 +46,15 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        model = new ViewModelProvider(this).get(UserViewModel.class);
         init();
     }
 
 
     private void init() {
         if (checkUserAuth() == null) return;
+        if (getActivity() == null) return;
 
+        UserViewModel model = ((MainActivity) getActivity()).model;
 
         showBottomNavigation();
 

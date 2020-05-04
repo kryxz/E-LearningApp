@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -182,18 +181,12 @@ public class ViewUsersFragment extends Fragment {
 
 
     /*
-    update title in teh action bar
+    update title in the action bar
     uses a string id from strings.xml
      */
+
     private void updateTitle(int id) {
-        MainActivity activity = ((MainActivity) getActivity());
-
-        if (activity != null) {
-            ActionBar bar = activity.getSupportActionBar();
-            if (bar != null)
-                bar.setTitle(getString(id));
-        }
-
+        Common.updateTitle(getActivity(), id);
     }
 
 

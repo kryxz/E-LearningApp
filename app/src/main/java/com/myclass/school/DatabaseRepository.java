@@ -26,7 +26,6 @@ class DatabaseRepository {
     }
 
 
-
     // returns reference to users location in database
     CollectionReference getUsers() {
         return db.collection("users");
@@ -50,6 +49,19 @@ class DatabaseRepository {
 
     StorageReference getImagesRef() {
         return storage.getReference("images");
+    }
+
+    StorageReference getClassFiles(String id) {
+        return storage.getReference("files").child(id);
+    }
+
+
+    CollectionReference getClassFilesRef(String id) {
+        return getClassroomsRef().document(id).collection("files");
+    }
+
+    CollectionReference getClassPosts(String id) {
+        return getClassroomsRef().document(id).collection("posts");
     }
 
     // get current auth user

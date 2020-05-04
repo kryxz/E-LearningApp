@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
-    android:layout_marginVertical="2dp"
-    android:orientation="vertical"
-    android:padding="2dp">
+    android:orientation="vertical">
 
 
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
@@ -15,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_marginHorizontal="4dp"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="8dp"
         app:strokeColor="?colorAccent"
         app:strokeWidth="2dp">
 
@@ -23,41 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/first_letter_name_item"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginHorizontal="2dp"
-                android:background="@drawable/rectangle_text"
+                android:background="@drawable/circle_text"
                 android:gravity="center"
                 android:text="@string/single_letter_sample"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/classroom_item_name"
+                    android:id="@+id/member_item_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="4dp"
-                    android:text="@string/classroom_name"
+                    android:gravity="center"
+                    android:text="@string/name"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/classroom_item_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:text="@string/description"
-                    android:textColor="@color/grayDark"
-                    android:textSize="15sp" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

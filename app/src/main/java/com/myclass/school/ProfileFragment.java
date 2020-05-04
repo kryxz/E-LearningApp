@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -179,7 +180,7 @@ public class ProfileFragment extends Fragment {
     private void uploadPicture() {
 
         // create intent to pick from photos
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
 
 
@@ -199,17 +200,21 @@ public class ProfileFragment extends Fragment {
             // get image as a path
             Uri selectedImage = data.getData();
 
-            try {
-                // convert to bitmap image
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(view.getContext()
-                        .getContentResolver(), selectedImage);
-                setPicture(bitmap);
+            AsyncTask.execute(() -> {
+                try {
+                    // convert to bitmap image
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(view.getContext()
+                            .getContentResolver(), selectedImage);
+                    setPicture(bitmap);
 
-            } catch (IOException e) {
-                // tell user cannot upload
-                Common.showMessage(getContext(), R.string.cannot_upload);
+                } catch (IOException e) {
+                    // tell user cannot upload
+                    Common.showMessage(getContext(), R.string.cannot_upload);
 
-            }
+                }
+
+            });
+
         }
 
 
@@ -218,10 +223,12 @@ public class ProfileFragment extends Fragment {
 
     // upload chosen picture to database
     private void setPicture(Bitmap pic) {
-        if (getContext() == null) return;
+        if (getActivity() == null) return;
 
-        // show user message about uploading image
-        Common.showMessage(getContext(), R.string.uploading_pic);
+        getActivity().runOnUiThread(() -> {
+            // show user message about uploading image
+            Common.showMessage(getContext(), R.string.uploading_pic);
+        });
 
         // upload picture to database, and update user data!
         model.updateProfilePic(pic);

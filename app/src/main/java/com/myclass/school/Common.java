@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -25,7 +27,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
-import java.util.Random;
 
 
 /*
@@ -45,7 +46,6 @@ public class Common {
             R.color.red,
             R.color.green,
     };
-
 
     static int getRandomColor(Context c, int pos) {
         return ContextCompat.getColor(c, colors[pos % colors.length]);
@@ -214,4 +214,53 @@ public class Common {
                 .addNextIntent(activity.getIntent())
                 .startActivities();
     }
+
+
+    static void updateTitle(Activity ac, int id) {
+        MainActivity activity = ((MainActivity) ac);
+
+        if (activity != null) {
+            ActionBar bar = activity.getSupportActionBar();
+            if (bar != null)
+                bar.setTitle(ac.getString(id));
+        }
+
+    }
+
+    static void updateTitle(Activity ac, String text) {
+        MainActivity activity = ((MainActivity) ac);
+
+        if (activity != null) {
+            ActionBar bar = activity.getSupportActionBar();
+            if (bar != null)
+                bar.setTitle(text);
+        }
+
+    }
+
+    static void hideActionBar(Activity ac) {
+        if (ac != null) {
+            ActionBar bar = ((AppCompatActivity) ac).getSupportActionBar();
+            if (bar != null) bar.hide();
+        }
+
+    }
+
+    static void showActionBar(Activity ac) {
+        if (ac != null) {
+            ActionBar bar = ((AppCompatActivity) ac).getSupportActionBar();
+            if (bar != null) bar.show();
+        }
+
+    }
+
+    static String getTimeAgo(long time) {
+        return DateUtils.getRelativeTimeSpanString(
+                time,
+                System.currentTimeMillis(),
+                DateUtils.MINUTE_IN_MILLIS
+        ).toString();
+    }
+
+
 }
