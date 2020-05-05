@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/classroom_name"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_night"
         android:textSize="17sp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/description"
-            android:textColor="@color/black"
+            android:textColor="@color/blue_night"
             android:textSize="17sp" />
 
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/instructor"
-            android:textColor="@color/black"
+            android:textColor="@color/blue_night"
             android:textSize="17sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/members_count"
-            android:textColor="@color/black"
+            android:textColor="@color/blue_night"
             android:textSize="17sp" />
 
 
@@ -60,8 +60,9 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:drawableEnd="@drawable/ic_delete"
+            android:drawableTint="@color/iron_white"
             android:text="@string/delete"
-            android:textColor="@color/black"
+            android:textColor="@color/lynx_white"
             android:textSize="17sp"
             android:textStyle="bold" />
 

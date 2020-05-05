@@ -42,6 +42,5 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <View style="@style/view_divider_style" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

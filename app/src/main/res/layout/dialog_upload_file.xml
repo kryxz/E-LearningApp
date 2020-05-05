@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/upload_file"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_night"
         android:textSize="21sp"
         android:textStyle="bold" />
 
@@ -25,6 +25,7 @@
             android:id="@+id/file_name_dialog"
             style="@style/text_input_style"
             android:drawableEnd="@drawable/ic_file"
+            android:drawableTint="@color/colorPrimary"
             android:hint="@string/file_name" />
 
 
@@ -32,6 +33,7 @@
             android:id="@+id/file_description_dialog"
             style="@style/text_input_style"
             android:drawableEnd="@drawable/ic_text_fields"
+            android:drawableTint="@color/colorPrimary"
             android:hint="@string/description" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -51,7 +53,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:text="@string/upload"
-            android:textColor="@color/black"
+            android:textColor="@color/lynx_white"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -64,7 +66,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="@color/black"
+            android:textColor="@color/lynx_white"
             android:textSize="17sp"
             android:textStyle="bold" />
 

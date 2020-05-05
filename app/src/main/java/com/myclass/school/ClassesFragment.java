@@ -181,7 +181,7 @@ public class ClassesFragment extends Fragment {
         }
 
 
-        static class ClassroomMemberItem extends Item<GroupieViewHolder> {
+        private static class ClassroomMemberItem extends Item<GroupieViewHolder> {
 
             final private String name;
 
@@ -202,7 +202,6 @@ public class ClassesFragment extends Fragment {
 
                 final String firstLetterName = String.valueOf(name.charAt(0));
                 firstLetter.setText(firstLetterName);
-
 
                 firstLetter.getBackground().setTint(Common.getRandomColor(view.getContext(), position));
 

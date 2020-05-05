@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/manage_classes"
-        android:textColor="@color/black"
+        android:textColor="@color/black_night"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
             android:gravity="center_horizontal"
             android:padding="4dp"
             android:text="@string/all_classes"
-            android:textColor="@color/black" />
+            android:textColor="@color/black_night" />
 
         <View style="@style/view_divider_style" />
 
@@ -49,7 +49,7 @@
             android:gravity="center_horizontal"
             android:padding="4dp"
             android:text="@string/user_classes"
-            android:textColor="@color/black" />
+            android:textColor="@color/black_night" />
 
         <View style="@style/view_divider_style" />
 
@@ -72,7 +72,7 @@
         android:layout_marginEnd="4dp"
         android:layout_weight="1"
         android:text="@string/done"
-        android:textColor="@color/black"
+        android:textColor="@color/lynx_white"
         android:textSize="17sp"
         android:textStyle="bold" />
 

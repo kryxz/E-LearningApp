@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/add_teacher"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_night"
         android:textSize="21sp"
         android:textStyle="bold" />
 
@@ -22,17 +22,19 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:drawableEnd="@drawable/ic_text_fields"
             android:id="@+id/add_user_name"
-            android:hint="@string/name"
-            style="@style/text_input_style" />
+            style="@style/text_input_style"
+            android:drawableEnd="@drawable/ic_text_fields"
+            android:drawableTint="@color/colorPrimary"
+            android:hint="@string/name" />
 
 
         <com.google.android.material.textfield.TextInputEditText
-            android:drawableEnd="@drawable/ic_class"
-            android:hint="@string/subject_name"
             android:id="@+id/add_subject_name"
-            style="@style/text_input_style" />
+            style="@style/text_input_style"
+            android:drawableEnd="@drawable/ic_class"
+            android:drawableTint="@color/colorPrimary"
+            android:hint="@string/subject_name" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -52,7 +54,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:text="@string/confirm"
-            android:textColor="@color/black"
+            android:textColor="@color/lynx_white"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -65,7 +67,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="@color/black"
+            android:textColor="@color/lynx_white"
             android:textSize="17sp"
             android:textStyle="bold" />
 

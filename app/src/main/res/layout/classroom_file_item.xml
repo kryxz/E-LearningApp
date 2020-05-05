@@ -51,7 +51,7 @@
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:text="@string/name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/blue_night"
                         android:textSize="18sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -78,7 +78,7 @@
                 android:layout_marginTop="7dp"
                 android:padding="8dp"
                 android:text="@string/text_sample"
-                android:textColor="@color/black"
+                android:textColor="@color/black_night"
                 android:textSize="16sp" />
 
 
