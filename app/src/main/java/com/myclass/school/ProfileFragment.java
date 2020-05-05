@@ -3,6 +3,7 @@ package com.myclass.school;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -56,20 +58,26 @@ public class ProfileFragment extends Fragment {
 
     private void init() {
         if (getActivity() == null) return;
+        if (getArguments() == null) return;
 
         model = ((MainActivity) getActivity()).model;
 
-        AppCompatTextView username = view.findViewById(R.id.profile_username);
-        AppCompatTextView userType = view.findViewById(R.id.profile_user_type);
+        final AppCompatTextView username = view.findViewById(R.id.profile_username);
+        final AppCompatTextView userType = view.findViewById(R.id.profile_user_type);
+
+        final AppCompatTextView userStatus = view.findViewById(R.id.profile_user_status);
 
 
-        TextInputEditText userEmail = view.findViewById(R.id.profile_email);
-        TextInputEditText userSubject = view.findViewById(R.id.profile_grade_subject);
+        final TextInputEditText userEmail = view.findViewById(R.id.profile_email);
+        final TextInputEditText userSubject = view.findViewById(R.id.profile_grade_subject);
+
+        final String userId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
+        final boolean isProfileOwner = userId.equals("null");
+
+        final CircleImageView profilePic = view.findViewById(R.id.profile_pic);
 
 
-        CircleImageView profilePic = view.findViewById(R.id.profile_pic);
-
-        model.getUser().observe(getViewLifecycleOwner(), user -> {
+        model.getUserById(userId).observe(getViewLifecycleOwner(), user -> {
             if (user == null) return;
 
             // set email and name
@@ -89,16 +97,41 @@ public class ProfileFragment extends Fragment {
                 userType.setText(getString(R.string.student));
             }
 
-            username.setOnClickListener(v -> editUserDialog(user));
 
+            // can edit if user is owner of profile
+            if (isProfileOwner) {
+                username.setOnClickListener(v -> editUserDialog(user));
+
+                Drawable drawable = Common.tintDrawable(getContext(), R.drawable.ic_edit,
+                        ContextCompat.getColor(view.getContext(), R.color.maz_blue));
+
+                username.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+
+            } else // update title to username's profile
+                Common.updateTitle(getActivity(), getString(R.string.user_profile_arg, user.getName()));
+
+
+            // show profile image
             String photo = user.getPhotoUrl();
             if (photo != null)
                 Picasso.get().load(photo).placeholder(R.drawable.ic_person).into(profilePic);
 
+
+            // online status
+            if (user.isOnline()) {
+                userStatus.setText(getString(R.string.status_online));
+                Common.tintDrawableTextView(userStatus, R.color.green);
+            } else {
+                userStatus.setText(getString(R.string.status_offline));
+                Common.tintDrawableTextView(userStatus, R.color.red);
+
+            }
+
         });
 
-
-        profilePic.setOnClickListener(v -> uploadPicture());
+        // can edit profile image if owner
+        if (isProfileOwner)
+            profilePic.setOnClickListener(v -> uploadPicture());
 
     }
 

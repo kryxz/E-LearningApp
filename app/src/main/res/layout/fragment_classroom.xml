@@ -12,7 +12,11 @@
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/colorPrimaryDark">
+        app:tabBackground="@color/lynx_white"
+        app:tabIconTint="@color/colorPrimary"
+        app:tabIndicatorColor="@color/gang_gray"
+        app:tabSelectedTextColor="@color/gang_gray"
+        app:tabTextColor="@color/black_night">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -29,8 +33,22 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/no_posts_yet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/no_posts"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -42,7 +60,8 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-    </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <View style="@style/view_divider_style" />
 

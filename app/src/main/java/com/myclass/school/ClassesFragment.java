@@ -3,7 +3,6 @@ package com.myclass.school;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -38,26 +37,17 @@ public class ClassesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_classes, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Common.setDrawerIcon(getActivity());
         this.view = view;
         init();
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // open drawer on click
-        if (item.getItemId() == android.R.id.home)
-            Common.openDrawer(getActivity());
-        return super.onOptionsItemSelected(item);
-    }
 
     private void init() {
         if (getActivity() == null) return;
@@ -71,14 +61,21 @@ public class ClassesFragment extends Fragment {
     private void getClasses() {
         final RecyclerView rv = view.findViewById(R.id.classes_rv);
         final GroupAdapter adapter = new GroupAdapter<>();
-        ProgressBar progressBar = view.findViewById(R.id.user_classes_progress_bar);
+        final ProgressBar progressBar = view.findViewById(R.id.user_classes_progress_bar);
+        final AppCompatTextView noClassesText = view.findViewById(R.id.no_classes_text);
 
 
         progressBar.setVisibility(View.VISIBLE);
         model.getMyClasses().observe(getViewLifecycleOwner(), classrooms -> {
 
             adapter.clear();
-            if (classrooms == null || classrooms.isEmpty()) return;
+
+            if (classrooms == null || classrooms.isEmpty()) {
+                noClassesText.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                return;
+            }
+
 
             for (final Classroom c : classrooms) {
                 // get members names
@@ -90,7 +87,7 @@ public class ClassesFragment extends Fragment {
                 adapter.add(new ClassroomItem(c, members));
 
             }
-
+            noClassesText.setVisibility(View.GONE);
             rv.setAdapter(adapter);
             progressBar.setVisibility(View.GONE);
         });
@@ -107,10 +104,6 @@ public class ClassesFragment extends Fragment {
         });
 
     }
-
-
-
-
 
 
     private static class ClassroomItem extends Item<GroupieViewHolder> {

@@ -52,7 +52,6 @@ public class FilesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
         init();
     }
 
@@ -70,7 +69,8 @@ public class FilesFragment extends Fragment {
         tabLayoutListener();
 
 
-        View addFileButton = view.findViewById(R.id.add_file_button);
+        final View addFileButton = view.findViewById(R.id.add_file_button);
+        final AppCompatTextView noFilesYet = view.findViewById(R.id.no_files_yet);
 
         final RecyclerView rv = view.findViewById(R.id.files_rv);
         final GroupAdapter adapter = new GroupAdapter();
@@ -87,14 +87,18 @@ public class FilesFragment extends Fragment {
 
 
         model.getClassFiles(classroomId).observe(getViewLifecycleOwner(), classroomFiles -> {
-            if (classroomFiles == null || classroomFiles.isEmpty()) return;
+            if (classroomFiles == null || classroomFiles.isEmpty()) {
+                noFilesYet.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            noFilesYet.setVisibility(View.GONE);
             adapter.clear();
 
             for (ClassroomFile file : classroomFiles)
                 adapter.add(new FileItem(file, getActivity()));
 
             rv.setAdapter(adapter);
-            rv.scrollToPosition(classroomFiles.size() - 1);
         });
 
 
@@ -179,7 +183,7 @@ public class FilesFragment extends Fragment {
     private void chooseFile() {
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
+        intent.setType("*/*");
         startActivityForResult(intent, 2);
 
 
@@ -228,16 +232,31 @@ public class FilesFragment extends Fragment {
             descriptionText.setText(file.getDescription());
             dateText.setText(Common.getTimeAgo(file.getDate()));
 
-            if (file.getType().contains("pdf"))
-                icon.setImageResource(R.drawable.ic_pdf);
-            else
-                icon.setImageResource(R.drawable.ic_file);
+            int iconId = R.drawable.ic_file;
+            int color = Common.getRandomColor(view.getContext(), position);
+            String type = file.getType();
+
+            if (type.contains("pdf"))
+                iconId = R.drawable.ic_pdf;
+            else if (type.contains("image"))
+                iconId = R.drawable.ic_image;
+            else if (type.contains("word"))
+                iconId = R.drawable.ic_word;
+            else if (type.contains("presentation"))
+                iconId = R.drawable.ic_powerpoint;
+
+
+            icon.setImageDrawable(Common.tintDrawable(view.getContext(), iconId, color));
 
             view.setOnClickListener(v -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file.getDownloadUrl()));
                 activity.startActivity(browserIntent);
+                Common.showMessage(view.getContext(), R.string.file_download);
             });
+
+
         }
+
 
     }
 

@@ -6,6 +6,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -45,7 +48,15 @@ public class Common {
             R.color.colorPrimaryDark,
             R.color.red,
             R.color.green,
+            R.color.pico_void,
+            R.color.maz_blue,
+            R.color.wild_green,
+            R.color.aqua_velvet,
+            R.color.steel_pink,
+            R.color.orange_light,
+
     };
+
 
     static int getRandomColor(Context c, int pos) {
         return ContextCompat.getColor(c, colors[pos % colors.length]);
@@ -122,11 +133,17 @@ public class Common {
     static void setDrawerIcon(Activity ac) {
         if (ac == null) return;
 
+        Drawable drawable = ContextCompat.getDrawable(ac, R.drawable.ic_format_list);
+        if (drawable == null) return;
+
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(ac, R.color.lynx_white));
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
 
         ActionBar bar = ((MainActivity) ac).getSupportActionBar();
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
-            bar.setHomeAsUpIndicator(R.drawable.ic_format_list);
+            bar.setHomeAsUpIndicator(drawable);
 /*            if (bar.getTitle() == null) return;
 
             String title = bar.getTitle().toString();
@@ -146,6 +163,12 @@ public class Common {
             drawer.closeDrawer(GravityCompat.START);
         else
             drawer.openDrawer(GravityCompat.START);
+
+    }
+
+    static void fabVisibility(Activity activity, int visibility) {
+        if (activity == null) return;
+        activity.findViewById(R.id.open_drawer_fab).setVisibility(visibility);
 
     }
 
@@ -179,6 +202,26 @@ public class Common {
                 .hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
+
+    static void tintDrawableTextView(AppCompatTextView tv, int color) {
+        Drawable drawable = ContextCompat.getDrawable(tv.getContext(), R.drawable.colored_circle);
+        if (drawable == null) return;
+
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(tv.getContext(), color));
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+        tv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+    }
+
+    static Drawable tintDrawable(Context context, int id, int color) {
+        Drawable drawable = ContextCompat.getDrawable(context, id);
+        if (drawable == null) return null;
+
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, color);
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+        return drawable;
+    }
 
 
 /*

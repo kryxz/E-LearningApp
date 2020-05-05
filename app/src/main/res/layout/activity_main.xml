@@ -22,15 +22,32 @@
             <!--The fragment tag offers automatic
                     inflation for the nav graph -->
 
-            <fragment
-                android:id="@+id/nav_host"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/navigation"
-                tools:ignore="FragmentTagUsage" />
+                android:layout_weight="5">
+
+                <fragment
+                    android:id="@+id/nav_host"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/navigation"
+                    tools:ignore="FragmentTagUsage" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/open_drawer_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="64dp"
+                    android:src="@drawable/ic_format_list"
+                    android:tint="@color/iron_white"
+                    app:rippleColor="?attr/colorAccent" />
+
+            </FrameLayout>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav"
@@ -38,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:visibility="gone"
-                app:itemIconTint="?attr/colorPrimaryDark"
-                app:itemTextColor="@color/black"
+                app:itemIconTint="?attr/colorPrimary"
+                app:itemTextColor="@color/blue_night"
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/teacher_main_menu" />
 
@@ -53,6 +70,8 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/drawer_header"
             app:itemHorizontalPadding="16dp"
+            app:itemIconTint="?attr/colorPrimary"
+            app:itemTextColor="@color/blue_night"
             app:menu="@menu/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

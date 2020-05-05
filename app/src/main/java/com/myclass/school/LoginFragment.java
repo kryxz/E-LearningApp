@@ -43,6 +43,8 @@ public class LoginFragment extends Fragment {
     private void init() {
         final DatabaseRepository repo = new DatabaseRepository();
 
+        // hide fab button
+        Common.fabVisibility(getActivity(), View.GONE);
 
         final TextInputEditText passwordEd = view.findViewById(R.id.login_password);
         final TextInputEditText emailEd = view.findViewById(R.id.login_email);

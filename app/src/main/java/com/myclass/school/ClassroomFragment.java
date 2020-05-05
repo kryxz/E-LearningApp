@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -70,29 +71,45 @@ public class ClassroomFragment extends Fragment {
         model.getUser().observe(getViewLifecycleOwner(), u -> {
             if (u == null) return;
             user = u;
-
             postToClass();
             model.getUser().removeObservers(this);
         });
         tabLayoutListener();
-        getPosts();
+
+        final SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(() -> {
+            getPosts(50, true);
+            refreshLayout.setRefreshing(false);
+        });
+
+        getPosts(20, false);
 
     }
 
-    private void getPosts() {
+    private void getPosts(final int howMany, final boolean isRefresh) {
 
         final RecyclerView rv = view.findViewById(R.id.posts_rv);
-        final GroupAdapter adapter = new GroupAdapter();
 
-        model.getClassPosts(classroomId).observe(getViewLifecycleOwner(), classroomPosts -> {
-            if (classroomPosts == null || classroomPosts.isEmpty()) return;
+        final GroupAdapter adapter = new GroupAdapter();
+        final AppCompatTextView noPostsText = view.findViewById(R.id.no_posts_yet);
+
+        model.getClassPosts(classroomId, howMany).observe(getViewLifecycleOwner(), classroomPosts -> {
+
+            if (classroomPosts == null || classroomPosts.isEmpty()) {
+                noPostsText.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            noPostsText.setVisibility(View.GONE);
             adapter.clear();
 
             for (ClassroomPost post : classroomPosts)
                 adapter.add(new PostItem(post));
 
+
             rv.setAdapter(adapter);
-            rv.scrollToPosition(classroomPosts.size() - 1);
+            if (!isRefresh)
+                rv.scrollToPosition(classroomPosts.size() - 1);
         });
 
 
@@ -177,6 +194,11 @@ public class ClassroomFragment extends Fragment {
             return R.layout.classroom_post_item;
         }
 
+        private void goToProfile(View view) {
+            Navigation.findNavController(view).
+                    navigate(ClassroomFragmentDirections.viewUserProfile().setUserId(post.getSenderId()));
+        }
+
         @Override
         public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
             View view = viewHolder.itemView;
@@ -191,27 +213,30 @@ public class ClassroomFragment extends Fragment {
             if (post.getPhotoUrl() == null) {
                 firstLetter.setVisibility(View.VISIBLE);
                 profilePic.setVisibility(View.GONE);
-
+                firstLetter.setOnClickListener(v -> goToProfile(view));
             } else {
                 firstLetter.setVisibility(View.GONE);
                 profilePic.setVisibility(View.VISIBLE);
 
                 Picasso.get().load(post.getPhotoUrl()).into(profilePic);
+                profilePic.setOnClickListener(v -> goToProfile(view));
 
             }
 
+
             // set first letter
-            final String firstLetterName = String.valueOf(post.getAuthor().charAt(0));
+            final String senderName = post.getAuthor();
+            final String firstLetterName = String.valueOf(senderName.charAt(0));
             firstLetter.setText(firstLetterName);
 
             // set random background color
-            firstLetter.getBackground().setTint(Common.getRandomColor(view.getContext(), post.getAuthor().length()));
+            firstLetter.getBackground().setTint(Common.getRandomColor(view.getContext(), senderName.length()));
 
             // set time ago
             agoText.setText(Common.getTimeAgo(post.getDate()));
 
             // set author and content
-            authorText.setText(post.getAuthor());
+            authorText.setText(senderName);
             contentText.setText(post.getContent());
 
 

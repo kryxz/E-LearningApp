@@ -76,6 +76,7 @@
     <string name="one_member">1 Member</string>
     <string name="ago_sample">3m ago</string>
 
+    <string name="file_download">Downloading File</string>
 
     <string name="instructor">Instructor: %1$s</string>
     <string name="no_instructor">No Instructor</string>
@@ -106,6 +107,8 @@
     <string name="students_count">Number of Students: %1$d</string>
     <string name="classes_count">Number of Classes: %1$d</string>
 
+    <string name="user_profile_arg">%1$s\'s Profile</string>
+
     <string name="empty_teachers">No teachers found! Consider adding some.</string>
     <string name="empty_students">No students found! Consider adding some.</string>
     <string name="empty_classes">No Classes found! Consider adding some.</string>
@@ -116,13 +119,18 @@
     <string name="uploading_pic">Uploading Image</string>
     <string name="uploading_file">Uploading File</string>
     <string name="cannot_upload">Cannot Upload</string>
-    <string name="status_available">Available</string>
     <string name="file_sent">File Sent</string>
     <string name="classroom_files">Classroom Files</string>
 
     <string name="change_img">Change Picture</string>
     <string name="change_img_confirm">Are you sure you want to change your profile picture?</string>
     <string name="single_letter_sample">A</string>
+
+    <string name="status_online">Online</string>
+    <string name="status_offline">Offline</string>
+    <string name="no_classes">You are not in any classes yet!</string>
+    <string name="no_posts">No one has sent any messages yet</string>
+    <string name="no_files">The Instructor can post files here</string>
 
 
 </resources>

@@ -62,6 +62,38 @@ public class UserViewModel extends ViewModel {
         return classes;
     }
 
+
+    LiveData<User> getUserById(String id) {
+
+        if (id.equals("null")) {
+            final String email = getAuthUser().getEmail();
+
+            if (email == null) return null;
+            id = email.substring(0, email.indexOf('@'));
+        }
+
+
+        final boolean isTeacher = id.charAt(0) == 't';
+
+        if (isTeacher)
+            repo.getTeachersRef().document(id).addSnapshotListener((query, exception) -> {
+                if (exception != null || query == null) return;
+                Teacher t = query.toObject(Teacher.class);
+                user.setValue(t);
+            });
+
+        else
+            repo.getStudentsRef().document(id).addSnapshotListener((query, exception) -> {
+                if (exception != null || query == null) return;
+                Student s = query.toObject(Student.class);
+                user.setValue(s);
+
+            });
+        return user;
+
+    }
+
+
     LiveData<User> getUser() {
         String email = getAuthUser().getEmail();
 
@@ -133,12 +165,12 @@ public class UserViewModel extends ViewModel {
 
     }
 
-/*
+
     void logout() {
         repo.getAuth().signOut();
     }
 
-*/
+
 
 
     private void updatePicUrl(String email, String picUrl) {
@@ -216,10 +248,10 @@ public class UserViewModel extends ViewModel {
 
     }
 
-    LiveData<List<ClassroomPost>> getClassPosts(String id) {
+    LiveData<List<ClassroomPost>> getClassPosts(String id, int howMany) {
         MutableLiveData<List<ClassroomPost>> posts = new MutableLiveData<>();
 
-        repo.getClassPosts(id).orderBy("date", Query.Direction.ASCENDING).
+        repo.getClassPosts(id).orderBy("date", Query.Direction.ASCENDING).limitToLast(howMany).
                 addSnapshotListener((query, exception) -> {
                     if (exception != null || query == null) return;
                     ArrayList<ClassroomPost> allPosts = new ArrayList<>();

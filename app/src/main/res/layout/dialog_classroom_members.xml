@@ -12,7 +12,7 @@
         android:gravity="center_horizontal"
         android:padding="4dp"
         android:text="@string/members_arg"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_night"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -22,7 +22,7 @@
         android:id="@+id/classroom_members_rv"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginVertical="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#273c75</color>
+    <color name="colorPrimaryDark">#192a56</color>
+    <color name="colorAccent">#5f27cd</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -13,5 +13,27 @@
     <color name="green">#43A047</color>
     <color name="red">#D81B60</color>
 
+    <color name="blue_night">#353b48</color>
+    <color name="black_night">#2f3640</color>
 
+    <color name="gang_gray">#718093</color>
+    <color name="lynx_white">#f5f6fa</color>
+    <color name="iron_white">#dcdde1</color>
+    <color name="cyan_ite">#0abde3</color>
+
+    <color name="pico_void">#192a56</color>
+    <color name="maz_blue">#273c75</color>
+    <color name="wild_green">#1dd1a1</color>
+    <color name="aqua_velvet">#01a3a4</color>
+    <color name="steel_pink">#be2edd</color>
+    <color name="orange_light">#f0932b</color>
+
+
+    <color name="amour">#ee5253</color>
+
+    <!--
+        <color name="colorPrimary">#6200EE</color>
+        <color name="colorPrimaryDark">#3700B3</color>
+        <color name="colorAccent">#03DAC5</color>
+    -->
 </resources>

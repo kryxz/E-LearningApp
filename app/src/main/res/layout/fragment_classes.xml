@@ -6,13 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ClassesFragment">
 
+
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/user_classes_progress_bar"
         style="?android:attr/progressBarStyleLarge"
-        android:progressTint="@color/grayDark"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:progressTint="@color/grayDark"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/no_classes_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/no_classes"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/classes_rv"

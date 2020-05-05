@@ -5,59 +5,43 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-        style="@style/Widget.MaterialComponents.CardView"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:layout_marginHorizontal="4dp"
-        app:cardCornerRadius="8dp"
-        app:strokeColor="?colorAccent"
+        app:strokeColor="@color/iron_white"
         app:strokeWidth="2dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
+            android:layout_height="match_parent"
+            android:padding="8dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/first_letter_name_item"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginHorizontal="2dp"
                 android:background="@drawable/circle_text"
                 android:gravity="center"
                 android:text="@string/single_letter_sample"
-                android:textColor="@color/white"
+                android:textColor="@color/lynx_white"
                 android:textSize="24sp" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/member_item_name"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_marginHorizontal="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/name"
+                android:textColor="@color/blue_night"
+                android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/member_item_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="4dp"
-                    android:gravity="center"
-                    android:text="@string/name"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
+    </com.google.android.material.card.MaterialCardView>
 
     <View style="@style/view_divider_style" />
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

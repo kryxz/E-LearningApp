@@ -12,7 +12,11 @@
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/colorPrimaryDark">
+        app:tabBackground="@color/lynx_white"
+        app:tabIconTint="@color/colorPrimary"
+        app:tabIndicatorColor="@color/gang_gray"
+        app:tabSelectedTextColor="@color/gang_gray"
+        app:tabTextColor="@color/black_night">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -31,10 +35,25 @@
     </com.google.android.material.tabs.TabLayout>
 
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/no_files_yet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/no_files"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/files_rv"
@@ -48,10 +67,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginVertical="64dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="128dp"
             android:src="@drawable/ic_add"
-            android:visibility="gone" />
+            android:tint="@color/iron_white"
+            android:visibility="visible"
+            app:backgroundTint="@color/colorPrimaryDark" />
 
     </FrameLayout>
 

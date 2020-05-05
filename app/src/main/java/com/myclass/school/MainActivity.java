@@ -3,6 +3,7 @@ package com.myclass.school;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -68,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        findViewById(R.id.open_drawer_fab).setOnClickListener(v -> {
+            navController.navigate(R.id.mainFragment);
+            // close if open
+            if (drawer.isOpen())
+                drawer.closeDrawer(GravityCompat.START);
+            else
+                drawer.openDrawer(GravityCompat.START);
+        });
+
+        // todo remove this
+        // logout using fab
+        findViewById(R.id.open_drawer_fab).setOnLongClickListener(v -> {
+            logout();
+            return false;
+        });
+
 
         // fragments that has no back button
         int[] noBackButtonSet = new int[]{R.id.mainFragment, R.id.loginFragment,
@@ -83,6 +100,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    // todo remove
+    private void logout() {
+
+        // code that is executed upon confirmation (when user says yes to logout)
+        Runnable logout = () -> {
+            model.logout();
+
+            Common.restartApp(this);
+        };
+
+        Common.showConfirmDialog(this, getString(R.string.logout),
+                getString(R.string.logout_confirm), logout);
+
+    }
+
+
 
     @Override
     protected void onPause() {

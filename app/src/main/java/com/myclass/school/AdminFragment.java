@@ -20,8 +20,8 @@ import androidx.navigation.Navigation;
 import com.google.android.material.textfield.TextInputEditText;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
-import com.myclass.school.data.User;
 import com.myclass.school.data.Teacher;
+import com.myclass.school.data.User;
 
 import java.util.Random;
 
@@ -76,6 +76,9 @@ public class AdminFragment extends Fragment {
 
 
     private void init() {
+
+        // hide fab button
+        Common.fabVisibility(getActivity(), View.GONE);
 
 
         model = new ViewModelProvider(this).get(AdminViewModel.class);

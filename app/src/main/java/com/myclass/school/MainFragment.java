@@ -101,10 +101,12 @@ public class MainFragment extends Fragment {
 
         bottomNavigation.setVisibility(View.VISIBLE);
 
+        // show fab button
+        Common.fabVisibility(getActivity(), View.VISIBLE);
 
     }
 
-    private void setUpDrawer(User user) {
+    private void setUpDrawer(final User user) {
         final MainActivity activity = (MainActivity) getActivity();
         if (activity == null) return;
 
@@ -128,14 +130,15 @@ public class MainFragment extends Fragment {
 
 
         final CircleImageView profilePic = headerView.findViewById(R.id.header_profile_pic);
-        String photo = user.getPhotoUrl();
+        final String photo = user.getPhotoUrl();
         if (photo != null)
             Picasso.get().load(photo).placeholder(R.drawable.ic_person).into(profilePic);
 
 
+        NavController navController = Navigation.findNavController(view);
         // go to profile when click on name or picture
         headerView.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(MainFragmentDirections.goToProfile());
+            navController.navigate(MainFragmentDirections.goToProfile());
             drawer.closeDrawer(GravityCompat.START);
         });
 
@@ -151,20 +154,5 @@ public class MainFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
-/*
-    private void logout() {
-
-        // code that is executed upon confirmation (when user says yes to logout)
-        Runnable logout = () -> {
-            model.logout();
-
-            Common.restartApp(getActivity());
-        };
-
-        Common.showConfirmDialog(getContext(), getString(R.string.logout),
-                getString(R.string.logout_confirm), logout);
-
-    }*/
 
 }

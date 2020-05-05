@@ -71,7 +71,12 @@
         android:id="@+id/profileFragment"
         android:name="com.myclass.school.ProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="null"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/classroomFragment"
         android:name="com.myclass.school.ClassroomFragment"
@@ -83,6 +88,9 @@
         <action
             android:id="@+id/goToFiles"
             app:destination="@id/filesFragment" />
+        <action
+            android:id="@+id/viewUserProfile"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
