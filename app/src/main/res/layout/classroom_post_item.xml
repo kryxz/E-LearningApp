@@ -37,7 +37,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_person"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="1dp" />
 
@@ -51,7 +51,7 @@
                     android:text="@string/single_letter_sample"
                     android:textColor="@color/white"
                     android:textSize="24sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"

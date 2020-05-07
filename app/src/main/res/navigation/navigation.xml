@@ -45,9 +45,13 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.myclass.school.ChatFragment"
+        android:name="com.myclass.school.ChatsFragment"
         android:label="@string/chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/goToThisChat"
+            app:destination="@id/PMFragment" />
+    </fragment>
     <fragment
         android:id="@+id/classesFragment"
         android:name="com.myclass.school.ClassesFragment"
@@ -76,6 +80,10 @@
             android:name="userId"
             android:defaultValue="null"
             app:argType="string" />
+        <action
+            android:id="@+id/startPrivateChat"
+            app:destination="@id/PMFragment"
+            app:popUpTo="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/classroomFragment"
@@ -103,5 +111,23 @@
         <argument
             android:name="id"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/PMFragment"
+        android:name="com.myclass.school.PMFragment"
+        android:label="@string/private_chat"
+        tools:layout="@layout/fragment_p_m">
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+        <action
+            android:id="@+id/viewUserProfile"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

@@ -1,6 +1,7 @@
 package com.myclass.school;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer;
 
 
-    UserViewModel model;
+    UserViewModel userVM;
+    ChatViewModel chatVM;
+    ClassroomVM classroomVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavigation();
         FirebaseApp.initializeApp(this);
-        model = new ViewModelProvider(this).get(UserViewModel.class);
+        userVM = new ViewModelProvider(this).get(UserViewModel.class);
+        chatVM = new ViewModelProvider(this).get(ChatViewModel.class);
+        classroomVM = new ViewModelProvider(this).get(ClassroomVM.class);
     }
 
 
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
 
 
+        View fab = findViewById(R.id.open_drawer_fab);
         // drawer only available in main screen
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment ||
@@ -66,10 +72,14 @@ public class MainActivity extends AppCompatActivity {
             else
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
+            if (destination.getId() == R.id.PMFragment)
+                fab.setVisibility(View.GONE);
+            else
+                fab.setVisibility(View.VISIBLE);
 
         });
 
-        findViewById(R.id.open_drawer_fab).setOnClickListener(v -> {
+        fab.setOnClickListener(v -> {
             navController.navigate(R.id.mainFragment);
             // close if open
             if (drawer.isOpen())
@@ -106,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         // code that is executed upon confirmation (when user says yes to logout)
         Runnable logout = () -> {
-            model.logout();
+            userVM.logout();
 
             Common.restartApp(this);
         };
@@ -115,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.logout_confirm), logout);
 
     }
-
 
 
     @Override

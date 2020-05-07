@@ -7,7 +7,6 @@ public class ClassroomPost {
     private String senderId;
     private String author;
     private String content;
-    private String photoUrl;
 
     private Long date;
 
@@ -16,13 +15,6 @@ public class ClassroomPost {
     }
 
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 
 
     public String getId() {

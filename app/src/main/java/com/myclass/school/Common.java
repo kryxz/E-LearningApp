@@ -6,7 +6,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.text.method.PasswordTransformationMethod;
@@ -107,7 +111,8 @@ public class Common {
 
     // shows a simple toast message
     static void showMessage(Context context, int id) {
-        Toast.makeText(context, context.getString(id), Toast.LENGTH_SHORT).show();
+        if (context != null)
+            Toast.makeText(context, context.getString(id), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -305,5 +310,22 @@ public class Common {
         ).toString();
     }
 
+    static Drawable getDrawableFromView(View v) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
 
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = v.getBackground();
+        if (bgDrawable != null)
+            // has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        else
+            // does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+
+        v.draw(canvas);
+        //return the bitmap
+        return new BitmapDrawable(v.getResources(),
+                returnedBitmap);
+    }
 }
+

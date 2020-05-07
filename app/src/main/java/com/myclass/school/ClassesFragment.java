@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,7 @@ public class ClassesFragment extends Fragment {
     private void init() {
         if (getActivity() == null) return;
 
-        model = ((MainActivity) getActivity()).model;
+        model = ((MainActivity) getActivity()).userVM;
 
         getClasses();
 
@@ -97,10 +98,11 @@ public class ClassesFragment extends Fragment {
 
 
     private void getThenAddName(final String id, final ArrayList<String> members) {
-        model.getNameById(id).observe(getViewLifecycleOwner(), s -> {
+        final LiveData<String> nameLiveData = model.getNameById(id);
+        nameLiveData.observe(getViewLifecycleOwner(), s -> {
             if (s == null) return;
             members.add(s);
-            model.getNameById(id).removeObservers(getViewLifecycleOwner());
+            nameLiveData.removeObservers(getViewLifecycleOwner());
         });
 
     }

@@ -70,4 +70,10 @@ class DatabaseRepository {
     }
 
 
+    CollectionReference getChatMessagesRef(String chatId) {
+        return db.collection("chats").document(chatId).collection("messages");
+
+    }
+
+
 }

@@ -60,7 +60,7 @@ public class FilesFragment extends Fragment {
         if (getActivity() == null) return;
         if (getArguments() == null) return;
 
-        model = ((MainActivity) getActivity()).model;
+        model = ((MainActivity) getActivity()).userVM;
 
         classroomId = ClassroomFragmentArgs.fromBundle(getArguments()).getId();
 
@@ -112,7 +112,7 @@ public class FilesFragment extends Fragment {
         if (tab != null)
             tab.select();
 
-        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFragment, false).build();
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.classesFragment, false).build();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override

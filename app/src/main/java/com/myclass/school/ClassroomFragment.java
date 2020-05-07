@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class ClassroomFragment extends Fragment {
 
     private View view;
     private UserViewModel model;
+    private ClassroomVM classroomVM;
     private User user;
     private String classroomId;
 
@@ -58,11 +60,12 @@ public class ClassroomFragment extends Fragment {
     private void init() {
         if (getActivity() == null) return;
         if (getArguments() == null) return;
-        model = ((MainActivity) getActivity()).model;
+        model = ((MainActivity) getActivity()).userVM;
+        classroomVM = ((MainActivity) getActivity()).classroomVM;
 
         classroomId = ClassroomFragmentArgs.fromBundle(getArguments()).getId();
 
-        model.getClassById(classroomId).observe(getViewLifecycleOwner(), classroom -> {
+        classroomVM.getClassById(classroomId).observe(getViewLifecycleOwner(), classroom -> {
             if (classroom == null || !classroom.getId().equals(classroomId)) return;
             Common.updateTitle(getActivity(), classroom.getName());
 
@@ -93,7 +96,7 @@ public class ClassroomFragment extends Fragment {
         final GroupAdapter adapter = new GroupAdapter();
         final AppCompatTextView noPostsText = view.findViewById(R.id.no_posts_yet);
 
-        model.getClassPosts(classroomId, howMany).observe(getViewLifecycleOwner(), classroomPosts -> {
+        classroomVM.getClassPosts(classroomId, howMany).observe(getViewLifecycleOwner(), classroomPosts -> {
 
             if (classroomPosts == null || classroomPosts.isEmpty()) {
                 noPostsText.setVisibility(View.VISIBLE);
@@ -123,7 +126,7 @@ public class ClassroomFragment extends Fragment {
         if (tab != null)
             tab.select();
 
-        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFragment, false).build();
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.classesFragment, false).build();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -172,15 +175,14 @@ public class ClassroomFragment extends Fragment {
             post.setSenderId(user.getEmail());
             post.setAuthor(user.getName());
             post.setId(UUID.randomUUID().toString().substring(0, 10));
-            post.setPhotoUrl(user.getPhotoUrl());
 
-            model.postToClassroom(classroomId, post);
+            classroomVM.postToClassroom(classroomId, post);
             messageText.getText().clear();
         });
     }
 
 
-    private static class PostItem extends Item<GroupieViewHolder> {
+    private class PostItem extends Item<GroupieViewHolder> {
 
         final private ClassroomPost post;
 
@@ -201,27 +203,13 @@ public class ClassroomFragment extends Fragment {
 
         @Override
         public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
-            View view = viewHolder.itemView;
+            final View view = viewHolder.itemView;
 
-            AppCompatTextView firstLetter = view.findViewById(R.id.first_letter_name_item);
-            AppCompatTextView agoText = view.findViewById(R.id.post_item_date);
-            AppCompatTextView authorText = view.findViewById(R.id.post_item_author);
-            AppCompatTextView contentText = view.findViewById(R.id.post_item_content);
-            CircleImageView profilePic = view.findViewById(R.id.profile_pic_post_item);
-
-
-            if (post.getPhotoUrl() == null) {
-                firstLetter.setVisibility(View.VISIBLE);
-                profilePic.setVisibility(View.GONE);
-                firstLetter.setOnClickListener(v -> goToProfile(view));
-            } else {
-                firstLetter.setVisibility(View.GONE);
-                profilePic.setVisibility(View.VISIBLE);
-
-                Picasso.get().load(post.getPhotoUrl()).into(profilePic);
-                profilePic.setOnClickListener(v -> goToProfile(view));
-
-            }
+            final AppCompatTextView firstLetter = view.findViewById(R.id.first_letter_name_item);
+            final AppCompatTextView agoText = view.findViewById(R.id.post_item_date);
+            final AppCompatTextView authorText = view.findViewById(R.id.post_item_author);
+            final AppCompatTextView contentText = view.findViewById(R.id.post_item_content);
+            final CircleImageView profilePic = view.findViewById(R.id.profile_pic_post_item);
 
 
             // set first letter
@@ -232,12 +220,42 @@ public class ClassroomFragment extends Fragment {
             // set random background color
             firstLetter.getBackground().setTint(Common.getRandomColor(view.getContext(), senderName.length()));
 
+
+            model.getPhotoUrl(post.getSenderId()).observe(getViewLifecycleOwner(), url -> {
+                if (url == null) {
+                    firstLetter.setVisibility(View.VISIBLE);
+                    profilePic.setVisibility(View.GONE);
+                    firstLetter.setOnClickListener(v -> goToProfile(view));
+
+                } else {
+                    Picasso.get().load(url).placeholder(R.drawable.ic_person).into(profilePic);
+                    firstLetter.setVisibility(View.GONE);
+                    profilePic.setVisibility(View.VISIBLE);
+                    profilePic.setOnClickListener(v -> goToProfile(view));
+
+                }
+
+            });
+
             // set time ago
             agoText.setText(Common.getTimeAgo(post.getDate()));
-
             // set author and content
             authorText.setText(senderName);
             contentText.setText(post.getContent());
+
+
+            /*
+            get new name for sender
+            if a user changes their name, new name should be in old posts too
+             */
+            LiveData<String> userNameLiveData =
+                    model.getNameById(post.getSenderId());
+            userNameLiveData.observe(getViewLifecycleOwner(), name -> {
+                if (name == null) return;
+                authorText.setText(senderName);
+                userNameLiveData.removeObservers(getViewLifecycleOwner());
+
+            });
 
 
         }

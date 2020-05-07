@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
         if (checkUserAuth() == null) return;
         if (getActivity() == null) return;
 
-        UserViewModel model = ((MainActivity) getActivity()).model;
+        UserViewModel model = ((MainActivity) getActivity()).userVM;
 
         showBottomNavigation();
 
