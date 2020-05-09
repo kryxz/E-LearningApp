@@ -202,16 +202,26 @@ public class FilesFragment extends Fragment {
         }
     }
 
-    private static class FileItem extends Item<GroupieViewHolder> {
+    static class FileItem extends Item<GroupieViewHolder> {
 
         private final ClassroomFile file;
         private final Activity activity;
+
+
+        private boolean isFilePick = false;
+        private Runnable action;
 
         FileItem(ClassroomFile f, Activity a) {
             file = f;
             activity = a;
         }
 
+        FileItem(ClassroomFile f, Activity a, boolean isPick, Runnable r) {
+            file = f;
+            activity = a;
+            isFilePick = isPick;
+            action = r;
+        }
 
         @Override
         public int getLayout() {
@@ -230,7 +240,7 @@ public class FilesFragment extends Fragment {
 
             nameText.setText(file.getName());
             descriptionText.setText(file.getDescription());
-            dateText.setText(Common.getTimeAgo(file.getDate()));
+            dateText.setText(Common.getTimeAsString(file.getDate()));
 
             int iconId = R.drawable.ic_file;
             int color = Common.getRandomColor(view.getContext(), position);
@@ -249,9 +259,14 @@ public class FilesFragment extends Fragment {
             icon.setImageDrawable(Common.tintDrawable(view.getContext(), iconId, color));
 
             view.setOnClickListener(v -> {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(file.getDownloadUrl()));
-                activity.startActivity(browserIntent);
-                Common.showMessage(view.getContext(), R.string.file_download);
+                if (isFilePick) {
+                    Common.Temp.tempFile = file;
+                    action.run();
+                } else
+                    Common.downloadFile(activity, file.getDownloadUrl());
+
+
+
             });
 
 

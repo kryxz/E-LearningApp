@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAssignmentsFragment">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/view_assignments_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/assignments_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:progressTint="@color/grayDark"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/assignments_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/new_assignment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="128dp"
+                android:src="@drawable/ic_add"
+                android:tint="@color/iron_white"
+                app:backgroundTint="@color/colorPrimaryDark" />
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/create_assignment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/new_assignment"
+                android:textColor="@color/blue_night"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_title"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_text_fields"
+                android:drawableTint="@color/colorPrimary"
+                android:hint="@string/title"
+                android:maxLines="2" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_content"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_text_fields"
+                android:drawableTint="@color/colorPrimary"
+                android:hint="@string/description"
+                android:maxLines="100" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_date"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_access_time"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:hint="@string/open_date" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_due_date"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_access_time"
+                android:drawableTint="@color/orange_light"
+                android:hint="@string/due_date"
+                android:maxLines="2" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_time"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_access_time"
+                android:drawableTint="@color/wild_green"
+                android:hint="@string/assignment_time"
+                android:inputType="numberDecimal"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assignment_file"
+                style="@style/text_input_style"
+                android:drawableEnd="@drawable/ic_file"
+                android:drawableTint="@color/blue_night"
+                android:hint="@string/assignment_file" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/new_assignment_confirm"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/confirm"
+                    android:textColor="@color/lynx_white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/new_assignment_cancel"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"
+                    android:textColor="@color/lynx_white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

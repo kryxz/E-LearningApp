@@ -13,6 +13,8 @@ import com.myclass.school.data.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// a viewModel that controls chat data, contains methods for getting chats, deleting chats, and sending messages
 public class ChatViewModel extends ViewModel {
 
     private final DatabaseRepository repo = new DatabaseRepository();

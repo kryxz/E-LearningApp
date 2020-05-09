@@ -23,7 +23,7 @@ import com.xwray.groupie.Item;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
+//  a fragment for conversations with other users
 public class ChatsFragment extends Fragment {
 
     private View view;
@@ -56,6 +56,7 @@ public class ChatsFragment extends Fragment {
         final GroupAdapter adapter = new GroupAdapter();
 
 
+        // get chats from database and add them to the recycler view
         chatViewModel.getChats().observe(getViewLifecycleOwner(), chats -> {
             if (chats == null || chats.isEmpty()) return;
             adapter.clear();
@@ -69,9 +70,12 @@ public class ChatsFragment extends Fragment {
 
     }
 
-    private class ChatItem extends Item<GroupieViewHolder> {
-        private final Chat chat;
 
+    // a view holder that shows a profile picture, last message in chat, etc
+    private class ChatItem extends Item<GroupieViewHolder> {
+
+
+        private final Chat chat;
         private final String name;
 
         ChatItem(Chat c, String n) {
@@ -89,6 +93,8 @@ public class ChatsFragment extends Fragment {
         public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
             final View view = viewHolder.itemView;
 
+
+            // init fields
             final AppCompatTextView firstLetterText = view.findViewById(R.id.first_letter_name_item);
             final CircleImageView profilePic = view.findViewById(R.id.profile_pic_chat);
 
@@ -97,14 +103,15 @@ public class ChatsFragment extends Fragment {
             final AppCompatTextView lastMessageDate = view.findViewById(R.id.chat_item_last);
 
 
+            // set last message text and date
             if (chat.getLastMessage() != null) {
                 lastMessage.setText(chat.getLastMessage().getContent());
-                lastMessageDate.setText(Common.getTimeAgo(chat.getLastMessage().getDate()));
+                lastMessageDate.setText(Common.getTimeAsString(chat.getLastMessage().getDate()));
             }
 
+            // get user data from database
+            // profile pic and username
             LiveData<User> userLiveData = model.getUserById(chat.getUserId());
-
-
             userLiveData.observe(getViewLifecycleOwner(), user -> {
                 if (user == null || !user.getEmail().contains(chat.getUserId())) return;
                 String photoUrl = user.getPhotoUrl();
@@ -125,7 +132,7 @@ public class ChatsFragment extends Fragment {
                 userLiveData.removeObservers(getViewLifecycleOwner());
             });
 
-
+            // go to chat on click
             view.setOnClickListener(v -> Navigation.findNavController(view).navigate(
                     ChatsFragmentDirections.goToThisChat(chat.getUserId(), name, chat.getId())));
         }

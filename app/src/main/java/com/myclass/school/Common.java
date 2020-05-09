@@ -2,23 +2,32 @@ package com.myclass.school;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.format.DateUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,9 +39,17 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
+import com.myclass.school.data.ClassroomFile;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -45,6 +62,17 @@ public class Common {
     public static final String EMAIL_SUFFIX = "@elearn.jo";
     static final String DEFAULT_PASSWORD = "elearn123";
 
+
+    static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
 
     private static int[] colors = new int[]{
             R.color.colorAccent,
@@ -177,6 +205,20 @@ public class Common {
 
     }
 
+    static void downloadFile(Activity activity, String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        activity.startActivity(browserIntent);
+        Common.showMessage(activity, R.string.file_download);
+    }
+
+    static String getTimeAsString(long time) {
+        return DateUtils.getRelativeTimeSpanString(
+                time,
+                System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS
+        ).toString();
+    }
+
     @SuppressLint("ClickableViewAccessibility") // disable an IDE warning
     static void passwordView(final AppCompatEditText editText) {
         // hides and shows password when user clicks at the 'eye' icon.
@@ -302,12 +344,26 @@ public class Common {
 
     }
 
-    static String getTimeAgo(long time) {
-        return DateUtils.getRelativeTimeSpanString(
-                time,
-                System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS
-        ).toString();
+    // shows a datePick dialog when clicked on the editText.
+    // needs a fragmentManager to display the dialog.
+    static void showDatePickerDialog(TextInputEditText editText, final FragmentManager manager) {
+
+        final Common.DatePickerFragment datePickerFragment = new DatePickerFragment(
+                // minimum date -> Now
+                // maximum date -> a month from now
+                editText, new Date().getTime(),
+                new Date().getTime() + 2629746000L);
+
+
+        editText.setFocusableInTouchMode(false);
+
+
+        editText.setOnClickListener(v -> {
+                    hideKeypad(v);
+                    datePickerFragment.show(manager, "datePicker");
+                }
+        );
+
     }
 
     static Drawable getDrawableFromView(View v) {
@@ -326,6 +382,99 @@ public class Common {
         //return the bitmap
         return new BitmapDrawable(v.getResources(),
                 returnedBitmap);
+    }
+
+    static String getDateFormatted(long date) {
+        SimpleDateFormat ft = new SimpleDateFormat("MMM dd, hh:mm a", Locale.US);
+        return ft.format(date);
+    }
+
+    // inner class to hold some temp data
+    static class Temp {
+
+        // for creating an assignment
+        static long assignmentDate = 0L;
+        static long assignmentDueDate = 0L;
+        static ClassroomFile tempFile = null;
+
+        // for submitting to an assignment
+        static Uri fileUri;
+        static String fileType;
+
+    }
+
+    // Public and static: Android requires the class to be so.
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+
+        final AppCompatEditText ed; // set picked date in this
+        final private Long minDate; // minimum date that can be chosen by user
+        final private Long maxDate; // maximum date that can be chosen by user
+
+
+        // Constructor
+        DatePickerFragment(AppCompatEditText editText,
+                           Long minimumDate, Long maximumDate) {
+
+            ed = editText;
+            minDate = minimumDate;
+            maxDate = maximumDate;
+        }
+
+
+        @NonNull
+        @Override
+        //Creates a dialog, customizes a few things and returns it
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            // Use date(maxDate) as the default date in the picker
+            // by making a Calendar instance and setting time to maxDate.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(minDate);
+
+            //Getting fields from calendar instance.
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DATE);
+
+            // Create a new instance of DatePickerDialog and return it
+            assert getContext() != null;
+            //instantiating a Date picker dialog
+            DatePickerDialog dialog = new DatePickerDialog(getContext(), this, year, month, day);
+
+            //Setting max and min date.
+            dialog.getDatePicker().setMinDate(minDate);
+            dialog.getDatePicker().setMaxDate(maxDate);
+
+            return dialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            //set new date to the EditText we got from the Constructor.
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DATE, day);
+
+
+            // Since January is 0. December is 11. So we should increment month by 1.
+            String dateString = year + "-" + (month + 1) + "-" + day + " ";
+
+            if (ed.getId() == R.id.assignment_due_date) {
+                Temp.assignmentDueDate = calendar.getTimeInMillis();
+                ed.setText(getString(R.string.due_date_arg, dateString, Common.getDateFormatted(calendar.getTimeInMillis())));
+
+            } else if (ed.getId() == R.id.assignment_date) {
+                Temp.assignmentDate = calendar.getTimeInMillis();
+                ed.setText(getString(R.string.open_date_arg, dateString));
+
+            } else
+                ed.setText(dateString);
+
+        }
+
+
     }
 }
 

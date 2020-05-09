@@ -2,6 +2,9 @@ package com.myclass.school;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +14,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +50,7 @@ public class ClassroomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_classroom, container, false);
     }
 
@@ -71,11 +76,12 @@ public class ClassroomFragment extends Fragment {
 
         });
 
-        model.getUser().observe(getViewLifecycleOwner(), u -> {
+        LiveData<User> userLiveData = model.getUser();
+        userLiveData.observe(getViewLifecycleOwner(), u -> {
             if (u == null) return;
             user = u;
             postToClass();
-            model.getUser().removeObservers(this);
+            userLiveData.removeObservers(this);
         });
         tabLayoutListener();
 
@@ -181,6 +187,30 @@ public class ClassroomFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.classroom_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.assignments)
+            goToAssignments();
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void goToAssignments() {
+
+        final NavController controller = Navigation.findNavController(view);
+        if (model.getUserId().charAt(0) == 't')
+            controller.navigate(ClassroomFragmentDirections.viewAssignments(classroomId));
+        else
+            controller.navigate(ClassroomFragmentDirections.studentAssignments(classroomId));
+
+
+    }
 
     private class PostItem extends Item<GroupieViewHolder> {
 
@@ -238,7 +268,7 @@ public class ClassroomFragment extends Fragment {
             });
 
             // set time ago
-            agoText.setText(Common.getTimeAgo(post.getDate()));
+            agoText.setText(Common.getTimeAsString(post.getDate()));
             // set author and content
             authorText.setText(senderName);
             contentText.setText(post.getContent());

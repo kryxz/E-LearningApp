@@ -1,16 +1,26 @@
 package com.myclass.school;
 
+import android.os.Handler;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomPost;
+import com.myclass.school.data.Submission;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ClassroomVM extends ViewModel {
@@ -55,5 +65,68 @@ public class ClassroomVM extends ViewModel {
         return posts;
     }
 
+    LiveData<List<Assignment>> getAssignments(String id) {
+        final MutableLiveData<List<Assignment>> assignments = new MutableLiveData<>();
 
+        repo.getAssignmentsRef(id).addSnapshotListener((query, exception) -> {
+            if (exception != null || query == null) return;
+            final ArrayList<Assignment> all = new ArrayList<>();
+
+            for (DocumentSnapshot doc : query.getDocuments()) {
+                Assignment post = doc.toObject(Assignment.class);
+                all.add(post);
+            }
+
+            assignments.setValue(all);
+        });
+
+        return assignments;
+    }
+
+    void addAssignment(String id, Assignment assignment) {
+        assignment.setId(UUID.randomUUID().toString().substring(0, 10));
+        assignment.setClassroomId(id);
+
+        repo.getClassroomsRef().document(id).get().addOnSuccessListener(query -> {
+            assignment.setClassroomName(query.get("name", String.class));
+            repo.getAssignmentsRef(id).document(assignment.getId()).set(assignment);
+        });
+
+
+    }
+
+    void deleteAssignment(String classId, String assignmentId) {
+        repo.getAssignmentsRef(classId).document(assignmentId).delete();
+
+    }
+
+    void uploadSubmission(Submission submission, Assignment assignment, ProgressBar progressBar) {
+
+
+        final StorageReference fileRef = repo.getClassFiles(assignment.getClassroomId())
+                .child(submission.getSenderId() + assignment.getId());
+
+
+        final UploadTask uploadTask = fileRef.putFile(Common.Temp.fileUri);
+
+        uploadTask.addOnProgressListener(taskSnapshot -> {
+            double progress = (100.0 * taskSnapshot.getBytesTransferred())
+                    / taskSnapshot.getTotalByteCount();
+            progressBar.setProgress((int) progress);
+            progressBar.setSecondaryProgress((int) progress + 10);
+
+        });
+
+        uploadTask.addOnCompleteListener(task -> fileRef.getDownloadUrl().addOnSuccessListener(result -> {
+            submission.getFile().setDownloadUrl(result.toString());
+            repo.getAssignmentsRef(assignment.getClassroomId())
+                    .document(assignment.getId()).update("submissions", FieldValue.arrayUnion(submission));
+        }));
+
+        Common.Temp.fileUri = null;
+        Common.Temp.fileType = null;
+
+        uploadTask.addOnSuccessListener(command -> new Handler().postDelayed(() ->
+                progressBar.setVisibility(View.GONE), 250));
+    }
 }

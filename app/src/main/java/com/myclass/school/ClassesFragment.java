@@ -160,7 +160,7 @@ public class ClassesFragment extends Fragment {
             final AlertDialog dialog = new AlertDialog.Builder(context).create();
 
             final View layout =
-                    View.inflate(context, R.layout.dialog_classroom_members, null);
+                    View.inflate(context, R.layout.dialog_classroom_list, null);
 
             dialog.setView(layout);
 

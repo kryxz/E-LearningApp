@@ -99,6 +99,12 @@
         <action
             android:id="@+id/viewUserProfile"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/viewAssignments"
+            app:destination="@id/createAssignmentsFragment" />
+        <action
+            android:id="@+id/studentAssignments"
+            app:destination="@id/viewAssignmentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
@@ -129,5 +135,23 @@
         <action
             android:id="@+id/viewUserProfile"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAssignmentsFragment"
+        android:name="com.myclass.school.CreateAssignmentsFragment"
+        android:label="@string/assignments"
+        tools:layout="@layout/fragment_class_assignments">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewAssignmentsFragment"
+        android:name="com.myclass.school.ViewAssignmentsFragment"
+        android:label="fragment_view_assignments"
+        tools:layout="@layout/fragment_view_assignments">
+        <argument
+            android:name="classroomId"
+            app:argType="string" />
     </fragment>
 </navigation>

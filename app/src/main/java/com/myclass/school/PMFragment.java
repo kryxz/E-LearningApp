@@ -267,7 +267,7 @@ public class PMFragment extends Fragment {
 
             // set message content and date
             contentText.setText(message.getContent());
-            dateText.setText(Common.getTimeAgo(message.getDate()));
+            dateText.setText(Common.getTimeAsString(message.getDate()));
 
             // show $i minutes ago when message click
             final Handler handler = new Handler();

@@ -64,6 +64,10 @@ class DatabaseRepository {
         return getClassroomsRef().document(id).collection("posts");
     }
 
+    CollectionReference getAssignmentsRef(String id) {
+        return getClassroomsRef().document(id).collection("assignments");
+    }
+
     // get current auth user
     FirebaseUser getUser() {
         return auth.getCurrentUser();
