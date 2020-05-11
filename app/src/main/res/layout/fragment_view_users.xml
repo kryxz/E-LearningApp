@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ViewUsersFragment">
+    tools:context=".ui.ViewUsersFragment">
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/view_users_progress_bar"

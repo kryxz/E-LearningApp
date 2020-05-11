@@ -1,14 +1,13 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
 
+import com.myclass.school.R;
 
 
 public class SettingsFragment extends Fragment {

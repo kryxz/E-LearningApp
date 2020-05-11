@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.myclass.school.MainFragment"
+        android:name="com.myclass.school.ui.MainFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_main" >
         <action
@@ -22,12 +22,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.myclass.school.LoginFragment"
+        android:name="com.myclass.school.ui.LoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/adminFragment"
-        android:name="com.myclass.school.AdminFragment"
+        android:name="com.myclass.school.ui.AdminFragment"
         android:label="@string/admin"
         tools:layout="@layout/fragment_admin" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewUsersFragment"
-        android:name="com.myclass.school.ViewUsersFragment"
+        android:name="com.myclass.school.ui.ViewUsersFragment"
         android:label="@string/view_users"
         tools:layout="@layout/fragment_view_users">
         <argument
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.myclass.school.ChatsFragment"
+        android:name="com.myclass.school.ui.ChatsFragment"
         android:label="@string/chat"
         tools:layout="@layout/fragment_chat">
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/classesFragment"
-        android:name="com.myclass.school.ClassesFragment"
+        android:name="com.myclass.school.ui.ClassesFragment"
         android:label="@string/classes"
         tools:layout="@layout/fragment_classes">
         <action
@@ -63,17 +63,17 @@
     </fragment>
     <fragment
         android:id="@+id/assignmentsFragment"
-        android:name="com.myclass.school.AssignmentsFragment"
+        android:name="com.myclass.school.ui.AssignmentsFragment"
         android:label="@string/assignments"
         tools:layout="@layout/fragment_assignments" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.myclass.school.SettingsFragment"
+        android:name="com.myclass.school.ui.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.myclass.school.ProfileFragment"
+        android:name="com.myclass.school.ui.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/classroomFragment"
-        android:name="com.myclass.school.ClassroomFragment"
+        android:name="com.myclass.school.ui.ClassroomFragment"
         android:label="@string/classroom"
         tools:layout="@layout/fragment_classroom">
         <argument
@@ -108,7 +108,7 @@
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
-        android:name="com.myclass.school.FilesFragment"
+        android:name="com.myclass.school.ui.FilesFragment"
         android:label="@string/classroom_files"
         tools:layout="@layout/fragment_files">
         <action
@@ -120,7 +120,7 @@
     </fragment>
     <fragment
         android:id="@+id/PMFragment"
-        android:name="com.myclass.school.PMFragment"
+        android:name="com.myclass.school.ui.PMFragment"
         android:label="@string/private_chat"
         tools:layout="@layout/fragment_p_m">
         <argument
@@ -138,7 +138,7 @@
     </fragment>
     <fragment
         android:id="@+id/createAssignmentsFragment"
-        android:name="com.myclass.school.CreateAssignmentsFragment"
+        android:name="com.myclass.school.ui.CreateAssignmentsFragment"
         android:label="@string/assignments"
         tools:layout="@layout/fragment_class_assignments">
         <argument
@@ -147,11 +147,16 @@
     </fragment>
     <fragment
         android:id="@+id/viewAssignmentsFragment"
-        android:name="com.myclass.school.ViewAssignmentsFragment"
+        android:name="com.myclass.school.ui.ViewAssignmentsFragment"
         android:label="fragment_view_assignments"
         tools:layout="@layout/fragment_view_assignments">
         <argument
             android:name="classroomId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.myclass.school.ui.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
 </navigation>

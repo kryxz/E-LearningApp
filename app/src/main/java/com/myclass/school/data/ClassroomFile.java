@@ -1,5 +1,12 @@
 package com.myclass.school.data;
 
+/*
+    A model for a classroom file.
+    Files can be uploaded by teachers, and by students as submissions
+    Contains:
+    author name, file name, url for file in database.
+    file type, and a short description.
+ */
 public class ClassroomFile {
     private String id;
     private String author;

@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
 import android.util.Patterns;
@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.R;
+import com.myclass.school.viewmodels.DatabaseRepository;
 
 
 public class LoginFragment extends Fragment {
@@ -44,12 +47,12 @@ public class LoginFragment extends Fragment {
         final DatabaseRepository repo = new DatabaseRepository();
 
         // hide fab button
-        Common.fabVisibility(getActivity(), View.GONE);
+        CommonUtils.fabVisibility(getActivity(), View.GONE);
 
         final TextInputEditText passwordEd = view.findViewById(R.id.login_password);
         final TextInputEditText emailEd = view.findViewById(R.id.login_email);
 
-        Common.passwordView(passwordEd);
+        CommonUtils.passwordView(passwordEd);
 
         // handle user tap login button
         view.findViewById(R.id.login_btn).setOnClickListener(v -> {
@@ -67,14 +70,14 @@ public class LoginFragment extends Fragment {
 
 
             if (!isValidEmail) {
-                Common.showMessage(view.getContext(), R.string.invalid_email);
+                CommonUtils.showMessage(view.getContext(), R.string.invalid_email);
                 return;
             }
             // show progress bar
             final ContentLoadingProgressBar progressBar = view.findViewById(R.id.login_progress_bar);
             progressBar.setVisibility(View.VISIBLE);
 
-            Common.hideKeypad(view);
+            CommonUtils.hideKeypad(view);
             String id = email.substring(0, email.indexOf('@'));
             repo.getUsers().document(id)
                     .get().addOnCompleteListener(task -> {
@@ -85,7 +88,7 @@ public class LoginFragment extends Fragment {
                     // login
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass).addOnCompleteListener(loginTask -> {
                         if (loginTask.isSuccessful())
-                            Common.restartApp(getActivity());
+                            CommonUtils.restartApp(getActivity());
                         else // invalid email or password
                             invalidLogin();
                     });
@@ -103,7 +106,7 @@ public class LoginFragment extends Fragment {
 
     private void invalidLogin() {
         // user doesn't exist
-        Common.showMessage(view.getContext(), R.string.invalid_user);
+        CommonUtils.showMessage(view.getContext(), R.string.invalid_user);
         // hide progress bar
         view.findViewById(R.id.login_progress_bar).setVisibility(View.GONE);
     }

@@ -8,10 +8,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.myclass.school.AdminViewModel;
-import com.myclass.school.Common;
+import com.myclass.school.CommonUtils;
 import com.myclass.school.R;
 import com.myclass.school.data.Classroom;
+import com.myclass.school.viewmodels.AdminViewModel;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 
@@ -75,7 +75,7 @@ public class AdminClassroomItem extends Item<GroupieViewHolder> {
             final Runnable deleteAction = this::delete;
 
             // show delete dialog
-            Common.showConfirmDialog(context, context.getString(R.string.delete_classroom),
+            CommonUtils.showConfirmDialog(context, context.getString(R.string.delete_classroom),
                     context.getString(R.string.delete_user_confirm, classroom.getName()), deleteAction);
 
 

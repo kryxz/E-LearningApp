@@ -1,9 +1,7 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +19,16 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.MainActivity;
+import com.myclass.school.R;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.ClassroomFile;
 import com.myclass.school.data.Submission;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.ClassroomVM;
+import com.myclass.school.viewmodels.UserViewModel;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
@@ -44,82 +47,6 @@ public class CreateAssignmentsFragment extends Fragment {
 
     public CreateAssignmentsFragment() {
         // Required empty public constructor
-    }
-
-    static void setUpAssignmentItem(View view, Assignment assignment) {
-
-        final Context context = view.getContext();
-        final AppCompatTextView title = view.findViewById(R.id.assignment_title_item);
-        final AppCompatTextView content = view.findViewById(R.id.assignment_content_item);
-        final AppCompatTextView date = view.findViewById(R.id.assignment_date_item);
-        final AppCompatTextView dueDate = view.findViewById(R.id.assignment_due_date_item);
-        final AppCompatTextView headerText = view.findViewById(R.id.item_position_text);
-
-        final AppCompatTextView fileName = view.findViewById(R.id.assignment_file_title);
-
-
-        title.setText(context.getString(R.string.title_arg_with_class,
-                assignment.getClassroomName(), assignment.getTitle()));
-
-        content.setText(context.getString(R.string.content_arg, assignment.getContent()));
-
-        fileName.setText(context.getString(R.string.no_file_assignment));
-
-        final View detailsLayout = view.findViewById(R.id.details_layout);
-
-        headerText.setOnClickListener(v -> {
-            if (detailsLayout.getVisibility() == View.VISIBLE) {
-                detailsLayout.setVisibility(View.GONE);
-                headerText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_expand_more, 0);
-            } else {
-                detailsLayout.setVisibility(View.VISIBLE);
-                headerText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_expand_less, 0);
-
-            }
-        });
-        if (assignment.getFile() != null)
-            fileName.setText(assignment.getFile().getName());
-
-        date.setText(context.getString(R.string.open_date_arg,
-                Common.getTimeAsString(assignment.getDate())));
-
-        dueDate.setText(context.getString(R.string.due_date_arg,
-                Common.getTimeAsString(assignment.getDueDate()),
-                Common.getDateFormatted(assignment.getDueDate())));
-
-
-        // due date text
-        long timeNow = System.currentTimeMillis();
-        if (assignment.getDueDate() < timeNow) {
-            long elapsedTime = timeNow - assignment.getDueDate();
-            long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime);
-
-            long hours = TimeUnit.MILLISECONDS.toHours(elapsedTime);
-            long days = TimeUnit.MILLISECONDS.toDays(elapsedTime);
-
-            dueDate.setText(context.getString(R.string.assignment_due_arg_min, minutes));
-
-            if (minutes == 1)
-                dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));
-
-            else if (minutes > 60) {
-                dueDate.setText(context.getString(R.string.assignment_due_arg_hour, hours));
-
-                if (hours == 1)
-                    dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));
-
-                else if (hours > 24)
-                    dueDate.setText(context.getString(R.string.assignment_due_arg_day, days));
-
-                if (hours > 24 && days == 1)
-                    dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));
-            }
-
-            dueDate.setTextColor(ContextCompat.getColor(context, R.color.red));
-            dueDate.setTypeface(dueDate.getTypeface(), Typeface.BOLD);
-
-        }
-
     }
 
     @Override
@@ -191,6 +118,96 @@ public class CreateAssignmentsFragment extends Fragment {
 
     }
 
+    // display assignment data in layout
+    static void setUpAssignmentItem(View view, Assignment assignment) {
+
+        final Context context = view.getContext();
+
+        // get text fields
+        final AppCompatTextView title = view.findViewById(R.id.assignment_title_item);
+        final AppCompatTextView content = view.findViewById(R.id.assignment_content_item);
+        final AppCompatTextView date = view.findViewById(R.id.assignment_date_item);
+        final AppCompatTextView dueDate = view.findViewById(R.id.assignment_due_date_item);
+        final AppCompatTextView headerText = view.findViewById(R.id.item_position_text);
+
+        final AppCompatTextView fileName = view.findViewById(R.id.assignment_file_title);
+
+
+        // set name, description and title of the assignment
+        title.setText(context.getString(R.string.title_arg_with_class,
+                assignment.getClassroomName(), assignment.getTitle()));
+
+        content.setText(context.getString(R.string.content_arg, assignment.getContent()));
+
+        fileName.setText(context.getString(R.string.no_file_assignment));
+
+
+        // hide or show details on click!
+        final View detailsLayout = view.findViewById(R.id.details_layout);
+        headerText.setOnClickListener(v -> {
+            if (detailsLayout.getVisibility() == View.VISIBLE) {
+                detailsLayout.setVisibility(View.GONE);
+                headerText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_expand_more, 0);
+            } else {
+                detailsLayout.setVisibility(View.VISIBLE);
+                headerText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_expand_less, 0);
+
+            }
+        });
+
+        // can download file if not null
+        if (assignment.getFile() != null)
+            fileName.setText(assignment.getFile().getName());
+
+
+        // set date and due date
+        date.setText(context.getString(R.string.open_date_arg,
+                CommonUtils.getTimeAsString(assignment.getDate())));
+
+        dueDate.setText(context.getString(R.string.due_date_arg,
+                CommonUtils.getTimeAsString(assignment.getDueDate()),
+                CommonUtils.getDateFormatted(assignment.getDueDate())));
+
+
+        // due date text
+        long timeNow = System.currentTimeMillis();
+        if (assignment.getDueDate() < timeNow) {
+            long elapsedTime = timeNow - assignment.getDueDate();
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime);
+
+            long hours = TimeUnit.MILLISECONDS.toHours(elapsedTime);
+            long days = TimeUnit.MILLISECONDS.toDays(elapsedTime);
+
+            dueDate.setText(context.getString(R.string.assignment_due_arg_min, minutes));
+
+            // due by 1 minute
+            if (minutes == 1)
+                dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));
+
+                // due by more than 60 minutes ==>  hours
+            else if (minutes > 60) {
+                dueDate.setText(context.getString(R.string.assignment_due_arg_hour, hours));
+
+                // due by 1 hour
+                if (hours == 1)
+                    dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));                // due by 1 hour
+
+                    // due by more than 24 hours ==> days
+                else if (hours > 24)
+                    dueDate.setText(context.getString(R.string.assignment_due_arg_day, days));
+
+                if (hours > 24 && days == 1)
+                    dueDate.setText(dueDate.getText().subSequence(0, dueDate.getText().length() - 1));
+            }
+
+            // set text color to bold red if assignment is due
+            dueDate.setTextColor(ContextCompat.getColor(context, R.color.red));
+            dueDate.setTypeface(dueDate.getTypeface(), Typeface.BOLD);
+
+        }
+
+    }
+
     private void createAssignment(String classroomId) {
         if (getActivity() == null) return;
         viewVisibility(R.id.create_assignment_layout, View.VISIBLE);
@@ -212,8 +229,8 @@ public class CreateAssignmentsFragment extends Fragment {
         final Assignment assignment = new Assignment();
 
 
-        Common.showDatePickerDialog(dateText, getActivity().getSupportFragmentManager());
-        Common.showDatePickerDialog(dueDateText, getActivity().getSupportFragmentManager());
+        CommonUtils.showDatePickerDialog(dateText, getActivity().getSupportFragmentManager());
+        CommonUtils.showDatePickerDialog(dueDateText, getActivity().getSupportFragmentManager());
 
 
         fileText.setFocusableInTouchMode(false);
@@ -230,8 +247,8 @@ public class CreateAssignmentsFragment extends Fragment {
             final String title = contentText.getText().toString().trim();
             final String content = titleText.getText().toString().trim();
 
-            final long date = Common.Temp.assignmentDate;
-            long dueDate = Common.Temp.assignmentDueDate;
+            final long date = CommonUtils.Temp.assignmentDate;
+            long dueDate = CommonUtils.Temp.assignmentDueDate;
 
 
             boolean isSameDay = (dueDate - date) < 450000;
@@ -262,10 +279,10 @@ public class CreateAssignmentsFragment extends Fragment {
             assignment.setContent(content);
             assignment.setDueDate(dueDate);
             assignment.setDate(date);
-            assignment.setFile(Common.Temp.tempFile);
+            assignment.setFile(CommonUtils.Temp.tempFile);
             classroomVM.addAssignment(classroomId, assignment);
 
-            Common.showMessage(view.getContext(), R.string.assignment_sent);
+            CommonUtils.showMessage(view.getContext(), R.string.assignment_sent);
 
             // clear text
             titleText.getText().clear();
@@ -312,7 +329,7 @@ public class CreateAssignmentsFragment extends Fragment {
             adapter.clear();
 
             final Runnable callBack = () -> {
-                ed.setText(Common.Temp.tempFile.getName());
+                ed.setText(CommonUtils.Temp.tempFile.getName());
                 dialog.dismiss();
             };
 
@@ -327,6 +344,7 @@ public class CreateAssignmentsFragment extends Fragment {
 
     }
 
+    // a view holder class to hold assignment data for Teacher
     private class AssignmentItem extends Item<GroupieViewHolder> {
 
         private final Assignment assignment;
@@ -338,6 +356,7 @@ public class CreateAssignmentsFragment extends Fragment {
         }
 
 
+        // layout
         @Override
         public int getLayout() {
 
@@ -355,6 +374,7 @@ public class CreateAssignmentsFragment extends Fragment {
             final AppCompatTextView posText = view.findViewById(R.id.item_position_text);
 
             setUpAssignmentItem(view, assignment);
+            // set position and submissions count
             posText.setText(context.getString(R.string.number_arg, pos));
 
             submissions.setText(view.getContext().getString(R.string.submissions_count,
@@ -364,18 +384,22 @@ public class CreateAssignmentsFragment extends Fragment {
             final AppCompatButton submissionsButton = view.findViewById(R.id.view_submissions_btn);
 
 
+            // show submissions on click
             submissionsButton.setOnClickListener(v -> showSubmissions(context));
 
+
+            // delete with a confirmation message
             delete.setOnClickListener(v -> {
                 Runnable deleteAction = () -> classroomVM.deleteAssignment(classroomId, assignment.getId());
 
-                Common.showConfirmDialog(context,
+                CommonUtils.showConfirmDialog(context,
                         getString(R.string.delete_assignment),
                         getString(R.string.delete_assignment_confirm), deleteAction);
 
             });
         }
 
+        // a dialog to display user submissions in a list!
         private void showSubmissions(Context context) {
             // initialize dialog and its content
             final AlertDialog dialog = new AlertDialog.Builder(context).create();
@@ -405,6 +429,8 @@ public class CreateAssignmentsFragment extends Fragment {
             dialog.show();
         }
 
+
+        // a view holder to display submission data
         private class SubmissionItem extends Item<GroupieViewHolder> {
             private final Submission submission;
 
@@ -429,23 +455,25 @@ public class CreateAssignmentsFragment extends Fragment {
                 nameText.setText(getString(R.string.name));
                 LiveData<String> stringLiveData = model.getNameById(submission.getSenderId());
 
+                // get username from database
                 stringLiveData.observe(getViewLifecycleOwner(), s -> {
                     if (s == null) return;
                     nameText.setText(s);
                     stringLiveData.removeObservers(getViewLifecycleOwner());
                 });
 
-                dateText.setText(Common.getTimeAsString(submission.getFile().getDate()));
+
+                // set comment and date
                 if (submission.getComment() != null)
                     commentText.setText(submission.getComment());
 
+                dateText.setText(CommonUtils.getTimeAsString(submission.getFile().getDate()));
+
+                // download submission file
                 view.setOnClickListener(v -> {
                     if (getActivity() == null) return;
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(submission.getFile().getDownloadUrl()));
-                    getActivity().startActivity(browserIntent);
+                    CommonUtils.downloadFile(getActivity(), submission.getFile().getDownloadUrl());
 
-                    Common.showMessage(view.getContext(), R.string.file_download);
                 });
 
             }

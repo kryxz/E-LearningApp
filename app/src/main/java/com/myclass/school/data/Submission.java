@@ -1,5 +1,9 @@
 package com.myclass.school.data;
 
+/*
+    A model for student submissions.
+    contains a file object, and a comment.
+ */
 public class Submission {
     private String senderId; // who sent the file
     private ClassroomFile file; // file sent by student

@@ -1,5 +1,10 @@
 package com.myclass.school.data;
 
+
+/*
+    Represents a chat in Chats Screen.
+    Contains an id for the other user, their name, and the last message sent.
+ */
 public class Chat {
     private String id;
     private String name;
@@ -8,6 +13,11 @@ public class Chat {
 
     public Chat() {
 
+    }
+
+    public Chat(String chatId, Message msg) {
+        lastMessage = msg;
+        id = chatId;
     }
 
     public String getUserId() {

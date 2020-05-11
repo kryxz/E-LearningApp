@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +18,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.R;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.AdminViewModel;
 
 import java.util.Random;
 
@@ -78,7 +81,7 @@ public class AdminFragment extends Fragment {
     private void init() {
 
         // hide fab button
-        Common.fabVisibility(getActivity(), View.GONE);
+        CommonUtils.fabVisibility(getActivity(), View.GONE);
 
 
         model = new ViewModelProvider(this).get(AdminViewModel.class);
@@ -273,7 +276,7 @@ public class AdminFragment extends Fragment {
                 teacher.setName(name);
                 teacher.setSubject(subjectOrGrade);
                 teacher.setId(id);
-                ((Teacher) user).setPassword(Common.DEFAULT_PASSWORD);
+                ((Teacher) user).setPassword(CommonUtils.DEFAULT_PASSWORD);
                 // add teacher to database, and create an account for them.
                 addTeacher(teacher);
 
@@ -285,7 +288,7 @@ public class AdminFragment extends Fragment {
                 student.setGrade(subjectOrGrade);
                 student.setId(id);
                 // set default password
-                ((Student) user).setPassword(Common.DEFAULT_PASSWORD);
+                ((Student) user).setPassword(CommonUtils.DEFAULT_PASSWORD);
 
                 // add student to database, and create an account for them.
                 addStudent(student);
@@ -301,7 +304,7 @@ public class AdminFragment extends Fragment {
 
     private void addClassroom(Classroom c) {
         model.createClassroom(c).addOnSuccessListener(task -> {
-            Common.showMessage(getContext(), R.string.classroom_created);
+            CommonUtils.showMessage(getContext(), R.string.classroom_created);
             viewUsersNow("c");
 
         });
@@ -315,7 +318,7 @@ public class AdminFragment extends Fragment {
      */
     private void addTeacher(Teacher t) {
         model.addUser(t).addOnSuccessListener(task -> {
-            Common.showMessage(getContext(), R.string.teacher_added);
+            CommonUtils.showMessage(getContext(), R.string.teacher_added);
             model.reLogIn(() -> viewUsersNow("t"));
 
         });
@@ -329,7 +332,7 @@ public class AdminFragment extends Fragment {
         */
     private void addStudent(Student s) {
         model.addUser(s).addOnSuccessListener(task -> {
-            Common.showMessage(getContext(), R.string.student_added);
+            CommonUtils.showMessage(getContext(), R.string.student_added);
             model.reLogIn(() -> viewUsersNow("s"));
 
         });
@@ -380,10 +383,10 @@ public class AdminFragment extends Fragment {
         Runnable logout = () -> {
             model.logout();
 
-            Common.restartApp(getActivity());
+            CommonUtils.restartApp(getActivity());
         };
 
-        Common.showConfirmDialog(getContext(), getString(R.string.logout),
+        CommonUtils.showConfirmDialog(getContext(), getString(R.string.logout),
                 getString(R.string.logout_confirm), logout);
 
     }

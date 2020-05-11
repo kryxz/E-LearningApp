@@ -2,6 +2,15 @@ package com.myclass.school.data;
 
 import java.util.ArrayList;
 
+
+/*
+    data model for classrooms
+    Contains:
+    instructor id in database.
+    name and description
+    unique id in the database.
+    members who are in this classroom
+ */
 public class Classroom {
     private String instructor;
     private String description;

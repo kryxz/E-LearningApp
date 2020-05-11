@@ -5,11 +5,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.myclass.school.AdminViewModel;
 import com.myclass.school.R;
+import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
-import com.myclass.school.data.Classroom;
+import com.myclass.school.viewmodels.AdminViewModel;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 

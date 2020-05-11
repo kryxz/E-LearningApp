@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.viewmodels;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -10,35 +10,35 @@ import com.google.firebase.storage.StorageReference;
 
 
 // contains methods and instances for firebase database and auth
-class DatabaseRepository {
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+public class DatabaseRepository {
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
     // an empty constructor
-    DatabaseRepository() {
+    public DatabaseRepository() {
     }
 
     // returns an auth instance
-    FirebaseAuth getAuth() {
+    public FirebaseAuth getAuth() {
         return auth;
     }
 
 
     // returns reference to users location in database
-    CollectionReference getUsers() {
+    public CollectionReference getUsers() {
         return db.collection("users");
     }
 
 
     // returns reference to teachers location in database
-    CollectionReference getTeachersRef() {
+    public CollectionReference getTeachersRef() {
         return db.collection("teachers");
     }
 
     // returns reference to students location in database
-    CollectionReference getStudentsRef() {
+    public CollectionReference getStudentsRef() {
         return db.collection("students");
     }
 
@@ -69,7 +69,7 @@ class DatabaseRepository {
     }
 
     // get current auth user
-    FirebaseUser getUser() {
+    public FirebaseUser getUser() {
         return auth.getCurrentUser();
     }
 

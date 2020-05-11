@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -22,21 +22,32 @@ public class ChatViewModel extends ViewModel {
     private final MutableLiveData<List<Chat>> chats = new MutableLiveData<>();
 
 
+    // updates or adds chat data to user
     private void addChatToUser(String id, Chat chat, String name, String otherId) {
 
+        // decide if teacher
         final boolean isTeacher = id.charAt(0) == 't';
+
+
+        // reference in database
         CollectionReference ref = repo.getStudentsRef().document(id).collection("chats");
+
+        // change reference if user is a teacher!
         if (isTeacher)
             ref = repo.getTeachersRef().document(id).collection("chats");
 
+        // set name and the other user id
         chat.setUserId(otherId);
         chat.setName(name);
+        // update document!
         ref.document(chat.getId()).set(chat);
 
     }
 
 
+    // returns user id
     private String getUserId() {
+        // get email from auth
         final String email = repo.getUser().getEmail();
         if (email == null) return null;
 
@@ -44,39 +55,45 @@ public class ChatViewModel extends ViewModel {
 
     }
 
-    void deleteUserChat(String chatId) {
+    // removes chat for user
+    public void deleteUserChat(String chatId) {
         final String id = getUserId();
         if (id == null) return;
-        final boolean isTeacher = id.charAt(0) == 't';
 
+        // decides if user is a teacher!
+        final boolean isTeacher = id.charAt(0) == 't';
         CollectionReference ref = repo.getStudentsRef().document(id).collection("chats");
+
+        // change reference if user is a teacher!
         if (isTeacher)
             ref = repo.getTeachersRef().document(id).collection("chats");
 
+        // delete chat
         ref.document(chatId).delete();
 
     }
 
-
-    void sendMessage(Message msg, String who, String chatId, String username, String otherName) {
+    // send message to a chat!
+    public void sendMessage(Message msg, String who, String chatId, String username, String otherName) {
         String id = getUserId();
         if (id == null) return;
+
+        // add message to chat
         repo.getChatMessagesRef(chatId).add(msg);
 
-        Chat chat = new Chat();
-        chat.setId(chatId);
-        chat.setLastMessage(msg);
-        chat.setName(username);
+        // chat object with last message and chat Id
+        Chat chat = new Chat(chatId, msg);
 
+
+        // update chat for the two users!
         addChatToUser(id, chat, otherName, who);
-
         addChatToUser(who, chat, username, id);
 
 
     }
 
-
-    LiveData<List<Chat>> getChats() {
+    // get a user chats
+    public LiveData<List<Chat>> getChats() {
         final String id = getUserId();
         if (id == null) return null;
 
@@ -86,14 +103,21 @@ public class ChatViewModel extends ViewModel {
         if (isTeacher)
             ref = repo.getTeachersRef().document(id).collection("chats");
 
+
+        // array to contains all chats
         ArrayList<Chat> allChats = new ArrayList<>();
 
+
+        // query database
         ref.addSnapshotListener((query, e) -> {
             if (query == null || e != null) return;
             allChats.clear();
+
+            // add all chats to array
             for (DocumentSnapshot snapshot : query.getDocuments())
                 allChats.add(snapshot.toObject(Chat.class));
 
+            // update live data
             chats.setValue(allChats);
 
         });
@@ -101,20 +125,26 @@ public class ChatViewModel extends ViewModel {
         return chats;
     }
 
-    LiveData<List<Message>> getChatMessages(String chatId, int howMany) {
-        final MutableLiveData<List<Message>> messages = new MutableLiveData<>();
+    /*
+         get some messages sorted by date!
+         parameter *howMany*  decides how many messages to  query
+     */
+    public LiveData<List<Message>> getChatMessages(String chatId, int howMany) {
 
+        // init live data and an array for messages
+        final MutableLiveData<List<Message>> messages = new MutableLiveData<>();
         final ArrayList<Message> allMessages = new ArrayList<>();
 
         repo.getChatMessagesRef(chatId).orderBy("date", Query.Direction.ASCENDING).limitToLast(howMany)
                 .addSnapshotListener((query, e) -> {
                     if (query == null || e != null) return;
+                    // add messages to array
                     for (final DocumentSnapshot snapshot : query.getDocuments()) {
                         final Message msg = snapshot.toObject(Message.class);
                         if (!allMessages.contains(msg))
                             allMessages.add(msg);
                     }
-
+                    // update live data
                     messages.setValue(allMessages);
 
                 });

@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +19,12 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.MainActivity;
+import com.myclass.school.R;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.DatabaseRepository;
+import com.myclass.school.viewmodels.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,6 +37,7 @@ public class MainFragment extends Fragment {
     }
 
     private View view;
+    private UserViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,11 +60,11 @@ public class MainFragment extends Fragment {
         if (checkUserAuth() == null) return;
         if (getActivity() == null) return;
 
-        UserViewModel model = ((MainActivity) getActivity()).userVM;
+        model = ((MainActivity) getActivity()).userVM;
 
         showBottomNavigation();
 
-        Common.setDrawerIcon(getActivity());
+        CommonUtils.setDrawerIcon(getActivity());
 
 
         model.getUser().observe(getViewLifecycleOwner(), user -> {
@@ -102,7 +108,7 @@ public class MainFragment extends Fragment {
         bottomNavigation.setVisibility(View.VISIBLE);
 
         // show fab button
-        Common.fabVisibility(getActivity(), View.VISIBLE);
+        CommonUtils.fabVisibility(getActivity(), View.VISIBLE);
 
     }
 
@@ -135,6 +141,7 @@ public class MainFragment extends Fragment {
             Picasso.get().load(photo).placeholder(R.drawable.ic_person).into(profilePic);
 
 
+
         NavController navController = Navigation.findNavController(view);
         // go to profile when click on name or picture
         headerView.setOnClickListener(v -> {
@@ -150,7 +157,7 @@ public class MainFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // open drawer on click
         if (item.getItemId() == android.R.id.home)
-            Common.openDrawer(getActivity());
+            CommonUtils.openDrawer(getActivity());
         return super.onOptionsItemSelected(item);
     }
 

@@ -2,6 +2,11 @@ package com.myclass.school.data;
 
 import java.util.ArrayList;
 
+/*
+    Both Student and Teacher class implement this interface
+    they have all these functions in common.
+
+ */
 public interface User {
     String getEmail();
 

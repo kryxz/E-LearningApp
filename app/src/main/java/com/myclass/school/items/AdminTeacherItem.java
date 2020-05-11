@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.myclass.school.AdminViewModel;
-import com.myclass.school.Common;
+import com.myclass.school.CommonUtils;
 import com.myclass.school.R;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.AdminViewModel;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
@@ -84,7 +84,7 @@ public class AdminTeacherItem extends Item<GroupieViewHolder> {
             final Runnable deleteAction = this::delete;
 
             // show the delete dialog with the specified title and message
-            Common.showConfirmDialog(context, context.getString(R.string.delete_user),
+            CommonUtils.showConfirmDialog(context, context.getString(R.string.delete_user),
                     context.getString(R.string.delete_user_confirm, teacher.getName()), deleteAction);
 
 

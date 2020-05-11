@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/lynx_white"
     android:orientation="vertical"
-    tools:context=".PMFragment">
+    tools:context=".ui.PMFragment">
 
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
         style="@style/Widget.MaterialComponents.CardView"

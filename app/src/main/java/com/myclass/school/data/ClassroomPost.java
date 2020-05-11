@@ -1,6 +1,10 @@
 package com.myclass.school.data;
 
 
+/*
+    A model for classroom posts (messages)
+    Contains sender name, their id, content, date of message
+ */
 public class ClassroomPost {
 
     private String id;
@@ -14,7 +18,13 @@ public class ClassroomPost {
 
     }
 
-
+    public ClassroomPost(String postId, String sId, String text, String sender, Long d) {
+        id = postId;
+        senderId = sId;
+        author = sender;
+        content = text;
+        date = d;
+    }
 
 
     public String getId() {
@@ -31,10 +41,7 @@ public class ClassroomPost {
 
     public void setSenderId(String senderId) {
 
-        if (senderId.contains("@"))
-            this.senderId = senderId.substring(0, senderId.indexOf('@'));
-        else
-            this.senderId = senderId;
+        this.senderId = senderId;
 
     }
 

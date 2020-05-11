@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,8 +14,13 @@ import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.myclass.school.CommonUtils;
+import com.myclass.school.MainActivity;
+import com.myclass.school.R;
 import com.myclass.school.data.Chat;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.ChatViewModel;
+import com.myclass.school.viewmodels.UserViewModel;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
@@ -106,7 +111,7 @@ public class ChatsFragment extends Fragment {
             // set last message text and date
             if (chat.getLastMessage() != null) {
                 lastMessage.setText(chat.getLastMessage().getContent());
-                lastMessageDate.setText(Common.getTimeAsString(chat.getLastMessage().getDate()));
+                lastMessageDate.setText(CommonUtils.getTimeAsString(chat.getLastMessage().getDate()));
             }
 
             // get user data from database
@@ -117,7 +122,7 @@ public class ChatsFragment extends Fragment {
                 String photoUrl = user.getPhotoUrl();
                 firstLetterText.setText(String.valueOf(user.getName().charAt(0)));
                 if (photoUrl != null) {
-                    Drawable textBackground = Common.getDrawableFromView(firstLetterText);
+                    Drawable textBackground = CommonUtils.getDrawableFromView(firstLetterText);
 
                     Picasso.get().load(photoUrl).placeholder(textBackground).into(profilePic);
                     profilePic.setVisibility(View.VISIBLE);

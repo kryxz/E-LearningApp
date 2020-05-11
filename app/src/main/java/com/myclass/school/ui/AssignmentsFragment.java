@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,11 +20,16 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.MainActivity;
+import com.myclass.school.R;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomFile;
 import com.myclass.school.data.Submission;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.ClassroomVM;
+import com.myclass.school.viewmodels.UserViewModel;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
@@ -144,11 +149,11 @@ public class AssignmentsFragment extends Fragment {
             if (data.getData() != null && getContext() != null && getActivity() != null) {
                 Uri returnUri = data.getData();
 
-                Common.Temp.fileUri = returnUri;
-                Common.Temp.fileType = getContext().getContentResolver().getType(returnUri);
+                CommonUtils.Temp.fileUri = returnUri;
+                CommonUtils.Temp.fileType = getContext().getContentResolver().getType(returnUri);
 
-                fileNameDialog.setText(Common.queryName(getActivity().getContentResolver(),
-                        Common.Temp.fileUri));
+                fileNameDialog.setText(CommonUtils.queryName(getActivity().getContentResolver(),
+                        CommonUtils.Temp.fileUri));
 
             }
         }
@@ -196,7 +201,7 @@ public class AssignmentsFragment extends Fragment {
             // allow user to download that file
             if (assignment.getFile() != null && getActivity() != null) {
                 fileName.setText(getString(R.string.tap_to_download_arg, fileName.getText()));
-                fileName.setOnClickListener(v -> Common.downloadFile(getActivity(),
+                fileName.setOnClickListener(v -> CommonUtils.downloadFile(getActivity(),
                         assignment.getFile().getDownloadUrl()));
             }
 
@@ -219,7 +224,7 @@ public class AssignmentsFragment extends Fragment {
                     if (!assignment.containsSubmission(model.getUserId()))
                         showSubmitDialog(view.getContext());
                     else if (getActivity() != null) {
-                        Common.downloadFile(getActivity(), assignment.downloadFile(model.getUserId()));
+                        CommonUtils.downloadFile(getActivity(), assignment.downloadFile(model.getUserId()));
                     }
 
                 }
@@ -262,7 +267,7 @@ public class AssignmentsFragment extends Fragment {
             confirm.setOnClickListener(v -> {
 
                 // check input, and send submission to database
-                if (Common.Temp.fileUri == null) {
+                if (CommonUtils.Temp.fileUri == null) {
                     fileNameEd.setError(getString(R.string.choose_file_error));
                     return;
                 }
@@ -271,10 +276,10 @@ public class AssignmentsFragment extends Fragment {
                     submission.setComment(commentEd.getText().toString());
                 ClassroomFile file = new ClassroomFile();
 
-                file.setType(Common.Temp.fileType);
+                file.setType(CommonUtils.Temp.fileType);
                 file.setDate(System.currentTimeMillis());
                 file.setDescription(getString(R.string.assignment_submission));
-                file.setName(Common.queryName(context.getContentResolver(), Common.Temp.fileUri));
+                file.setName(CommonUtils.queryName(context.getContentResolver(), CommonUtils.Temp.fileUri));
 
                 file.setAuthor(user.getName());
                 file.setId(UUID.randomUUID().toString().substring(0, 10));
@@ -356,7 +361,7 @@ public class AssignmentsFragment extends Fragment {
                     stringLiveData.removeObservers(getViewLifecycleOwner());
                 });
 
-                dateText.setText(Common.getTimeAsString(submission.getFile().getDate()));
+                dateText.setText(CommonUtils.getTimeAsString(submission.getFile().getDate()));
                 if (submission.getComment() != null)
                     commentText.setText(submission.getComment());
 
@@ -366,7 +371,7 @@ public class AssignmentsFragment extends Fragment {
                             Uri.parse(submission.getFile().getDownloadUrl()));
                     getActivity().startActivity(browserIntent);
 
-                    Common.showMessage(view.getContext(), R.string.file_download);
+                    CommonUtils.showMessage(view.getContext(), R.string.file_download);
                 });
 
             }

@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,9 +22,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.MainActivity;
+import com.myclass.school.R;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -108,7 +112,7 @@ public class ProfileFragment extends Fragment {
             if (isOwner) {
                 username.setOnClickListener(v -> editUserDialog(user));
 
-                Drawable drawable = Common.tintDrawable(getContext(), R.drawable.ic_edit,
+                Drawable drawable = CommonUtils.tintDrawable(getContext(), R.drawable.ic_edit,
                         ContextCompat.getColor(view.getContext(), R.color.maz_blue));
 
                 username.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
@@ -123,7 +127,7 @@ public class ProfileFragment extends Fragment {
 
                 privateMessage.setVisibility(View.VISIBLE);
                 // update title to username's profile}
-                Common.updateTitle(getActivity(), getString(R.string.user_profile_arg, user.getName()));
+                CommonUtils.updateTitle(getActivity(), getString(R.string.user_profile_arg, user.getName()));
 
             }
 
@@ -136,10 +140,10 @@ public class ProfileFragment extends Fragment {
             // online status
             if (user.isOnline()) {
                 userStatus.setText(getString(R.string.status_online));
-                Common.tintDrawableTextView(userStatus, R.color.green);
+                CommonUtils.tintDrawableTextView(userStatus, R.color.green);
             } else {
                 userStatus.setText(getString(R.string.status_offline));
-                Common.tintDrawableTextView(userStatus, R.color.red);
+                CommonUtils.tintDrawableTextView(userStatus, R.color.red);
 
             }
 
@@ -232,7 +236,7 @@ public class ProfileFragment extends Fragment {
 
 
         // show confirmation dialog
-        Common.showConfirmDialog(view.getContext(), getString(R.string.change_img),
+        CommonUtils.showConfirmDialog(view.getContext(), getString(R.string.change_img),
                 getString(R.string.change_img_confirm),
                 () -> startActivityForResult(photoPickerIntent, 1));
 
@@ -247,6 +251,7 @@ public class ProfileFragment extends Fragment {
             // get image as a path
             Uri selectedImage = data.getData();
 
+            // do in background
             AsyncTask.execute(() -> {
                 try {
                     // convert to bitmap image
@@ -256,7 +261,7 @@ public class ProfileFragment extends Fragment {
 
                 } catch (IOException e) {
                     // tell user cannot upload
-                    Common.showMessage(getContext(), R.string.cannot_upload);
+                    CommonUtils.showMessage(getContext(), R.string.cannot_upload);
 
                 }
 
@@ -274,7 +279,7 @@ public class ProfileFragment extends Fragment {
 
         getActivity().runOnUiThread(() -> {
             // show user message about uploading image
-            Common.showMessage(getContext(), R.string.uploading_pic);
+            CommonUtils.showMessage(getContext(), R.string.uploading_pic);
         });
 
         // upload picture to database, and update user data!

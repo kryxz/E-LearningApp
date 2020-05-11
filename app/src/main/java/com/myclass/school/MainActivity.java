@@ -15,16 +15,19 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.myclass.school.viewmodels.ChatViewModel;
+import com.myclass.school.viewmodels.ClassroomVM;
+import com.myclass.school.viewmodels.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
-    DrawerLayout drawer;
+    public BottomNavigationView bottomNavigationView;
+    public DrawerLayout drawer;
 
 
-    UserViewModel userVM;
-    ChatViewModel chatVM;
-    ClassroomVM classroomVM;
+    public UserViewModel userVM;
+    public ChatViewModel chatVM;
+    public ClassroomVM classroomVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 drawer.openDrawer(GravityCompat.START);
         });
 
-        // todo remove this
         // logout using fab
         findViewById(R.id.open_drawer_fab).setOnLongClickListener(v -> {
             logout();
@@ -118,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
         Runnable logout = () -> {
             userVM.logout();
 
-            Common.restartApp(this);
+            CommonUtils.restartApp(this);
         };
 
-        Common.showConfirmDialog(this, getString(R.string.logout),
+        CommonUtils.showConfirmDialog(this, getString(R.string.logout),
                 getString(R.string.logout_confirm), logout);
 
     }
@@ -129,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Common.setOnline(false);
+        CommonUtils.setOnline(false);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        Common.setOnline(true);
+        CommonUtils.setOnline(true);
         super.onResume();
     }
 

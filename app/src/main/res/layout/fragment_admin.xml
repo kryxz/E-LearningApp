@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AdminFragment">
+    tools:context=".ui.AdminFragment">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add_teacher_btn"

@@ -30,7 +30,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -41,10 +40,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
 import com.myclass.school.data.ClassroomFile;
+import com.myclass.school.viewmodels.DatabaseRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,23 +59,13 @@ import java.util.Objects;
 A class which holds some common methods that are used in other places
  */
 
-public class Common {
+public class CommonUtils {
     // some default values
     public static final String EMAIL_SUFFIX = "@elearn.jo";
-    static final String DEFAULT_PASSWORD = "elearn123";
-
-
-    static String queryName(ContentResolver resolver, Uri uri) {
-        Cursor returnCursor =
-                resolver.query(uri, null, null, null, null);
-        assert returnCursor != null;
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        returnCursor.moveToFirst();
-        String name = returnCursor.getString(nameIndex);
-        returnCursor.close();
-        return name;
-    }
-
+    public static final String DEFAULT_PASSWORD = "elearn123";
+    // an object that contains references to database locations
+    private static final DatabaseRepository repo = new DatabaseRepository();
+    // random colors for list icons
     private static int[] colors = new int[]{
             R.color.colorAccent,
             R.color.colorPrimary,
@@ -89,9 +81,16 @@ public class Common {
 
     };
 
-
-    static int getRandomColor(Context c, int pos) {
-        return ContextCompat.getColor(c, colors[pos % colors.length]);
+    // get file name from uri
+    public static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
     }
 
 
@@ -99,7 +98,6 @@ public class Common {
     a simple confirm/cancel dialog
     performs an action upon confirmation
      */
-
     public static void showConfirmDialog(Context context, String title, String message,
                                          Runnable confirmAction) {
 
@@ -136,11 +134,9 @@ public class Common {
         dialog.show();
     }
 
-
-    // shows a simple toast message
-    static void showMessage(Context context, int id) {
-        if (context != null)
-            Toast.makeText(context, context.getString(id), Toast.LENGTH_SHORT).show();
+    // returns a random color from the colors array
+    public static int getRandomColor(Context c, int pos) {
+        return ContextCompat.getColor(c, colors[pos % colors.length]);
     }
 
 
@@ -162,8 +158,14 @@ public class Common {
         showMessage(context, R.string.copied);
     }
 
+    // shows a simple toast message
+    public static void showMessage(Context context, int id) {
+        if (context != null)
+            Toast.makeText(context, context.getString(id), Toast.LENGTH_SHORT).show();
+    }
 
-    static void setDrawerIcon(Activity ac) {
+    // set drawer icon in main screen
+    public static void setDrawerIcon(Activity ac) {
         if (ac == null) return;
 
         Drawable drawable = ContextCompat.getDrawable(ac, R.drawable.ic_format_list);
@@ -174,20 +176,15 @@ public class Common {
         DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
 
         ActionBar bar = ((MainActivity) ac).getSupportActionBar();
-        if (bar != null) {
-            bar.setDisplayHomeAsUpEnabled(true);
-            bar.setHomeAsUpIndicator(drawable);
-/*            if (bar.getTitle() == null) return;
+        if (bar == null) return;
 
-            String title = bar.getTitle().toString();
-            if (!title.contains("  "))
-                bar.setTitle("  " + title);*/
-
-        }
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setHomeAsUpIndicator(drawable);
 
     }
 
-    static void openDrawer(Activity activity) {
+    // get drawer from activity and open it
+    public static void openDrawer(Activity activity) {
         if (activity == null) return;
         DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
 
@@ -199,19 +196,23 @@ public class Common {
 
     }
 
-    static void fabVisibility(Activity activity, int visibility) {
+    // show or hide the fab button!
+    public static void fabVisibility(Activity activity, int visibility) {
         if (activity == null) return;
         activity.findViewById(R.id.open_drawer_fab).setVisibility(visibility);
 
     }
 
-    static void downloadFile(Activity activity, String url) {
+    // send user to internet browser to download a file with its url
+    public static void downloadFile(Activity activity, String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         activity.startActivity(browserIntent);
-        Common.showMessage(activity, R.string.file_download);
+        CommonUtils.showMessage(activity, R.string.file_download);
     }
 
-    static String getTimeAsString(long time) {
+    // returns a string saying if the time was in the past (5 hours ago)
+    // or the is in the future (in 2 days)
+    public static String getTimeAsString(long time) {
         return DateUtils.getRelativeTimeSpanString(
                 time,
                 System.currentTimeMillis(),
@@ -220,7 +221,7 @@ public class Common {
     }
 
     @SuppressLint("ClickableViewAccessibility") // disable an IDE warning
-    static void passwordView(final AppCompatEditText editText) {
+    public static void passwordView(final AppCompatEditText editText) {
         // hides and shows password when user clicks at the 'eye' icon.
         editText.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -241,16 +242,17 @@ public class Common {
         });
     }
 
-
-    static void hideKeypad(View v) {
+    // hide keyboard
+    public static void hideKeypad(View v) {
         Context context = v.getContext();
         ((InputMethodManager)
                 Objects.requireNonNull(context.getSystemService(Activity.INPUT_METHOD_SERVICE)))
                 .hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-
-    static void tintDrawableTextView(AppCompatTextView tv, int color) {
+    // set a color for the drawable in a text view
+    // used to show if a user is online or offline
+    public static void tintDrawableTextView(AppCompatTextView tv, int color) {
         Drawable drawable = ContextCompat.getDrawable(tv.getContext(), R.drawable.colored_circle);
         if (drawable == null) return;
 
@@ -260,7 +262,8 @@ public class Common {
         tv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
     }
 
-    static Drawable tintDrawable(Context context, int id, int color) {
+    // color the specified drawable with a specific color
+    public static Drawable tintDrawable(Context context, int id, int color) {
         Drawable drawable = ContextCompat.getDrawable(context, id);
         if (drawable == null) return null;
 
@@ -270,19 +273,15 @@ public class Common {
         return drawable;
     }
 
-
-/*
-    static void recreateFragment(View view, int id) {
+    public static void recreateFragment(View view, int id) {
         Navigation.findNavController(view).navigate(id,
                 null,
                 new NavOptions.Builder().setPopUpTo(id, true).build());
 
     }
-*/
 
-
-    private static final DatabaseRepository repo = new DatabaseRepository();
-
+    // set user online or offline
+    // used in OnPause and OnResume in MainActivity
     static void setOnline(boolean online) {
         FirebaseUser user = repo.getUser();
         if (user == null) return;
@@ -297,7 +296,9 @@ public class Common {
             repo.getStudentsRef().document(id).update("online", online);
     }
 
-    static void restartApp(Activity activity) {
+
+    // restart app
+    public static void restartApp(Activity activity) {
         if (activity == null) return;
         TaskStackBuilder.create(activity)
                 .addNextIntent(new Intent(activity, MainActivity.class))
@@ -306,7 +307,8 @@ public class Common {
     }
 
 
-    static void updateTitle(Activity ac, int id) {
+    // update action bar title with a text from strings.xml
+    public static void updateTitle(Activity ac, int id) {
         MainActivity activity = ((MainActivity) ac);
 
         if (activity != null) {
@@ -317,7 +319,9 @@ public class Common {
 
     }
 
-    static void updateTitle(Activity ac, String text) {
+
+    // update action bar title with a string
+    public static void updateTitle(Activity ac, String text) {
         MainActivity activity = ((MainActivity) ac);
 
         if (activity != null) {
@@ -328,33 +332,19 @@ public class Common {
 
     }
 
-    static void hideActionBar(Activity ac) {
-        if (ac != null) {
-            ActionBar bar = ((AppCompatActivity) ac).getSupportActionBar();
-            if (bar != null) bar.hide();
-        }
-
-    }
-
-    static void showActionBar(Activity ac) {
-        if (ac != null) {
-            ActionBar bar = ((AppCompatActivity) ac).getSupportActionBar();
-            if (bar != null) bar.show();
-        }
-
-    }
 
     // shows a datePick dialog when clicked on the editText.
     // needs a fragmentManager to display the dialog.
-    static void showDatePickerDialog(TextInputEditText editText, final FragmentManager manager) {
+    public static void showDatePickerDialog(TextInputEditText editText, final FragmentManager manager) {
 
-        final Common.DatePickerFragment datePickerFragment = new DatePickerFragment(
+        final CommonUtils.DatePickerFragment datePickerFragment = new DatePickerFragment(
                 // minimum date -> Now
                 // maximum date -> a month from now
                 editText, new Date().getTime(),
                 new Date().getTime() + 2629746000L);
 
 
+        // cannot type in this field
         editText.setFocusableInTouchMode(false);
 
 
@@ -366,7 +356,9 @@ public class Common {
 
     }
 
-    static Drawable getDrawableFromView(View v) {
+
+    // get view as a drawable
+    public static Drawable getDrawableFromView(View v) {
         Bitmap returnedBitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(returnedBitmap);
@@ -379,27 +371,28 @@ public class Common {
             canvas.drawColor(Color.WHITE);
 
         v.draw(canvas);
-        //return the bitmap
+        // return the bitmap
         return new BitmapDrawable(v.getResources(),
                 returnedBitmap);
     }
 
-    static String getDateFormatted(long date) {
-        SimpleDateFormat ft = new SimpleDateFormat("MMM dd, hh:mm a", Locale.US);
+    // get a string of the format MMM dd, hh:mm a
+    public static String getDateFormatted(long date) {
+        SimpleDateFormat ft = new SimpleDateFormat("MMM dd, hh:mm a", Locale.ENGLISH);
         return ft.format(date);
     }
 
     // inner class to hold some temp data
-    static class Temp {
+    public static class Temp {
 
         // for creating an assignment
-        static long assignmentDate = 0L;
-        static long assignmentDueDate = 0L;
-        static ClassroomFile tempFile = null;
+        public static long assignmentDate = 0L;
+        public static long assignmentDueDate = 0L;
+        public static ClassroomFile tempFile = null;
 
         // for submitting to an assignment
-        static Uri fileUri;
-        static String fileType;
+        public static Uri fileUri;
+        public static String fileType;
 
     }
 
@@ -425,7 +418,7 @@ public class Common {
 
         @NonNull
         @Override
-        //Creates a dialog, customizes a few things and returns it
+        // Creates a dialog, customizes a few things and returns it
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             // Use date(maxDate) as the default date in the picker
@@ -433,17 +426,17 @@ public class Common {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(minDate);
 
-            //Getting fields from calendar instance.
+            // Getting fields from calendar instance.
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DATE);
 
             // Create a new instance of DatePickerDialog and return it
             assert getContext() != null;
-            //instantiating a Date picker dialog
+            // instantiating a Date picker dialog
             DatePickerDialog dialog = new DatePickerDialog(getContext(), this, year, month, day);
 
-            //Setting max and min date.
+            // Setting max and min date.
             dialog.getDatePicker().setMinDate(minDate);
             dialog.getDatePicker().setMaxDate(maxDate);
 
@@ -451,7 +444,7 @@ public class Common {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            //set new date to the EditText we got from the Constructor.
+            // set new date to the EditText we got from the Constructor.
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
@@ -463,7 +456,7 @@ public class Common {
 
             if (ed.getId() == R.id.assignment_due_date) {
                 Temp.assignmentDueDate = calendar.getTimeInMillis();
-                ed.setText(getString(R.string.due_date_arg, dateString, Common.getDateFormatted(calendar.getTimeInMillis())));
+                ed.setText(getString(R.string.due_date_arg, dateString, CommonUtils.getDateFormatted(calendar.getTimeInMillis())));
 
             } else if (ed.getId() == R.id.assignment_date) {
                 Temp.assignmentDate = calendar.getTimeInMillis();

@@ -1,5 +1,10 @@
 package com.myclass.school.data;
 
+
+/*
+    A simple model for chat messages
+    Contains message text and date, plus who sent that message.
+ */
 public class Message {
 
     private String content;
@@ -8,6 +13,12 @@ public class Message {
 
     public Message() {
 
+    }
+
+    public Message(String content, String sender, Long date) {
+        this.content = content;
+        this.sender = sender;
+        this.date = date;
     }
 
     public String getSender() {

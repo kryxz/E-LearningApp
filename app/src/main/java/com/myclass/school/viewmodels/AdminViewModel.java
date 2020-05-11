@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.myclass.school.CommonUtils;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
@@ -36,13 +37,13 @@ public class AdminViewModel extends ViewModel {
 
 
     // logout from auth
-    void logout() {
+    public void logout() {
         repo.getAuth().signOut();
     }
 
 
     // login as Admin, and execute some action
-    void reLogIn(Runnable action) {
+    public void reLogIn(Runnable action) {
         logout();
         signInAsAdmin(action);
     }
@@ -67,7 +68,7 @@ public class AdminViewModel extends ViewModel {
     }
 
     // add user to database, and create an account for them!
-    Task<AuthResult> addUser(User user) {
+    public Task<AuthResult> addUser(User user) {
         String email = user.getEmail();
 
         // if user is Teacher, add a teacher
@@ -85,7 +86,7 @@ public class AdminViewModel extends ViewModel {
         }
 
         // return creating an account as a task
-        return repo.getAuth().createUserWithEmailAndPassword(email, Common.DEFAULT_PASSWORD);
+        return repo.getAuth().createUserWithEmailAndPassword(email, CommonUtils.DEFAULT_PASSWORD);
 
     }
 
@@ -145,11 +146,11 @@ public class AdminViewModel extends ViewModel {
 
         CollectionReference ref = repo.getTeachersRef();
         // remove from database
-        if (user instanceof Teacher) {
-            classes = ((Teacher) user).getClasses();
-        } else {
+        if (user instanceof Teacher)
+            classes = user.getClasses();
+        else {
             ref = repo.getStudentsRef();
-            classes = ((Student) user).getClasses();
+            classes = user.getClasses();
 
         }
 
@@ -196,7 +197,7 @@ public class AdminViewModel extends ViewModel {
 
 
     // observe (listen to changes in) the teachers collection
-    LiveData<List<Teacher>> getTeachers() {
+    public LiveData<List<Teacher>> getTeachers() {
         // ArrayList to add all teachers from database
         ArrayList<Teacher> allTeachers = new ArrayList<>();
 
@@ -224,7 +225,7 @@ public class AdminViewModel extends ViewModel {
     }
 
     // observe the students collection
-    LiveData<List<Student>> getStudents() {
+    public LiveData<List<Student>> getStudents() {
         // ArrayList to add all students from database
         List<Student> allStudents = new ArrayList<>();
 
@@ -247,7 +248,7 @@ public class AdminViewModel extends ViewModel {
         return students;
     }
 
-    Task<Void> createClassroom(Classroom classroom) {
+    public Task<Void> createClassroom(Classroom classroom) {
         return repo.getClassroomsRef().document(classroom.getId()).set(classroom);
     }
 

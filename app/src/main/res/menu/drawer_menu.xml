@@ -13,7 +13,7 @@
         android:title="@string/settings" />
 
     <item
-        android:id="@+id/help"
+        android:id="@+id/helpFragment"
         android:icon="@drawable/ic_help"
         android:title="@string/help" />
 

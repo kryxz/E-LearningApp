@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.myclass.school.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ViewAssignmentsFragment extends Fragment {
 
-    public ViewAssignmentsFragment() {
+public class HelpFragment extends Fragment {
+
+    public HelpFragment() {
         // Required empty public constructor
     }
 
@@ -22,6 +21,6 @@ public class ViewAssignmentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_assignments, container, false);
+        return inflater.inflate(R.layout.fragment_help, container, false);
     }
 }

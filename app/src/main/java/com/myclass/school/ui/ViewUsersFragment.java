@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.myclass.school.CommonUtils;
+import com.myclass.school.R;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.items.AdminClassroomItem;
 import com.myclass.school.items.AdminStudentItem;
 import com.myclass.school.items.AdminTeacherItem;
+import com.myclass.school.viewmodels.AdminViewModel;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 
@@ -186,7 +189,7 @@ public class ViewUsersFragment extends Fragment {
      */
 
     private void updateTitle(int id) {
-        Common.updateTitle(getActivity(), id);
+        CommonUtils.updateTitle(getActivity(), id);
     }
 
 

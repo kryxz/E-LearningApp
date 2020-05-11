@@ -11,13 +11,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-
-import com.myclass.school.AdminViewModel;
-import com.myclass.school.data.Classroom;
-import com.myclass.school.Common;
+import com.myclass.school.CommonUtils;
 import com.myclass.school.R;
+import com.myclass.school.data.Classroom;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.User;
+import com.myclass.school.viewmodels.AdminViewModel;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
@@ -59,9 +58,9 @@ public class AdminStudentItem extends Item<GroupieViewHolder> {
         name.setText(context.getString(R.string.name_details, user.getName()));
 
 
-        email.setOnClickListener(v -> Common.copyText(context, userEmail));
+        email.setOnClickListener(v -> CommonUtils.copyText(context, userEmail));
 
-        password.setOnClickListener(v -> Common.copyText(context, userEmail));
+        password.setOnClickListener(v -> CommonUtils.copyText(context, userEmail));
 
         // hide and show view on click
         name.setOnClickListener(v -> {
@@ -87,7 +86,7 @@ public class AdminStudentItem extends Item<GroupieViewHolder> {
                     user.getEmail(), user.getPassword());
 
             // copy text data
-            Common.copyText(context, loginDetails);
+            CommonUtils.copyText(context, loginDetails);
 
         });
 
@@ -133,7 +132,7 @@ public class AdminStudentItem extends Item<GroupieViewHolder> {
             final Runnable deleteAction = this::delete;
 
             // show delete dialog
-            Common.showConfirmDialog(context, context.getString(R.string.delete_user),
+            CommonUtils.showConfirmDialog(context, context.getString(R.string.delete_user),
                     context.getString(R.string.delete_user_confirm, student.getName()), deleteAction);
 
         });

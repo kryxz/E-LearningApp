@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.viewmodels;
 
 import android.os.Handler;
 import android.view.View;
@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.myclass.school.CommonUtils;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomPost;
@@ -22,14 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+// must be public
 public class ClassroomVM extends ViewModel {
+
     private final DatabaseRepository repo = new DatabaseRepository();
 
     private final MutableLiveData<Classroom> classroom = new MutableLiveData<>();
 
 
-    LiveData<Classroom> getClassById(String id) {
+    // get classroom object from database!
+    public LiveData<Classroom> getClassById(String id) {
 
         repo.getClassroomsRef().document(id).
                 get().addOnSuccessListener(query ->
@@ -40,14 +43,17 @@ public class ClassroomVM extends ViewModel {
         return classroom;
     }
 
-    void postToClassroom(String classId, ClassroomPost post) {
+    // send message to classroom
+    public void postToClassroom(String classId, ClassroomPost post) {
         repo.getClassPosts(classId).document(post.getId()).set(post);
 
     }
 
-    LiveData<List<ClassroomPost>> getClassPosts(String id, int howMany) {
-        MutableLiveData<List<ClassroomPost>> posts = new MutableLiveData<>();
+    // get classroom messages
+    public LiveData<List<ClassroomPost>> getClassPosts(String id, int howMany) {
 
+        MutableLiveData<List<ClassroomPost>> posts = new MutableLiveData<>();
+        // query order by date, and get only a specific amount of messages
         repo.getClassPosts(id).orderBy("date", Query.Direction.ASCENDING).limitToLast(howMany).
                 addSnapshotListener((query, exception) -> {
                     if (exception != null || query == null) return;
@@ -65,7 +71,8 @@ public class ClassroomVM extends ViewModel {
         return posts;
     }
 
-    LiveData<List<Assignment>> getAssignments(String id) {
+    // get classroom assignments
+    public LiveData<List<Assignment>> getAssignments(String id) {
         final MutableLiveData<List<Assignment>> assignments = new MutableLiveData<>();
 
         repo.getAssignmentsRef(id).addSnapshotListener((query, exception) -> {
@@ -83,7 +90,8 @@ public class ClassroomVM extends ViewModel {
         return assignments;
     }
 
-    void addAssignment(String id, Assignment assignment) {
+    // add a new assignment to class
+    public void addAssignment(String id, Assignment assignment) {
         assignment.setId(UUID.randomUUID().toString().substring(0, 10));
         assignment.setClassroomId(id);
 
@@ -95,20 +103,28 @@ public class ClassroomVM extends ViewModel {
 
     }
 
-    void deleteAssignment(String classId, String assignmentId) {
+    // remove assignment from database
+    public void deleteAssignment(String classId, String assignmentId) {
         repo.getAssignmentsRef(classId).document(assignmentId).delete();
 
     }
 
-    void uploadSubmission(Submission submission, Assignment assignment, ProgressBar progressBar) {
+
+    // student submission upload!
+    // upload a file, and send a data object to database
+    public void uploadSubmission(Submission submission, Assignment assignment, ProgressBar progressBar) {
 
 
+        // files reference
         final StorageReference fileRef = repo.getClassFiles(assignment.getClassroomId())
                 .child(submission.getSenderId() + assignment.getId());
 
 
-        final UploadTask uploadTask = fileRef.putFile(Common.Temp.fileUri);
+        // upload task to track progress
+        final UploadTask uploadTask = fileRef.putFile(CommonUtils.Temp.fileUri);
 
+
+        // update progress bar as the upload task is working
         uploadTask.addOnProgressListener(taskSnapshot -> {
             double progress = (100.0 * taskSnapshot.getBytesTransferred())
                     / taskSnapshot.getTotalByteCount();
@@ -117,16 +133,20 @@ public class ClassroomVM extends ViewModel {
 
         });
 
+        // add data to database when the upload process is complete!
         uploadTask.addOnCompleteListener(task -> fileRef.getDownloadUrl().addOnSuccessListener(result -> {
             submission.getFile().setDownloadUrl(result.toString());
             repo.getAssignmentsRef(assignment.getClassroomId())
                     .document(assignment.getId()).update("submissions", FieldValue.arrayUnion(submission));
+
+            // hide progress bar on complete
+            new Handler().postDelayed(() ->
+                    progressBar.setVisibility(View.GONE), 250);
         }));
 
-        Common.Temp.fileUri = null;
-        Common.Temp.fileType = null;
+        // null temp data
+        CommonUtils.Temp.fileUri = null;
+        CommonUtils.Temp.fileType = null;
 
-        uploadTask.addOnSuccessListener(command -> new Handler().postDelayed(() ->
-                progressBar.setVisibility(View.GONE), 250));
     }
 }

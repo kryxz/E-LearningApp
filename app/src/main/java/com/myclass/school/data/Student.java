@@ -1,6 +1,6 @@
 package com.myclass.school.data;
 
-import com.myclass.school.Common;
+import com.myclass.school.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class Student implements User {
 
     @Override
     public String getEmail() {
-        return id + Common.EMAIL_SUFFIX;
+        return id + CommonUtils.EMAIL_SUFFIX;
     }
 
     public void setSubjectGrade(String g) {

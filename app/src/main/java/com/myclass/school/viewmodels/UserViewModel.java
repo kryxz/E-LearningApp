@@ -1,4 +1,4 @@
-package com.myclass.school;
+package com.myclass.school.viewmodels;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -37,7 +37,7 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<Classroom>> classes = new MutableLiveData<>();
 
 
-    LiveData<List<Classroom>> getMyClasses() {
+    public LiveData<List<Classroom>> getMyClasses() {
 
         String id = getUserId();
 
@@ -61,7 +61,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    LiveData<User> getUserById(String id) {
+    public LiveData<User> getUserById(String id) {
 
         final MutableLiveData<User> otherUser = new MutableLiveData<>();
 
@@ -92,7 +92,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    LiveData<User> getUser() {
+    public LiveData<User> getUser() {
         final String id = getUserId();
         if (id == null) return null;
 
@@ -123,7 +123,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    void updateProfilePic(Bitmap pic) {
+    public void updateProfilePic(Bitmap pic) {
         final String id = getUserId();
         if (id == null) return;
 
@@ -148,7 +148,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    void updateUser(User user) {
+    public void updateUser(User user) {
         final String id = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         if (user instanceof Teacher)
@@ -159,7 +159,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    void logout() {
+    public void logout() {
         repo.getAuth().signOut();
     }
 
@@ -176,8 +176,8 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    void uploadFile(Uri file, String classroomId, String fileName, String description,
-                    String fileType, Runnable completeAction) {
+    public void uploadFile(Uri file, String classroomId, String fileName, String description,
+                           String fileType, Runnable completeAction) {
 
 
         final String userId = getUserId();
@@ -208,7 +208,7 @@ public class UserViewModel extends ViewModel {
 
     }
 
-    LiveData<String> getNameById(String id) {
+    public LiveData<String> getNameById(String id) {
 
         final MutableLiveData<String> name = new MutableLiveData<>();
 
@@ -222,7 +222,7 @@ public class UserViewModel extends ViewModel {
         return name;
     }
 
-    LiveData<String> getPhotoUrl(String id) {
+    public LiveData<String> getPhotoUrl(String id) {
 
         final MutableLiveData<String> photoUrl = new MutableLiveData<>();
 
@@ -237,7 +237,7 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    LiveData<List<ClassroomFile>> getClassFiles(String id) {
+    public LiveData<List<ClassroomFile>> getClassFiles(String id) {
         final MutableLiveData<List<ClassroomFile>> files = new MutableLiveData<>();
 
         repo.getClassFilesRef(id).orderBy("date", Query.Direction.DESCENDING).
@@ -257,7 +257,7 @@ public class UserViewModel extends ViewModel {
         return files;
     }
 
-    String getUserId() {
+    public String getUserId() {
         String email = getAuthUser().getEmail();
         if (email == null) return null;
 
