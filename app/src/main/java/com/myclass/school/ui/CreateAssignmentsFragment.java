@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,9 +25,8 @@ import com.myclass.school.MainActivity;
 import com.myclass.school.R;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.ClassroomFile;
+import com.myclass.school.data.Notification;
 import com.myclass.school.data.Submission;
-import com.myclass.school.data.Teacher;
-import com.myclass.school.data.User;
 import com.myclass.school.viewmodels.ClassroomVM;
 import com.myclass.school.viewmodels.UserViewModel;
 import com.xwray.groupie.GroupAdapter;
@@ -41,7 +41,6 @@ public class CreateAssignmentsFragment extends Fragment {
 
     private View view;
     private ClassroomVM classroomVM;
-    private User user;
     private String classroomId;
     private UserViewModel model;
 
@@ -74,29 +73,23 @@ public class CreateAssignmentsFragment extends Fragment {
 
         final View createButton = view.findViewById(R.id.new_assignment_button);
 
-        LiveData<User> userLiveData = model.getUser();
-        userLiveData.observe(getViewLifecycleOwner(), u -> {
-            if (u == null) return;
-            user = u;
 
-            if (user instanceof Teacher) {
-                createButton.setVisibility(View.VISIBLE);
-                createButton.setOnClickListener(v -> createAssignment(classroomId));
+        createButton.setOnClickListener(v -> createAssignment(classroomId));
 
-            } else
-                createButton.setVisibility(View.GONE);
-
-
-            userLiveData.removeObservers(this);
-        });
 
         final ProgressBar progressBar = view.findViewById(R.id.assignments_progress_bar);
         final RecyclerView rv = view.findViewById(R.id.assignments_rv);
         final GroupAdapter adapter = new GroupAdapter();
-
+        final AppCompatTextView noAssignmentsText = view.findViewById(R.id.no_assignments_text);
         classroomVM.getAssignments(classroomId).observe(getViewLifecycleOwner(), assignments -> {
-            if (assignments == null || assignments.isEmpty()) return;
+            if (assignments == null) return;
             progressBar.setVisibility(View.GONE);
+            if (assignments.isEmpty()) {
+                noAssignmentsText.setVisibility(View.VISIBLE);
+            } else {
+                noAssignmentsText.setVisibility(View.GONE);
+
+            }
 
             adapter.clear();
             for (int i = 0; i < assignments.size(); i++)
@@ -210,6 +203,7 @@ public class CreateAssignmentsFragment extends Fragment {
 
     private void createAssignment(String classroomId) {
         if (getActivity() == null) return;
+
         viewVisibility(R.id.create_assignment_layout, View.VISIBLE);
         viewVisibility(R.id.view_assignments_layout, View.GONE);
 
@@ -226,13 +220,12 @@ public class CreateAssignmentsFragment extends Fragment {
         final AppCompatButton confirm = view.findViewById(R.id.new_assignment_confirm);
         final AppCompatButton cancel = view.findViewById(R.id.new_assignment_cancel);
 
-        final Assignment assignment = new Assignment();
 
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        CommonUtils.showDatePickerDialog(dateText, manager);
+        CommonUtils.showDatePickerDialog(dueDateText, manager);
 
-        CommonUtils.showDatePickerDialog(dateText, getActivity().getSupportFragmentManager());
-        CommonUtils.showDatePickerDialog(dueDateText, getActivity().getSupportFragmentManager());
-
-
+        // user cannot type in this text field
         fileText.setFocusableInTouchMode(false);
 
 
@@ -274,13 +267,14 @@ public class CreateAssignmentsFragment extends Fragment {
 
             if (title.isEmpty() || content.isEmpty()) return;
 
+            final Assignment assignment = new Assignment(
+                    title, content, date, dueDate,
+                    CommonUtils.Temp.tempFile);
+            Notification notification = new Notification();
 
-            assignment.setTitle(title);
-            assignment.setContent(content);
-            assignment.setDueDate(dueDate);
-            assignment.setDate(date);
-            assignment.setFile(CommonUtils.Temp.tempFile);
-            classroomVM.addAssignment(classroomId, assignment);
+            notification.setMessage(getString(R.string.new_assignment_arg, assignment.getClassroomName()));
+            notification.setTitle(getString(R.string.new_assignment));
+            classroomVM.addAssignment(classroomId, assignment, notification);
 
             CommonUtils.showMessage(view.getContext(), R.string.assignment_sent);
 

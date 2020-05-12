@@ -1,5 +1,6 @@
 package com.myclass.school.viewmodels;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -15,8 +16,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.myclass.school.CommonUtils;
+import com.myclass.school.R;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomFile;
+import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.Student;
 import com.myclass.school.data.Teacher;
 import com.myclass.school.data.User;
@@ -35,6 +40,7 @@ public class UserViewModel extends ViewModel {
 
 
     private final MutableLiveData<List<Classroom>> classes = new MutableLiveData<>();
+    private final MutableLiveData<List<Notification>> notifications = new MutableLiveData<>();
 
 
     public LiveData<List<Classroom>> getMyClasses() {
@@ -177,7 +183,7 @@ public class UserViewModel extends ViewModel {
 
 
     public void uploadFile(Uri file, String classroomId, String fileName, String description,
-                           String fileType, Runnable completeAction) {
+                           String fileType, Context context) {
 
 
         final String userId = getUserId();
@@ -202,10 +208,28 @@ public class UserViewModel extends ViewModel {
                     classroomFile.setDownloadUrl(uri.toString());
 
                     repo.getClassFilesRef(classroomId).document(fileId).set(classroomFile);
-                    completeAction.run();
+                    notifyStudents(classroomId, context);
+                    CommonUtils.showMessage(context, R.string.file_sent);
                 }));
 
 
+    }
+
+    private void notifyStudents(String classroomId, Context context) {
+
+        repo.getClassroomsRef().document(classroomId).get().addOnSuccessListener(query -> {
+            final Classroom classroom = query.toObject(Classroom.class);
+            if (classroom == null) return;
+            Notification notification = new Notification(
+                    context.getString(R.string.new_file_title),
+                    context.getString(R.string.new_file, classroom.getName()),
+                    System.currentTimeMillis(), classroomId,
+                    NotificationType.NEW_FILE
+
+            );
+            for (String id : classroom.getMembers())
+                repo.getNotificationsRef(id).add(notification);
+        });
     }
 
     public LiveData<String> getNameById(String id) {
@@ -263,6 +287,27 @@ public class UserViewModel extends ViewModel {
 
         return email.substring(0, email.indexOf('@'));
 
+    }
+
+
+    public LiveData<List<Notification>> getNotifications() {
+        final String id = getUserId();
+
+
+        repo.getNotificationsRef(id).orderBy("date", Query.Direction.DESCENDING)
+                .addSnapshotListener((query, exception) -> {
+                    if (exception != null || query == null) return;
+                    final ArrayList<Notification> allNotifications = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : query.getDocuments())
+                        allNotifications.add(doc.toObject(Notification.class));
+
+
+                    notifications.setValue(allNotifications);
+
+                });
+
+        return notifications;
     }
 
 

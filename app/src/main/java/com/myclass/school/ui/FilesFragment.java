@@ -205,11 +205,10 @@ public class FilesFragment extends Fragment {
                 return;
 
             // action that tells user their file was sent!
-            Runnable doneAction = () -> CommonUtils.showMessage(getContext(), R.string.file_sent);
 
 
             // execute upload process in background
-            AsyncTask.execute(() -> model.uploadFile(path, classroomId, name, description, type, doneAction));
+            AsyncTask.execute(() -> model.uploadFile(path, classroomId, name, description, type, view.getContext()));
 
 
             CommonUtils.showMessage(getContext(), R.string.uploading_file);

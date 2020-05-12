@@ -26,6 +26,8 @@ import com.myclass.school.R;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomFile;
+import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.Submission;
 import com.myclass.school.data.User;
 import com.myclass.school.viewmodels.ClassroomVM;
@@ -35,6 +37,7 @@ import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -81,16 +84,31 @@ public class AssignmentsFragment extends Fragment {
         final boolean isTeacher = model.getUserId().charAt(0) == 't';
         final LiveData<List<Classroom>> listLiveData = model.getMyClasses();
 
+        // get progress bar
+        progressBar = view.findViewById(R.id.assignments_progress_bar);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        final AppCompatTextView noAssignmentsText = view.findViewById(R.id.no_assignments_text);
 
         // get classrooms from database
         listLiveData.observe(getViewLifecycleOwner(), classrooms -> {
-            if (classrooms == null || classrooms.isEmpty()) return;
+            if (classrooms == null) return;
+
+            if (classrooms.isEmpty()) {
+                noAssignmentsText.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            } else
+                noAssignmentsText.setVisibility(View.GONE);
 
             for (Classroom classroom : classrooms)
                 getAssignmentsThenAdd(classroom.getId(), isTeacher);
 
+            progressBar.setProgress(new Random().nextInt(100));
+
             // doesn't observe database changes
             listLiveData.removeObservers(getViewLifecycleOwner());
+
         });
 
         // get user
@@ -101,9 +119,6 @@ public class AssignmentsFragment extends Fragment {
             userLiveData.removeObservers(getViewLifecycleOwner());
         });
 
-        // get progress bar
-        progressBar = view.findViewById(R.id.assignments_progress_bar);
-
 
     }
 
@@ -113,7 +128,7 @@ public class AssignmentsFragment extends Fragment {
 
         final RecyclerView rv = view.findViewById(R.id.assignments_rv);
         final GroupAdapter adapter = new GroupAdapter();
-
+        final AppCompatTextView noAssignmentsText = view.findViewById(R.id.no_assignments_text);
 
         final LiveData<List<Assignment>> listLiveData = classroomVM.getAssignments(id);
 
@@ -121,13 +136,24 @@ public class AssignmentsFragment extends Fragment {
         listLiveData.observe(getViewLifecycleOwner(), assignments -> {
             if (assignments == null) return;
             adapter.clear();
+
             for (int i = 0; i < assignments.size(); i++)
                 adapter.add(new AssignmentItem(assignments.get(i), i + 1, isTeacher));
 
             rv.setAdapter(adapter);
+
+            if (adapter.getItemCount() == 0)
+                noAssignmentsText.setVisibility(View.VISIBLE);
+
+            if (adapter.getItemCount() > 0)
+                noAssignmentsText.setVisibility(View.GONE);
+
+            progressBar.setVisibility(View.GONE);
         });
 
+
     }
+
 
     // lets user choose any file!
     private void chooseFile(TextInputEditText ed) {
@@ -271,22 +297,32 @@ public class AssignmentsFragment extends Fragment {
                     fileNameEd.setError(getString(R.string.choose_file_error));
                     return;
                 }
-                Submission submission = new Submission();
+
+                ClassroomFile file = new ClassroomFile(
+                        UUID.randomUUID().toString().substring(0, 10), // file id
+                        user.getName(), // sender name
+                        CommonUtils.queryName(context.getContentResolver(), CommonUtils.Temp.fileUri), // file name
+                        CommonUtils.Temp.fileType,
+                        getString(R.string.assignment_submission),
+                        System.currentTimeMillis()
+                );
+
+                Submission submission = new Submission(file, model.getUserId());
+
                 if (commentEd.getText() != null)
                     submission.setComment(commentEd.getText().toString());
-                ClassroomFile file = new ClassroomFile();
 
-                file.setType(CommonUtils.Temp.fileType);
-                file.setDate(System.currentTimeMillis());
-                file.setDescription(getString(R.string.assignment_submission));
-                file.setName(CommonUtils.queryName(context.getContentResolver(), CommonUtils.Temp.fileUri));
-
-                file.setAuthor(user.getName());
-                file.setId(UUID.randomUUID().toString().substring(0, 10));
-
-                submission.setFile(file);
-                submission.setSenderId(model.getUserId());
                 classroomVM.uploadSubmission(submission, assignment, progressBar);
+
+                // send new submission notification to instructor
+                Notification notification = new Notification(
+                        getString(R.string.new_submission_title),
+                        getString(R.string.new_submission, assignment.getTitle()),
+                        System.currentTimeMillis(), assignment.getClassroomId(),
+                        NotificationType.NEW_SUBMISSION
+
+                );
+                classroomVM.sendNotificationInstructor(notification, assignment.getClassroomId());
 
                 dialog.dismiss();
 

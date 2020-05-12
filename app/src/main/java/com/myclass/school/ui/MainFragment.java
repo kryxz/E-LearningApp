@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -22,10 +23,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.myclass.school.CommonUtils;
 import com.myclass.school.MainActivity;
 import com.myclass.school.R;
+import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.User;
 import com.myclass.school.viewmodels.DatabaseRepository;
 import com.myclass.school.viewmodels.UserViewModel;
 import com.squareup.picasso.Picasso;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.GroupieViewHolder;
+import com.xwray.groupie.Item;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,7 +43,6 @@ public class MainFragment extends Fragment {
     }
 
     private View view;
-    private UserViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +65,7 @@ public class MainFragment extends Fragment {
         if (checkUserAuth() == null) return;
         if (getActivity() == null) return;
 
-        model = ((MainActivity) getActivity()).userVM;
+        UserViewModel model = ((MainActivity) getActivity()).userVM;
 
         showBottomNavigation();
 
@@ -72,6 +77,33 @@ public class MainFragment extends Fragment {
 
             setUpDrawer(user);
         });
+        final AppCompatTextView noNotificationsText = view.findViewById(R.id.no_notifications);
+
+
+        // Recycler view for the list of messages
+        final RecyclerView rv = view.findViewById(R.id.notifications_rv);
+
+        final GroupAdapter adapter = new GroupAdapter();
+
+
+        model.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
+            if (notifications == null) return;
+            if (notifications.isEmpty()) {
+                noNotificationsText.setVisibility(View.VISIBLE);
+                return;
+            }
+            noNotificationsText.setVisibility(View.GONE);
+
+            adapter.clear();
+
+            for (Notification notification : notifications)
+                adapter.add(new NotificationItem(notification));
+
+            rv.setAdapter(adapter);
+
+
+        });
+
     }
 
     private FirebaseUser checkUserAuth() {
@@ -141,7 +173,6 @@ public class MainFragment extends Fragment {
             Picasso.get().load(photo).placeholder(R.drawable.ic_person).into(profilePic);
 
 
-
         NavController navController = Navigation.findNavController(view);
         // go to profile when click on name or picture
         headerView.setOnClickListener(v -> {
@@ -159,6 +190,52 @@ public class MainFragment extends Fragment {
         if (item.getItemId() == android.R.id.home)
             CommonUtils.openDrawer(getActivity());
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private static class NotificationItem extends Item<GroupieViewHolder> {
+        private final Notification notification;
+
+
+        NotificationItem(Notification n) {
+            notification = n;
+        }
+
+
+        @Override
+        public int getLayout() {
+            return R.layout.notification_item;
+        }
+
+        @Override
+        public void bind(@NonNull GroupieViewHolder viewHolder, int position) {
+            final View view = viewHolder.itemView;
+
+            final CircleImageView iconView = view.findViewById(R.id.icon_pic);
+            final AppCompatTextView titleText = view.findViewById(R.id.notification_item_title);
+            final AppCompatTextView messageText = view.findViewById(R.id.notification_item_description);
+            final AppCompatTextView dateText = view.findViewById(R.id.notification_item_date);
+
+
+            titleText.setText(notification.getTitle());
+            messageText.setText(notification.getMessage());
+            dateText.setText(CommonUtils.getTimeAsString(notification.getDate()));
+
+            int icon = R.drawable.ic_assignment;
+            if (notification.getType() == NotificationType.NEW_FILE)
+                icon = R.drawable.ic_file;
+            else if (notification.getType() == NotificationType.MENTION)
+                icon = R.drawable.ic_person;
+
+            iconView.setImageDrawable(CommonUtils.tintDrawable(view.getContext(), icon,
+                    CommonUtils.getRandomColor(view.getContext(), position)));
+
+            view.setOnClickListener(v -> {
+                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFragment, false).build();
+                Navigation.findNavController(view).navigate(MainFragmentDirections.goToClassroom(notification.getClassroomId()), navOptions);
+
+            });
+        }
     }
 
 

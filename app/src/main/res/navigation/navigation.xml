@@ -19,6 +19,9 @@
         <action
             android:id="@+id/goToProfile"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/goToClassroom"
+            app:destination="@id/classroomFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -102,9 +105,6 @@
         <action
             android:id="@+id/viewAssignments"
             app:destination="@id/createAssignmentsFragment" />
-        <action
-            android:id="@+id/studentAssignments"
-            app:destination="@id/viewAssignmentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
@@ -146,17 +146,8 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/viewAssignmentsFragment"
-        android:name="com.myclass.school.ui.ViewAssignmentsFragment"
-        android:label="fragment_view_assignments"
-        tools:layout="@layout/fragment_view_assignments">
-        <argument
-            android:name="classroomId"
-            app:argType="string" />
-    </fragment>
-    <fragment
         android:id="@+id/helpFragment"
         android:name="com.myclass.school.ui.HelpFragment"
-        android:label="fragment_help"
+        android:label="@string/help"
         tools:layout="@layout/fragment_help" />
 </navigation>

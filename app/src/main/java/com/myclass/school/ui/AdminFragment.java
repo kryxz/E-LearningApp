@@ -31,9 +31,10 @@ import java.util.Random;
 
 
 /*
-    A page that contains four buttons:
+    A page that contains six buttons:
         add student/teacher
         view students/teachers
+        create class/ view classes
  */
 
 public class AdminFragment extends Fragment {

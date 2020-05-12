@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.AssignmentsFragment">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/no_assignments_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/no_assignments"
+        android:textColor="@color/blue_night"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/assignments_progress_bar"
@@ -13,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:progress="5"
-        android:progressTint="@color/orange_light"
+        android:progressTint="@color/maz_blue"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

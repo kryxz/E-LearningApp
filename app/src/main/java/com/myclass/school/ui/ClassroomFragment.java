@@ -1,15 +1,19 @@
 package com.myclass.school.ui;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -21,11 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputEditText;
 import com.myclass.school.CommonUtils;
 import com.myclass.school.MainActivity;
 import com.myclass.school.R;
+import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomPost;
+import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.User;
 import com.myclass.school.viewmodels.ClassroomVM;
 import com.myclass.school.viewmodels.UserViewModel;
@@ -34,6 +40,11 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.GroupieViewHolder;
 import com.xwray.groupie.Item;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,6 +62,7 @@ public class ClassroomFragment extends Fragment {
     private ClassroomVM classroomVM;
     private User user;
     private String classroomId;
+    private Classroom classroom;
 
     public ClassroomFragment() {
         // Required empty public constructor
@@ -99,7 +111,8 @@ public class ClassroomFragment extends Fragment {
         classroomVM.getClassById(classroomId).observe(getViewLifecycleOwner(), classroom -> {
             if (classroom == null || !classroom.getId().equals(classroomId)) return;
             CommonUtils.updateTitle(getActivity(), classroom.getName());
-
+            this.classroom = classroom;
+            mentionUser();
         });
         // get user data from database
         LiveData<User> userLiveData = model.getUser();
@@ -206,10 +219,68 @@ public class ClassroomFragment extends Fragment {
 
     }
 
+
+    private void mentionUser() {
+
+        final List<String> names = new ArrayList<>();
+
+        final List<String> membersIds = classroom.getMembers();
+        final HashMap<String, String> nameId = new HashMap<>();
+        final AppCompatAutoCompleteTextView messageText = view.findViewById(R.id.message_text);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(),
+                R.layout.select_mention_message, names);
+        messageText.setAdapter(adapter);
+
+        messageText.setThreshold(1);
+        for (String id : membersIds) {
+            LiveData<String> nameLiveData = model.getNameById(id);
+            nameLiveData.observe(getViewLifecycleOwner(), s -> {
+                if (s == null || s.equals(user.getName())) return;
+                names.add(s);
+                nameId.put(s, id);
+                nameLiveData.removeObservers(getViewLifecycleOwner());
+            });
+
+        }
+        messageText.setOnItemClickListener((parent, view1, position, id) -> {
+            CommonUtils.Temp.isMention = true;
+            CommonUtils.Temp.mentionWho = nameId.get(messageText.getText().toString().trim());
+
+        });
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.length() == 0) return;
+                final String text = s.toString();
+                if (StringUtils.indexOfAny(text, names.toArray(new String[0])) == -1) {
+                    CommonUtils.Temp.isMention = false;
+                    CommonUtils.Temp.mentionWho = null;
+                }
+
+
+            }
+        };
+        messageText.addTextChangedListener(textWatcher);
+
+    }
+
+
     //  enables user to send messages to the classroom
     private void postToClass() {
-        TextInputEditText messageText = view.findViewById(R.id.message_text);
-        AppCompatButton sendButton = view.findViewById(R.id.send_message_btn);
+        final AppCompatAutoCompleteTextView messageText = view.findViewById(R.id.message_text);
+        final AppCompatButton sendButton = view.findViewById(R.id.send_message_btn);
 
 
         // show send button when click on text field
@@ -231,7 +302,7 @@ public class ClassroomFragment extends Fragment {
 
 
             // a classroom message object
-            ClassroomPost post = new ClassroomPost(
+            final ClassroomPost post = new ClassroomPost(
                     randomId, // identifier for this message
                     model.getUserId(), // identifier who sent it
                     message, // actual message content
@@ -239,8 +310,17 @@ public class ClassroomFragment extends Fragment {
                     System.currentTimeMillis() // sent at date
             );
 
+
+            final Notification notification = new Notification(
+                    getString(R.string.new_mention_title),
+                    getString(R.string.new_mention, classroom.getName()),
+                    System.currentTimeMillis(),
+                    classroomId,
+                    NotificationType.MENTION
+            );
             // Send to database
-            classroomVM.postToClassroom(classroomId, post);
+            // Notification is only sent if post contains a mention to a user
+            classroomVM.postToClassroom(classroomId, post, notification);
             // Clear text field
             messageText.getText().clear();
         });
@@ -250,7 +330,8 @@ public class ClassroomFragment extends Fragment {
     // options menu in action bar
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.classroom_menu, menu);
+        if (model.getUserId().charAt(0) == 't')
+            inflater.inflate(R.menu.classroom_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -267,12 +348,7 @@ public class ClassroomFragment extends Fragment {
         // A navController manages navigation
         final NavController controller = Navigation.findNavController(view);
 
-        // Decide where to go depending on user type
-        if (model.getUserId().charAt(0) == 't')
-            controller.navigate(ClassroomFragmentDirections.viewAssignments(classroomId));
-        else
-            controller.navigate(ClassroomFragmentDirections.studentAssignments(classroomId));
-
+        controller.navigate(ClassroomFragmentDirections.viewAssignments(classroomId));
 
     }
 

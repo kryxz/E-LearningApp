@@ -14,6 +14,8 @@ public class ClassroomPost {
 
     private Long date;
 
+    private boolean isMention;
+
     public ClassroomPost() {
 
     }
@@ -26,6 +28,13 @@ public class ClassroomPost {
         date = d;
     }
 
+    public boolean isMention() {
+        return isMention;
+    }
+
+    public void setMention(boolean mention) {
+        isMention = mention;
+    }
 
     public String getId() {
         return id;

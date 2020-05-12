@@ -103,17 +103,17 @@ public class AdminTeacherItem extends Item<GroupieViewHolder> {
         final RecyclerView allClassesRV = layout.findViewById(R.id.all_classes_rv);
         final RecyclerView userClassesRV = layout.findViewById(R.id.item_classes_rv);
 
-        allClassesRV.setLayoutManager(new StaggeredGridLayoutManager(1,
+        allClassesRV.setLayoutManager(new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.HORIZONTAL));
 
-        userClassesRV.setLayoutManager(new StaggeredGridLayoutManager(1,
+        userClassesRV.setLayoutManager(new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.HORIZONTAL));
 
 
-        GroupAdapter<GroupieViewHolder> allClassesAdapter = new GroupAdapter<>();
+        final GroupAdapter allClassesAdapter = new GroupAdapter();
 
 
-        GroupAdapter<GroupieViewHolder> userClassesAdapter = new GroupAdapter<>();
+        final GroupAdapter userClassesAdapter = new GroupAdapter();
 
 
         model.getAllClassrooms().observe(lifecycleOwner, classrooms -> {

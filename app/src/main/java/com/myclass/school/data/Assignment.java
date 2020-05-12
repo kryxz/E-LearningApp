@@ -24,6 +24,14 @@ public class Assignment {
         return classroomName;
     }
 
+    public Assignment(String title, String content, Long date, Long dueDate, ClassroomFile file) {
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        this.dueDate = dueDate;
+        this.file = file;
+    }
+
     public void setClassroomName(String classroomName) {
         this.classroomName = classroomName;
     }

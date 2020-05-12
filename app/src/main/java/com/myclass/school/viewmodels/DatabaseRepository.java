@@ -79,5 +79,16 @@ public class DatabaseRepository {
 
     }
 
+    CollectionReference getNotificationsRef(String id) {
+        CollectionReference ref = getStudentsRef();
+
+        if (id.charAt(0) == 't')
+            ref = getTeachersRef();
+
+        return ref.document(id).collection("notifications");
+
+
+    }
+
 
 }

@@ -316,11 +316,11 @@ public class PMFragment extends Fragment {
 
             // set message content and date
             contentText.setText(message.getContent());
-            dateText.setText(CommonUtils.getTimeAsString(message.getDate()));
 
             // show $i minutes ago when message click
             final Handler handler = new Handler();
             view.setOnClickListener(v -> {
+                dateText.setText(CommonUtils.getTimeAsString(message.getDate()));
                 dateText.setVisibility(View.VISIBLE);
                 handler.postDelayed(() -> {
                     if (view.getContext() != null)

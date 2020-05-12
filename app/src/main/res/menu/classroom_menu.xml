@@ -4,7 +4,7 @@
     <item
         android:id="@+id/assignments"
         android:icon="@drawable/ic_assignment"
-        android:title="@string/login"
+        android:title="@string/assignments"
         app:showAsAction="always" />
 
 </menu>

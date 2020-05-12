@@ -22,6 +22,15 @@ public class ClassroomFile {
 
     }
 
+    public ClassroomFile(String id, String author, String name, String type, String description, Long date) {
+        this.id = id;
+        this.author = author;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.date = date;
+    }
+
 
     public Long getDate() {
         return date;

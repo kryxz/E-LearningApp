@@ -49,8 +49,12 @@ import com.myclass.school.data.ClassroomFile;
 import com.myclass.school.viewmodels.DatabaseRepository;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -65,21 +69,29 @@ public class CommonUtils {
     public static final String DEFAULT_PASSWORD = "elearn123";
     // an object that contains references to database locations
     private static final DatabaseRepository repo = new DatabaseRepository();
-    // random colors for list icons
-    private static int[] colors = new int[]{
-            R.color.colorAccent,
-            R.color.colorPrimary,
-            R.color.colorPrimaryDark,
-            R.color.red,
-            R.color.green,
-            R.color.pico_void,
-            R.color.maz_blue,
-            R.color.wild_green,
-            R.color.aqua_velvet,
-            R.color.steel_pink,
-            R.color.orange_light,
 
-    };
+    // random colors for list icons
+    private static List<Integer> colors = new ArrayList<>(
+            Arrays.asList(
+                    R.color.colorAccent,
+                    R.color.colorPrimary,
+                    R.color.colorPrimaryDark,
+                    R.color.red,
+                    R.color.green,
+                    R.color.pico_void,
+                    R.color.maz_blue,
+                    R.color.wild_green,
+                    R.color.aqua_velvet,
+                    R.color.steel_pink,
+                    R.color.orange_light
+            )
+    );
+
+    // shuffle colors
+    static {
+        Collections.shuffle(colors);
+    }
+
 
     // get file name from uri
     public static String queryName(ContentResolver resolver, Uri uri) {
@@ -136,7 +148,7 @@ public class CommonUtils {
 
     // returns a random color from the colors array
     public static int getRandomColor(Context c, int pos) {
-        return ContextCompat.getColor(c, colors[pos % colors.length]);
+        return ContextCompat.getColor(c, colors.get(pos % colors.size()));
     }
 
 
@@ -393,6 +405,9 @@ public class CommonUtils {
         // for submitting to an assignment
         public static Uri fileUri;
         public static String fileType;
+
+        public static boolean isMention;
+        public static String mentionWho;
 
     }
 

@@ -163,7 +163,6 @@ public class AdminViewModel extends ViewModel {
                 repo.getClassroomsRef().document(classroomItem).update("instructor", null);
         }
 
-
         // remove from database
         ref.document(id).delete();
         removeFromDb(id);
@@ -199,7 +198,6 @@ public class AdminViewModel extends ViewModel {
     // observe (listen to changes in) the teachers collection
     public LiveData<List<Teacher>> getTeachers() {
         // ArrayList to add all teachers from database
-        ArrayList<Teacher> allTeachers = new ArrayList<>();
 
         // listen to changes in teachers
         repo.getTeachersRef().addSnapshotListener((query, exception) -> {
@@ -207,8 +205,8 @@ public class AdminViewModel extends ViewModel {
             if (exception != null || query == null) return;
 
             // clear array if it holds any data
-            allTeachers.clear();
 
+            final ArrayList<Teacher> allTeachers = new ArrayList<>();
 
             // loop through all documents and add teachers to the array
             for (DocumentSnapshot snapshot : query.getDocuments()) {
@@ -227,13 +225,12 @@ public class AdminViewModel extends ViewModel {
     // observe the students collection
     public LiveData<List<Student>> getStudents() {
         // ArrayList to add all students from database
-        List<Student> allStudents = new ArrayList<>();
 
         repo.getStudentsRef().addSnapshotListener((query, e) -> {
             // check for exceptions, or if there is no data
             if (e != null || query == null) return;
 
-            allStudents.clear();
+            final List<Student> allStudents = new ArrayList<>();
 
             for (DocumentSnapshot snapshot : query.getDocuments()) {
                 // cast document to a Student object
@@ -255,12 +252,11 @@ public class AdminViewModel extends ViewModel {
 
     public LiveData<List<Classroom>> getAllClassrooms() {
 
-        List<Classroom> allClasses = new ArrayList<>();
 
         repo.getClassroomsRef().addSnapshotListener((query, e) -> {
             if (e != null || query == null) return;
 
-            allClasses.clear();
+            final List<Classroom> allClasses = new ArrayList<>();
 
             for (DocumentSnapshot snapshot : query.getDocuments()) {
                 // cast document to a Student object

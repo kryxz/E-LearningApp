@@ -13,6 +13,10 @@ public class Submission {
 
     }
 
+    public Submission(ClassroomFile f, String s) {
+        senderId = s;
+        file = f;
+    }
 
     public String getSenderId() {
         return senderId;

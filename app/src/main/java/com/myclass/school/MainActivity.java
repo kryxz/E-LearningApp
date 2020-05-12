@@ -19,6 +19,9 @@ import com.myclass.school.viewmodels.ChatViewModel;
 import com.myclass.school.viewmodels.ClassroomVM;
 import com.myclass.school.viewmodels.UserViewModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     public BottomNavigationView bottomNavigationView;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public UserViewModel userVM;
     public ChatViewModel chatVM;
     public ClassroomVM classroomVM;
+
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         // a navController manages navigation between pages.
-        NavController navController = Navigation.findNavController(this, R.id.nav_host);
+        navController = Navigation.findNavController(this, R.id.nav_host);
 
 
         // title in the app bar will automatically change when user goes to another screen
@@ -66,7 +71,17 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
 
 
-        View fab = findViewById(R.id.open_drawer_fab);
+        final View fab = findViewById(R.id.open_drawer_fab);
+
+        ArrayList<Integer> noFabScreens = new ArrayList<>(
+                Arrays.asList(R.id.PMFragment,
+                        R.id.viewUsersFragment,
+                        R.id.classroomFragment,
+                        R.id.createAssignmentsFragment
+                )
+        );
+
+
         // drawer only available in main screen
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment ||
@@ -75,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
-            if (destination.getId() == R.id.PMFragment)
+            if (noFabScreens.contains(destination.getId()))
                 fab.setVisibility(View.GONE);
             else
                 fab.setVisibility(View.VISIBLE);

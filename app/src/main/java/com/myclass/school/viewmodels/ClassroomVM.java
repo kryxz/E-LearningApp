@@ -17,6 +17,8 @@ import com.myclass.school.CommonUtils;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomPost;
+import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.Submission;
 
 import java.util.ArrayList;
@@ -44,8 +46,23 @@ public class ClassroomVM extends ViewModel {
     }
 
     // send message to classroom
-    public void postToClassroom(String classId, ClassroomPost post) {
+    public void postToClassroom(String classId, ClassroomPost post, Notification notification) {
+
+        post.setMention(CommonUtils.Temp.isMention);
+        CommonUtils.Temp.isMention = false; // reset to default
         repo.getClassPosts(classId).document(post.getId()).set(post);
+
+        // if mention, send notification
+        if (CommonUtils.Temp.mentionWho != null && post.isMention())
+            notifyMention(notification);
+
+
+    }
+
+
+    private void notifyMention(Notification notification) {
+        repo.getNotificationsRef(CommonUtils.Temp.mentionWho).add(notification);
+        CommonUtils.Temp.mentionWho = null;
 
     }
 
@@ -91,15 +108,33 @@ public class ClassroomVM extends ViewModel {
     }
 
     // add a new assignment to class
-    public void addAssignment(String id, Assignment assignment) {
+    public void addAssignment(String id, Assignment assignment, Notification notification) {
+
         assignment.setId(UUID.randomUUID().toString().substring(0, 10));
         assignment.setClassroomId(id);
 
         repo.getClassroomsRef().document(id).get().addOnSuccessListener(query -> {
-            assignment.setClassroomName(query.get("name", String.class));
+            if (query == null) return;
+            Classroom classroom = query.toObject(Classroom.class);
+            if (classroom == null) return;
+            assignment.setClassroomName(classroom.getName());
+
+            notification.setClassroomId(classroom.getId());
+            notifyStudents(classroom.getMembers(), notification);
+
             repo.getAssignmentsRef(id).document(assignment.getId()).set(assignment);
         });
 
+
+    }
+
+    private void notifyStudents(List<String> members, Notification notification) {
+
+        notification.setType(NotificationType.NEW_ASSIGNMENT);
+        notification.setDate(System.currentTimeMillis());
+
+        for (String id : members)
+            repo.getNotificationsRef(id).add(notification);
 
     }
 
@@ -107,6 +142,17 @@ public class ClassroomVM extends ViewModel {
     public void deleteAssignment(String classId, String assignmentId) {
         repo.getAssignmentsRef(classId).document(assignmentId).delete();
 
+    }
+
+
+    public void sendNotificationInstructor(Notification n, String classroomId) {
+
+        repo.getClassroomsRef().document(classroomId).get().addOnSuccessListener(query -> {
+            final String id = query.get("instructor", String.class);
+            if (id != null)
+                repo.getNotificationsRef(id).add(n);
+
+        });
     }
 
 
