@@ -71,8 +71,8 @@
             android:layout_marginVertical="128dp"
             android:src="@drawable/ic_add"
             android:tint="@color/iron_white"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorPrimaryDark" />
+            android:visibility="visible"
+            app:backgroundTint="@color/gang_gray" />
 
     </FrameLayout>
 

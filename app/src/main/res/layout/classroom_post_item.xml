@@ -15,7 +15,7 @@
         android:layout_margin="2dp"
         android:padding="2dp"
         app:cardCornerRadius="16dp"
-        app:strokeColor="?colorAccent"
+        app:strokeColor="@color/iron_white"
         app:strokeWidth="2dp">
 
 
@@ -38,7 +38,7 @@
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_person"
                     android:visibility="gone"
-                    app:civ_border_color="#FF000000"
+                    app:civ_border_color="@color/black_night"
                     app:civ_border_width="1dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:text="@string/name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/black_night"
                         android:textSize="18sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView

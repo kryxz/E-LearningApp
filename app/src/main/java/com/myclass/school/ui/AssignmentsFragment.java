@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,9 @@ public class AssignmentsFragment extends Fragment {
 
         final AppCompatTextView noAssignmentsText = view.findViewById(R.id.no_assignments_text);
 
+        final RecyclerView rv = view.findViewById(R.id.assignments_rv);
+        final GroupAdapter adapter = new GroupAdapter();
+
         // get classrooms from database
         listLiveData.observe(getViewLifecycleOwner(), classrooms -> {
             if (classrooms == null) return;
@@ -102,7 +106,8 @@ public class AssignmentsFragment extends Fragment {
                 noAssignmentsText.setVisibility(View.GONE);
 
             for (Classroom classroom : classrooms)
-                getAssignmentsThenAdd(classroom.getId(), isTeacher);
+                getAssignmentsThenAdd(classroom.getId(), isTeacher, rv, adapter);
+
 
             progressBar.setProgress(new Random().nextInt(100));
 
@@ -124,10 +129,10 @@ public class AssignmentsFragment extends Fragment {
 
 
     // adds assignments to recycler view
-    private void getAssignmentsThenAdd(String id, boolean isTeacher) {
+    private void getAssignmentsThenAdd(String id, boolean isTeacher,
+                                       RecyclerView rv, GroupAdapter adapter) {
 
-        final RecyclerView rv = view.findViewById(R.id.assignments_rv);
-        final GroupAdapter adapter = new GroupAdapter();
+
         final AppCompatTextView noAssignmentsText = view.findViewById(R.id.no_assignments_text);
 
         final LiveData<List<Assignment>> listLiveData = classroomVM.getAssignments(id);
@@ -135,8 +140,8 @@ public class AssignmentsFragment extends Fragment {
         // observe assignments changes and add them to the adapter!
         listLiveData.observe(getViewLifecycleOwner(), assignments -> {
             if (assignments == null) return;
-            adapter.clear();
 
+            Log.i("Hello", "Size: " + assignments.size());
             for (int i = 0; i < assignments.size(); i++)
                 adapter.add(new AssignmentItem(assignments.get(i), i + 1, isTeacher));
 

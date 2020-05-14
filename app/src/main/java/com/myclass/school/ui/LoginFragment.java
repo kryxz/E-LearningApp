@@ -12,7 +12,6 @@ import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.myclass.school.CommonUtils;
 import com.myclass.school.R;
 import com.myclass.school.viewmodels.DatabaseRepository;
@@ -52,8 +51,6 @@ public class LoginFragment extends Fragment {
         final TextInputEditText passwordEd = view.findViewById(R.id.login_password);
         final TextInputEditText emailEd = view.findViewById(R.id.login_email);
 
-        CommonUtils.passwordView(passwordEd);
-
         // handle user tap login button
         view.findViewById(R.id.login_btn).setOnClickListener(v -> {
 
@@ -67,7 +64,6 @@ public class LoginFragment extends Fragment {
 
             // check email pattern
             final boolean isValidEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
-
 
             if (!isValidEmail) {
                 CommonUtils.showMessage(view.getContext(), R.string.invalid_email);
@@ -86,7 +82,7 @@ public class LoginFragment extends Fragment {
                 final boolean isValid = task.isSuccessful();
                 if (isValid)
                     // login
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass).addOnCompleteListener(loginTask -> {
+                    repo.getAuth().signInWithEmailAndPassword(email, pass).addOnCompleteListener(loginTask -> {
                         if (loginTask.isSuccessful())
                             CommonUtils.restartApp(getActivity());
                         else // invalid email or password

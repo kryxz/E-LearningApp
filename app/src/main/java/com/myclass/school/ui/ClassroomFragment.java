@@ -112,6 +112,9 @@ public class ClassroomFragment extends Fragment {
             if (classroom == null || !classroom.getId().equals(classroomId)) return;
             CommonUtils.updateTitle(getActivity(), classroom.getName());
             this.classroom = classroom;
+            if (!classroom.getMembers().contains(model.getUserId())) {
+                Navigation.findNavController(view).navigateUp();
+            }
             mentionUser();
         });
         // get user data from database
@@ -332,7 +335,9 @@ public class ClassroomFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if (model.getUserId().charAt(0) == 't')
             inflater.inflate(R.menu.classroom_menu, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override

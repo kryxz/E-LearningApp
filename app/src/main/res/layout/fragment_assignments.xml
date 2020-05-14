@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/no_assignments"
+        android:text="@string/no_assignments_yet"
         android:textColor="@color/blue_night"
         android:textSize="24sp"
         android:textStyle="bold"

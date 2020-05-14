@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,26 +37,41 @@
             <View style="@style/view_divider_style" />
 
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_email"
+            <com.google.android.material.textfield.TextInputLayout
                 style="@style/text_input_style"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_email"
-                android:drawableTint="@color/colorPrimary"
-                android:textColor="@color/black"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@color/white">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_password"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableEnd="@drawable/ic_email"
+                    android:drawableTint="@color/colorPrimary"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 style="@style/text_input_style"
-                android:drawableTint="@color/colorPrimary"
-                android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_lock"
-                android:hint="@string/password"
-                android:textColor="@color/black"
-                android:drawableEnd="@drawable/ic_visibility_off"
-                android:inputType="textPassword" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/maz_blue">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/password" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <View style="@style/view_divider_style" />
 

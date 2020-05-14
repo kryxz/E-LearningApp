@@ -74,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
         final View fab = findViewById(R.id.open_drawer_fab);
 
         ArrayList<Integer> noFabScreens = new ArrayList<>(
-                Arrays.asList(R.id.PMFragment,
+                Arrays.asList(
+                        R.id.PMFragment,
+                        R.id.profileFragment,
                         R.id.viewUsersFragment,
                         R.id.classroomFragment,
-                        R.id.createAssignmentsFragment
-                )
+                        R.id.createAssignmentsFragment,
+                        R.id.settingsFragment)
         );
 
 
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
             else
                 fab.setVisibility(View.VISIBLE);
+            CommonUtils.hideKeypad(getWindow().getDecorView().getRootView());
 
         });
 
@@ -104,12 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 drawer.closeDrawer(GravityCompat.START);
             else
                 drawer.openDrawer(GravityCompat.START);
-        });
-
-        // logout using fab
-        findViewById(R.id.open_drawer_fab).setOnLongClickListener(v -> {
-            logout();
-            return false;
         });
 
 
@@ -125,21 +122,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this,
                 navController, appBarConfiguration);
 
-
-    }
-
-    // todo remove
-    private void logout() {
-
-        // code that is executed upon confirmation (when user says yes to logout)
-        Runnable logout = () -> {
-            userVM.logout();
-
-            CommonUtils.restartApp(this);
-        };
-
-        CommonUtils.showConfirmDialog(this, getString(R.string.logout),
-                getString(R.string.logout_confirm), logout);
 
     }
 

@@ -150,10 +150,10 @@ public class AdminStudentItem extends Item<GroupieViewHolder> {
         final RecyclerView allClassesRV = layout.findViewById(R.id.all_classes_rv);
         final RecyclerView userClassesRV = layout.findViewById(R.id.item_classes_rv);
 
-        allClassesRV.setLayoutManager(new StaggeredGridLayoutManager(1,
+        allClassesRV.setLayoutManager(new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.HORIZONTAL));
 
-        userClassesRV.setLayoutManager(new StaggeredGridLayoutManager(1,
+        userClassesRV.setLayoutManager(new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.HORIZONTAL));
 
 

@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".ui.ClassroomFragment">
 
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"

@@ -19,13 +19,14 @@
         android:textColor="@color/blue_night"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notifications_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

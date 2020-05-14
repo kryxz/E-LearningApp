@@ -186,6 +186,7 @@
     <string name="no_assignments">No Assignments in this class</string>
 
     <string name="no_file_assignment">No attached resources</string>
+    <string name="no_assignments_yet">No Assignments</string>
 
     <string name="delete_chat">Delete Chat</string>
     <string name="delete_chat_confirm">Are you sure you want to delete this chat?</string>
@@ -200,7 +201,24 @@
     <string name="new_file">A new file was added in %1$s</string>
     <string name="new_file_title">New File</string>
 
-    <string name="mention">%1$s%2$s </string>
+
+    <string name="about">About</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="change_password">Change Password</string>
+    <string name="clear_cache_done">Cache Cleared</string>
+    <string name="ok">OK</string>
+    <string name="password_changed">Password changed successfully</string>
+
+
+    <string name="about_message">Write about app here</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+
+    <string name="password_too_short">Password too short</string>
+
+
+    <string name="notification_delete">Delete Notification</string>
+    <string name="notification_delete_confirm">Are you sure you want to delete this notification?</string>
 
     <string-array name="chat_actions">
         <item>Cancel</item>

@@ -4,6 +4,7 @@ package com.myclass.school.viewmodels;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -80,14 +81,19 @@ public class DatabaseRepository {
     }
 
     CollectionReference getNotificationsRef(String id) {
+
+        return getUserRefById(id).collection("notifications");
+
+
+    }
+
+    DocumentReference getUserRefById(String id) {
         CollectionReference ref = getStudentsRef();
 
         if (id.charAt(0) == 't')
             ref = getTeachersRef();
 
-        return ref.document(id).collection("notifications");
-
-
+        return ref.document(id);
     }
 
 

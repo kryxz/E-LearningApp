@@ -13,10 +13,10 @@
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="1dp"
         android:layout_marginHorizontal="4dp"
         app:cardCornerRadius="4dp"
-        app:strokeColor="?colorAccent"
+        app:strokeColor="@color/iron_white"
         app:strokeWidth="2dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -68,8 +68,6 @@
 
     </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-
-    <View style="@style/view_divider_style" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

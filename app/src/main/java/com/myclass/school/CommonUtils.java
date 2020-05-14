@@ -1,6 +1,5 @@
 package com.myclass.school;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -20,8 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.format.DateUtils;
-import android.text.method.PasswordTransformationMethod;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
@@ -30,7 +27,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.TaskStackBuilder;
@@ -83,7 +79,13 @@ public class CommonUtils {
                     R.color.wild_green,
                     R.color.aqua_velvet,
                     R.color.steel_pink,
-                    R.color.orange_light
+                    R.color.orange_light,
+                    R.color.ba_red,
+                    R.color.magenta_purple,
+                    R.color.sea,
+                    R.color.radiant_yellow,
+                    R.color.pico_pink,
+                    R.color.asphalt
             )
     );
 
@@ -114,34 +116,18 @@ public class CommonUtils {
                                          Runnable confirmAction) {
 
 
-        // initialize dialog and its content
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
-        final View layout = View.inflate(context, R.layout.confirm_dialog, null);
-        dialog.setView(layout);
+        dialog.setPositiveButton(R.string.confirm, (d, which) -> {
 
-
-        // title and message
-        final AppCompatTextView titleEd = layout.findViewById(R.id.dialog_title);
-        final AppCompatTextView messageEd = layout.findViewById(R.id.dialog_message);
-        titleEd.setText(title);
-        messageEd.setText(message);
-
-        // buttons confirm and cancel
-        final AppCompatButton confirm = layout.findViewById(R.id.dialog_confirm_button);
-        final AppCompatButton cancel = layout.findViewById(R.id.dialog_cancel_button);
-
-
-        // dismiss dialog on cancel
-        cancel.setOnClickListener(v -> dialog.dismiss());
-
-        // run action on confirm
-        confirm.setOnClickListener(v -> {
             confirmAction.run();
-
-            dialog.dismiss();
+            d.dismiss();
         });
 
+        dialog.setNegativeButton(R.string.cancel, (d, which) -> d.dismiss());
+
+        dialog.setTitle(title);
+        dialog.setMessage(message);
 
         dialog.show();
     }
@@ -232,27 +218,6 @@ public class CommonUtils {
         ).toString();
     }
 
-    @SuppressLint("ClickableViewAccessibility") // disable an IDE warning
-    public static void passwordView(final AppCompatEditText editText) {
-        // hides and shows password when user clicks at the 'eye' icon.
-        editText.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[0].getBounds().width())) {
-                    if (editText.getTransformationMethod() == null) {
-                        // Hides password.
-                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visibility_off, 0);
-                        editText.setTransformationMethod(new PasswordTransformationMethod());
-                    } else {
-                        // Shows password
-                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock, 0, R.drawable.ic_visibility, 0);
-                        editText.setTransformationMethod(null);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
 
     // hide keyboard
     public static void hideKeypad(View v) {
@@ -261,6 +226,7 @@ public class CommonUtils {
                 Objects.requireNonNull(context.getSystemService(Activity.INPUT_METHOD_SERVICE)))
                 .hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
+
 
     // set a color for the drawable in a text view
     // used to show if a user is online or offline
@@ -294,8 +260,8 @@ public class CommonUtils {
 
     // set user online or offline
     // used in OnPause and OnResume in MainActivity
-    static void setOnline(boolean online) {
-        FirebaseUser user = repo.getUser();
+    public static void setOnline(boolean online) {
+        final FirebaseUser user = repo.getUser();
         if (user == null) return;
         final String email = user.getEmail();
         if (email == null || email.contains("admin")) return;
@@ -408,6 +374,17 @@ public class CommonUtils {
 
         public static boolean isMention;
         public static String mentionWho;
+
+    }
+
+    public static String getDayMonthYear(long date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DATE);
+
+        return year + "-" + (month + 1) + "-" + day + " ";
 
     }
 

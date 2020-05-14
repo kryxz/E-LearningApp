@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
@@ -293,7 +295,6 @@ public class UserViewModel extends ViewModel {
     public LiveData<List<Notification>> getNotifications() {
         final String id = getUserId();
 
-
         repo.getNotificationsRef(id).orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener((query, exception) -> {
                     if (exception != null || query == null) return;
@@ -310,5 +311,20 @@ public class UserViewModel extends ViewModel {
         return notifications;
     }
 
+    public void deleteNotification(String id) {
+        repo.getNotificationsRef(getUserId()).document(id).delete();
+    }
 
+    public void changePassword(String old, String newPassword, Runnable doneAction) {
+        String email = getAuthUser().getEmail();
+        if (email == null) return;
+        AuthCredential authCredential = EmailAuthProvider.getCredential(email, old);
+        repo.getUser().reauthenticate(authCredential).addOnSuccessListener(task ->
+                repo.getUser().updatePassword(newPassword).addOnSuccessListener(taskTwo -> {
+
+                    repo.getUserRefById(getUserId()).update("password", newPassword);
+                    doneAction.run();
+                }));
+
+    }
 }

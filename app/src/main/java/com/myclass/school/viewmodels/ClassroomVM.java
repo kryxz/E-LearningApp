@@ -18,7 +18,6 @@ import com.myclass.school.data.Assignment;
 import com.myclass.school.data.Classroom;
 import com.myclass.school.data.ClassroomPost;
 import com.myclass.school.data.Notification;
-import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.Submission;
 
 import java.util.ArrayList;
@@ -119,7 +118,6 @@ public class ClassroomVM extends ViewModel {
             if (classroom == null) return;
             assignment.setClassroomName(classroom.getName());
 
-            notification.setClassroomId(classroom.getId());
             notifyStudents(classroom.getMembers(), notification);
 
             repo.getAssignmentsRef(id).document(assignment.getId()).set(assignment);
@@ -128,13 +126,20 @@ public class ClassroomVM extends ViewModel {
 
     }
 
+    public String getUserId() {
+        String email = repo.getUser().getEmail();
+        if (email == null) return null;
+
+        return email.substring(0, email.indexOf('@'));
+
+    }
+
     private void notifyStudents(List<String> members, Notification notification) {
 
-        notification.setType(NotificationType.NEW_ASSIGNMENT);
-        notification.setDate(System.currentTimeMillis());
-
+        final String teacherId = getUserId();
         for (String id : members)
-            repo.getNotificationsRef(id).add(notification);
+            if (!id.equals(teacherId))
+                repo.getNotificationsRef(id).add(notification);
 
     }
 

@@ -3,6 +3,8 @@ package com.myclass.school.ui;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.myclass.school.R;
 import com.myclass.school.data.Assignment;
 import com.myclass.school.data.ClassroomFile;
 import com.myclass.school.data.Notification;
+import com.myclass.school.data.NotificationType;
 import com.myclass.school.data.Submission;
 import com.myclass.school.viewmodels.ClassroomVM;
 import com.myclass.school.viewmodels.UserViewModel;
@@ -231,14 +234,38 @@ public class CreateAssignmentsFragment extends Fragment {
 
         fileText.setOnClickListener(v -> chooseFileDialog(fileText));
 
+        durationText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.length() == 0) return;
+                final double durationInMS = Double.parseDouble(s.toString()) * 3600000;
+                final long dueDate = CommonUtils.Temp.assignmentDueDate + ((long) durationInMS);
+                dueDateText.setText(getString(R.string.due_date_arg,
+                        CommonUtils.getDayMonthYear(dueDate), CommonUtils.getDateFormatted(dueDate)));
+
+            }
+        });
         confirm.setOnClickListener(v -> {
             if (titleText.getText() == null || contentText.getText() == null) return;
+            final String title = titleText.getText().toString().trim();
+            final String content = contentText.getText().toString().trim();
+
+            if (title.length() == 0) return;
+            if (content.length() == 0) return;
 
             if (dateText.getText() == null || dueDateText.getText() == null) return;
+            if (dateText.getText().length() == 0 || dueDateText.getText().length() == 0) return;
 
-
-            final String title = contentText.getText().toString().trim();
-            final String content = titleText.getText().toString().trim();
 
             final long date = CommonUtils.Temp.assignmentDate;
             long dueDate = CommonUtils.Temp.assignmentDueDate;
@@ -264,16 +291,25 @@ public class CreateAssignmentsFragment extends Fragment {
                 dueDate += ((long) durationInMS);
             }
 
+            isSameDay = (dueDate - date) < 450000;
 
-            if (title.isEmpty() || content.isEmpty()) return;
-
+            if (isSameDay) {
+                durationText.setError(getString(R.string.same_day_choose_duration));
+                return;
+            }
             final Assignment assignment = new Assignment(
                     title, content, date, dueDate,
                     CommonUtils.Temp.tempFile);
-            Notification notification = new Notification();
 
-            notification.setMessage(getString(R.string.new_assignment_arg, assignment.getClassroomName()));
-            notification.setTitle(getString(R.string.new_assignment));
+            Notification notification = new Notification(
+                    getString(R.string.new_assignment),
+                    getString(R.string.new_assignment_arg, assignment.getClassroomName()),
+                    System.currentTimeMillis(), assignment.getClassroomId(),
+                    NotificationType.NEW_ASSIGNMENT
+
+            );
+
+
             classroomVM.addAssignment(classroomId, assignment, notification);
 
             CommonUtils.showMessage(view.getContext(), R.string.assignment_sent);

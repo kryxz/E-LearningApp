@@ -54,7 +54,7 @@
                 android:layout_marginVertical="128dp"
                 android:src="@drawable/ic_add"
                 android:tint="@color/iron_white"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="@color/gang_gray" />
         </FrameLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -3,44 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.AdminFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/add_teacher_btn"
-        style="@style/admin_button_style"
-        android:text="@string/add_teacher" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_teacher_btn"
+                style="@style/admin_button_style"
+                android:text="@string/add_teacher" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/view_teachers_btn"
-        style="@style/admin_button_style"
-        android:text="@string/view_teachers" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/view_teachers_btn"
+                style="@style/admin_button_style"
+                android:text="@string/view_teachers" />
 
 
-    <View style="@style/view_divider_style" />
+            <View style="@style/view_divider_style" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/add_student_btn"
-        style="@style/admin_button_style"
-        android:text="@string/add_student" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_student_btn"
+                style="@style/admin_button_style"
+                android:text="@string/add_student" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/view_students_btn"
-        style="@style/admin_button_style"
-        android:text="@string/view_students" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/view_students_btn"
+                style="@style/admin_button_style"
+                android:text="@string/view_students" />
 
-    <View style="@style/view_divider_style" />
+            <View style="@style/view_divider_style" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/add_classroom_btn"
-        style="@style/admin_button_style"
-        android:text="@string/add_classroom" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_classroom_btn"
+                style="@style/admin_button_style"
+                android:text="@string/add_classroom" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/view_classrooms_btn"
-        style="@style/admin_button_style"
-        android:text="@string/view_classes" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/view_classrooms_btn"
+                style="@style/admin_button_style"
+                android:text="@string/view_classes" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

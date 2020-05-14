@@ -1,11 +1,13 @@
 package com.myclass.school.data;
 
 
+import java.util.UUID;
+
 public class Notification {
     private String title;
     private String message;
     private long date;
-
+    private String id;
     private String classroomId;
     private NotificationType type;
 
@@ -19,6 +21,16 @@ public class Notification {
         this.date = date;
         this.classroomId = classroomId;
         this.type = type;
+        id = UUID.randomUUID().toString().substring(0, 10);
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

@@ -24,9 +24,9 @@
         android:id="@+id/details_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="4dp"
         app:strokeColor="@color/iron_white"
-        app:strokeWidth="4dp">
+        app:strokeWidth="2dp">
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -111,6 +111,7 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:background="@drawable/border_background"
                 android:orientation="horizontal">
 
@@ -118,7 +119,6 @@
                     android:id="@+id/assignment_submissions_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:padding="8dp"
                     android:text="@string/submissions_count"

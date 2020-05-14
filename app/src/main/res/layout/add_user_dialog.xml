@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -21,20 +22,46 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/add_user_name"
+        <com.google.android.material.textfield.TextInputLayout
             style="@style/text_input_style"
-            android:drawableEnd="@drawable/ic_text_fields"
-            android:drawableTint="@color/colorPrimary"
-            android:hint="@string/name" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline"
+            app:boxCollapsedPaddingTop="4dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_text_fields"
+                android:drawableTint="@color/colorPrimary"
+                android:padding="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/add_subject_name"
+        <com.google.android.material.textfield.TextInputLayout
             style="@style/text_input_style"
-            android:drawableEnd="@drawable/ic_class"
-            android:drawableTint="@color/colorPrimary"
-            android:hint="@string/subject_name" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline"
+            app:boxCollapsedPaddingTop="4dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_subject_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_class"
+                android:drawableTint="@color/colorPrimary"
+                android:padding="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

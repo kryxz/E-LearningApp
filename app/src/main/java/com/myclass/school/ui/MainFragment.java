@@ -43,6 +43,7 @@ public class MainFragment extends Fragment {
     }
 
     private View view;
+    private UserViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +66,7 @@ public class MainFragment extends Fragment {
         if (checkUserAuth() == null) return;
         if (getActivity() == null) return;
 
-        UserViewModel model = ((MainActivity) getActivity()).userVM;
+        model = ((MainActivity) getActivity()).userVM;
 
         showBottomNavigation();
 
@@ -85,13 +86,12 @@ public class MainFragment extends Fragment {
 
         final GroupAdapter adapter = new GroupAdapter();
 
+        noNotificationsText.setVisibility(View.VISIBLE);
+
 
         model.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
-            if (notifications == null) return;
-            if (notifications.isEmpty()) {
-                noNotificationsText.setVisibility(View.VISIBLE);
-                return;
-            }
+            if (notifications == null || notifications.isEmpty()) return;
+
             noNotificationsText.setVisibility(View.GONE);
 
             adapter.clear();
@@ -184,6 +184,14 @@ public class MainFragment extends Fragment {
     }
 
 
+    private void deleteNotification(String id) {
+        Runnable delete = () -> model.deleteNotification(id);
+
+        CommonUtils.showConfirmDialog(getContext(), getString(R.string.notification_delete),
+                getString(R.string.notification_delete_confirm), delete);
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // open drawer on click
@@ -193,7 +201,7 @@ public class MainFragment extends Fragment {
     }
 
 
-    private static class NotificationItem extends Item<GroupieViewHolder> {
+    private class NotificationItem extends Item<GroupieViewHolder> {
         private final Notification notification;
 
 
@@ -234,6 +242,10 @@ public class MainFragment extends Fragment {
                 NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mainFragment, false).build();
                 Navigation.findNavController(view).navigate(MainFragmentDirections.goToClassroom(notification.getClassroomId()), navOptions);
 
+            });
+            view.setOnLongClickListener(v -> {
+                deleteNotification(notification.getId());
+                return false;
             });
         }
     }

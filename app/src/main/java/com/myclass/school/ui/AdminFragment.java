@@ -118,12 +118,12 @@ public class AdminFragment extends Fragment {
 
                     // view teachers
                     case R.id.view_teachers_btn: {
-                        viewUsersNow("t");
+                        viewAllData("t");
                         break;
                     }
                     // view students
                     case R.id.view_students_btn: {
-                        viewUsersNow("s");
+                        viewAllData("s");
                         break;
 
                     }
@@ -137,7 +137,7 @@ public class AdminFragment extends Fragment {
 
                     // view classes
                     case R.id.view_classrooms_btn: {
-                        viewUsersNow("c");
+                        viewAllData("c");
                         break;
 
                     }
@@ -211,7 +211,7 @@ public class AdminFragment extends Fragment {
 
 
     // go to View Users page
-    private void viewUsersNow(String argument) {
+    private void viewAllData(String argument) {
         Navigation.findNavController(view)
                 .navigate(AdminFragmentDirections.viewUsersNow(argument));
     }
@@ -235,7 +235,7 @@ public class AdminFragment extends Fragment {
         final TextInputEditText userNameEd = layout.findViewById(R.id.add_user_name);
         final TextInputEditText subjectEd = layout.findViewById(R.id.add_subject_name);
 
-
+        userNameEd.setHint(getString(R.string.name));
         // add teacher
         if (user instanceof Teacher) {
             subjectEd.setHint(getString(R.string.subject_name));
@@ -306,7 +306,7 @@ public class AdminFragment extends Fragment {
     private void addClassroom(Classroom c) {
         model.createClassroom(c).addOnSuccessListener(task -> {
             CommonUtils.showMessage(getContext(), R.string.classroom_created);
-            viewUsersNow("c");
+            viewAllData("c");
 
         });
 
@@ -320,7 +320,7 @@ public class AdminFragment extends Fragment {
     private void addTeacher(Teacher t) {
         model.addUser(t).addOnSuccessListener(task -> {
             CommonUtils.showMessage(getContext(), R.string.teacher_added);
-            model.reLogIn(() -> viewUsersNow("t"));
+            model.reLogIn(() -> viewAllData("t"));
 
         });
 
@@ -334,7 +334,7 @@ public class AdminFragment extends Fragment {
     private void addStudent(Student s) {
         model.addUser(s).addOnSuccessListener(task -> {
             CommonUtils.showMessage(getContext(), R.string.student_added);
-            model.reLogIn(() -> viewUsersNow("s"));
+            model.reLogIn(() -> viewAllData("s"));
 
         });
 
