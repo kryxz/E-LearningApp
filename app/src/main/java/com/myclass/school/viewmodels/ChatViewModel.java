@@ -25,16 +25,10 @@ public class ChatViewModel extends ViewModel {
     // updates or adds chat data to user
     private void addChatToUser(String id, Chat chat, String name, String otherId) {
 
-        // decide if teacher
-        final boolean isTeacher = id.charAt(0) == 't';
-
 
         // reference in database
-        CollectionReference ref = repo.getStudentsRef().document(id).collection("chats");
+        CollectionReference ref = repo.getUserRefById(id).collection("chats");
 
-        // change reference if user is a teacher!
-        if (isTeacher)
-            ref = repo.getTeachersRef().document(id).collection("chats");
 
         // set name and the other user id
         chat.setUserId(otherId);
@@ -60,13 +54,9 @@ public class ChatViewModel extends ViewModel {
         final String id = getUserId();
         if (id == null) return;
 
-        // decides if user is a teacher!
-        final boolean isTeacher = id.charAt(0) == 't';
-        CollectionReference ref = repo.getStudentsRef().document(id).collection("chats");
 
-        // change reference if user is a teacher!
-        if (isTeacher)
-            ref = repo.getTeachersRef().document(id).collection("chats");
+        CollectionReference ref = repo.getUserRefById(id).collection("chats");
+
 
         // delete chat
         ref.document(chatId).delete();
@@ -97,11 +87,8 @@ public class ChatViewModel extends ViewModel {
         final String id = getUserId();
         if (id == null) return null;
 
-        final boolean isTeacher = id.charAt(0) == 't';
 
-        CollectionReference ref = repo.getStudentsRef().document(id).collection("chats");
-        if (isTeacher)
-            ref = repo.getTeachersRef().document(id).collection("chats");
+        CollectionReference ref = repo.getUserRefById(id).collection("chats");
 
 
         // array to contains all chats

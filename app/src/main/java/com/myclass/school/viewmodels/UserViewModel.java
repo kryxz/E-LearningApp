@@ -12,7 +12,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -79,10 +78,8 @@ public class UserViewModel extends ViewModel {
 
         final boolean isTeacher = id.charAt(0) == 't';
 
-        DocumentReference ref = repo.getStudentsRef().document(id);
+        DocumentReference ref = repo.getUserRefById(id);
 
-        if (isTeacher)
-            ref = repo.getTeachersRef().document(id);
 
         ref.addSnapshotListener((query, exception) -> {
             if (exception != null || query == null) return;
@@ -106,10 +103,7 @@ public class UserViewModel extends ViewModel {
 
         final boolean isTeacher = id.charAt(0) == 't';
 
-        DocumentReference ref = repo.getStudentsRef().document(id);
-
-        if (isTeacher)
-            ref = repo.getTeachersRef().document(id);
+        DocumentReference ref = repo.getUserRefById(id);
 
         ref.addSnapshotListener((query, exception) -> {
             if (exception != null || query == null) return;
@@ -159,11 +153,8 @@ public class UserViewModel extends ViewModel {
     public void updateUser(User user) {
         final String id = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
-        if (user instanceof Teacher)
-            repo.getTeachersRef().document(id).set(user);
-        else
-            repo.getStudentsRef().document(id).set(user);
 
+        repo.getUserRefById(id).set(user);
     }
 
 
@@ -175,10 +166,7 @@ public class UserViewModel extends ViewModel {
     private void updatePicUrl(String picUrl) {
         String id = getUserId();
 
-        if (id.charAt(0) == 't')
-            repo.getTeachersRef().document(id).update("photoUrl", picUrl);
-        else
-            repo.getStudentsRef().document(id).update("photoUrl", picUrl);
+        repo.getUserRefById(id).update("photoUrl", picUrl);
 
 
     }
@@ -238,12 +226,8 @@ public class UserViewModel extends ViewModel {
 
         final MutableLiveData<String> name = new MutableLiveData<>();
 
-        CollectionReference ref = repo.getTeachersRef();
 
-        if (id.charAt(0) == 's')
-            ref = repo.getStudentsRef();
-
-        ref.document(id).get().addOnSuccessListener(query ->
+        repo.getUserRefById(id).get().addOnSuccessListener(query ->
                 name.setValue(query.get("name", String.class)));
         return name;
     }
@@ -252,12 +236,7 @@ public class UserViewModel extends ViewModel {
 
         final MutableLiveData<String> photoUrl = new MutableLiveData<>();
 
-        CollectionReference ref = repo.getTeachersRef();
-
-        if (id.charAt(0) == 's')
-            ref = repo.getStudentsRef();
-
-        ref.document(id).get().addOnSuccessListener(query ->
+        repo.getUserRefById(id).get().addOnSuccessListener(query ->
                 photoUrl.setValue(query.get("photoUrl", String.class)));
         return photoUrl;
     }

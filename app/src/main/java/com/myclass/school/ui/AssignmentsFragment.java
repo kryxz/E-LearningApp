@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,7 +140,6 @@ public class AssignmentsFragment extends Fragment {
         listLiveData.observe(getViewLifecycleOwner(), assignments -> {
             if (assignments == null) return;
 
-            Log.i("Hello", "Size: " + assignments.size());
             for (int i = 0; i < assignments.size(); i++)
                 adapter.add(new AssignmentItem(assignments.get(i), i + 1, isTeacher));
 

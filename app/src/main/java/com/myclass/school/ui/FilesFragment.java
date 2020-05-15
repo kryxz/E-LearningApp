@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,6 +57,7 @@ public class FilesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_files, container, false);
     }
 
@@ -73,8 +77,6 @@ public class FilesFragment extends Fragment {
 
         // initialises view models
         model = ((MainActivity) getActivity()).userVM;
-        classroomId = ClassroomFragmentArgs.fromBundle(getArguments()).getId();
-
 
         // current classroom id
         classroomId = ClassroomFragmentArgs.fromBundle(getArguments()).getId();
@@ -232,6 +234,26 @@ public class FilesFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.members_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.showMembers)
+            showClassroomMembers();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showClassroomMembers() {
+        Navigation.findNavController(view).navigate(
+                FilesFragmentDirections.showClassroomMembers(classroomId)
+        );
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

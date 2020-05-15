@@ -80,6 +80,7 @@
     <string name="members_arg">%1$d Members</string>
     <string name="one_member">1 Member</string>
     <string name="ago_sample">3m ago</string>
+    <string name="members">Members</string>
 
     <string name="file_download">Downloading File</string>
 
@@ -197,6 +198,7 @@
 
     <string name="new_mention">Someone mentioned you in %1$s</string>
     <string name="new_mention_title">New Mention</string>
+    <string name="view_profile_hint">Tap to view a member\'s profile</string>
 
     <string name="new_file">A new file was added in %1$s</string>
     <string name="new_file_title">New File</string>
@@ -236,4 +238,28 @@
         <item>Saturday</item>
     </string-array>
 
+
+    <!-- To add a new question and answer
+         simply add a new item in each array -->
+
+    <string-array name="questions">
+        <item>How do I sign out?</item>
+        <item>How do change my password?</item>
+        <item>I don\'t know my current password, what do I do?</item>
+        <item>How can I see other class members?</item>
+        <item>How can I mention someone in the classroom chat?</item>
+        <item>Who can see my profile?</item>
+
+    </string-array>
+
+
+    <string-array name="answers">
+        <item>You can sign out from the app settings</item>
+        <item>To change your password, open settings, tap Change Password,\n type in your old password and your new password</item>
+        <item>You should contact your organization administrator</item>
+        <item>In your classes page, long tap a class item to view all members of that class</item>
+        <item>In the classroom chat, start by typing the first letter of their name, a menu will appear and you can select who you want to mention.</item>
+        <item>Other class members and teachers can see your profile.</item>
+
+    </string-array>
 </resources>

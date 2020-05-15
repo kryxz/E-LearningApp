@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         final View fab = findViewById(R.id.open_drawer_fab);
 
-        ArrayList<Integer> noFabScreens = new ArrayList<>(
+        final ArrayList<Integer> noFabScreens = new ArrayList<>(
                 Arrays.asList(
                         R.id.PMFragment,
                         R.id.profileFragment,
@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         // drawer only available in main screen
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment ||
-                    destination.getId() == R.id.adminFragment)
+                    destination.getId() == R.id.adminFragment ||
+                    destination.getId() == R.id.viewUsersFragment)
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             else
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
             else
                 fab.setVisibility(View.VISIBLE);
+            // hide keypad when user goes to another screen
             CommonUtils.hideKeypad(getWindow().getDecorView().getRootView());
 
         });
@@ -111,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // fragments that has no back button
-        int[] noBackButtonSet = new int[]{R.id.mainFragment, R.id.loginFragment,
+        final int[] noBackButtonSet = new int[]{R.id.mainFragment, R.id.loginFragment,
                 R.id.adminFragment, R.id.chatFragment,
                 R.id.assignmentsFragment, R.id.classesFragment};
 
-        AppBarConfiguration appBarConfiguration
+        final AppBarConfiguration appBarConfiguration
                 = new AppBarConfiguration.Builder(noBackButtonSet).build();
 
         // hides the back button if the user is either in main or login screen.
@@ -145,8 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        return Navigation.findNavController(this, R.id.nav_host).navigateUp()
-                || super.onSupportNavigateUp();
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
 

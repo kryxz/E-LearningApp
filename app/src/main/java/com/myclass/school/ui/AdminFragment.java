@@ -194,7 +194,7 @@ public class AdminFragment extends Fragment {
             final String id = generateId(name, 'c');
 
             // create classroom object
-            Classroom classroom = new Classroom();
+            final Classroom classroom = new Classroom();
             classroom.setName(name);
             classroom.setDescription(description);
             classroom.setId(id);

@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.myclass.school.CommonUtils;
@@ -119,16 +120,12 @@ public class AdminViewModel extends ViewModel {
 
 
     public void deleteClassroom(Classroom classroom) {
-        ArrayList<String> members = classroom.getMembers();
+        final ArrayList<String> members = classroom.getMembers();
 
-        String id = classroom.getId();
+
+        final String id = classroom.getId();
         for (String member : members)
-            if (member.charAt(0) == 't')
-                repo.getTeachersRef().document(member).update("classes",
-                        FieldValue.arrayRemove(id));
-            else
-                repo.getStudentsRef().document(member).update("classes",
-                        FieldValue.arrayRemove(id));
+            repo.getUserRefById(member).update("classes", FieldValue.arrayRemove(id));
 
 
         repo.getClassroomsRef().document(id).delete();
@@ -278,14 +275,12 @@ public class AdminViewModel extends ViewModel {
 
     public LiveData<String> getNameById(String id) {
 
-        MutableLiveData<String> name = new MutableLiveData<>();
+        final MutableLiveData<String> name = new MutableLiveData<>();
 
-        CollectionReference ref = repo.getTeachersRef();
+        final DocumentReference ref = repo.getUserRefById(id);
 
-        if (id.charAt(0) == 's')
-            ref = repo.getStudentsRef();
 
-        ref.document(id).get().addOnSuccessListener(query ->
+        ref.get().addOnSuccessListener(query ->
                 name.setValue(query.get("name", String.class)));
         return name;
     }

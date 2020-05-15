@@ -1,6 +1,7 @@
 package com.myclass.school.viewmodels;
 
 import android.os.Handler;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -199,5 +200,30 @@ public class ClassroomVM extends ViewModel {
         CommonUtils.Temp.fileUri = null;
         CommonUtils.Temp.fileType = null;
 
+    }
+
+
+    public MutableLiveData<List<Pair<String, String>>> getMembers(String id) {
+
+        final MutableLiveData<List<Pair<String, String>>> members = new MutableLiveData<>();
+        final ArrayList<Pair<String, String>> allMembers = new ArrayList<>();
+
+        repo.getClassroomsRef().document(id).get().addOnSuccessListener(query -> {
+            if (query == null) return;
+            final Classroom classroom = query.toObject(Classroom.class);
+            if (classroom == null) return;
+            final ArrayList<String> ids = classroom.getMembers();
+
+            for (String memberId : ids) {
+                repo.getUserRefById(memberId).get().addOnSuccessListener(q -> {
+                            final String name = q.get("name", String.class);
+                            allMembers.add(new Pair<>(name, memberId));
+                            members.setValue(allMembers);
+                        }
+                );
+            }
+
+        });
+        return members;
     }
 }

@@ -63,6 +63,10 @@
         <action
             android:id="@+id/goToClassroom"
             app:destination="@id/classroomFragment" />
+        <action
+            android:id="@+id/goToThisProfile"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/classesFragment" />
     </fragment>
     <fragment
         android:id="@+id/assignmentsFragment"
@@ -117,6 +121,10 @@
         <argument
             android:name="id"
             app:argType="string" />
+        <action
+            android:id="@+id/showClassroomMembers"
+            app:destination="@id/membersFragment"
+            app:popUpTo="@id/filesFragment" />
     </fragment>
     <fragment
         android:id="@+id/PMFragment"
@@ -150,4 +158,17 @@
         android:name="com.myclass.school.ui.HelpFragment"
         android:label="@string/help"
         tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/membersFragment"
+        android:name="com.myclass.school.ui.MembersFragment"
+        android:label="@string/members"
+        tools:layout="@layout/fragment_members">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <action
+            android:id="@+id/goToThisProfile"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/filesFragment" />
+    </fragment>
 </navigation>
