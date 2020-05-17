@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // right to left layout!
-        // getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        setLanguage();
         setContentView(R.layout.activity_main);
 
         setupNavigation();
@@ -48,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
         classroomVM = new ViewModelProvider(this).get(ClassroomVM.class);
     }
 
+    private void setLanguage() {
+        CommonUtils.setLocale(CommonUtils.getLanguage(this), this);
+
+    }
 
     // sets up navigation between screens
     private void setupNavigation() {

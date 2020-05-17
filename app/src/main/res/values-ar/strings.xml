@@ -1,0 +1,266 @@
+<resources>
+    <string name="app_name">E-Learning App</string>
+
+
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="home">الرئيسية</string>
+    <string name="admin">الإدارة</string>
+    <string name="help">مساعدة</string>
+
+    <string name="confirm">تأكيد</string>
+    <string name="upload">رفع</string>
+    <string name="choose_file">اختر الملف</string>
+    <string name="cancel">إلغاء</string>
+    <string name="edit">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="copy">نسخ</string>
+
+    <string name="name">اسم المستخدم</string>
+    <string name="teacher_name">اسم المدرس</string>
+    <string name="file_name">اسم الملف</string>
+
+    <string name="subject_name">الموضوع الدراسي</string>
+    <string name="cannot_be_empty">لا يمكن أن يكون فارغا</string>
+    <string name="login_info">معلومات الدخول</string>
+    <string name="copied">تم النسخ</string>
+    <string name="grade">الصف/الشعبة</string>
+    <string name="done">تم</string>
+
+    <string name="teacher">مدرس</string>
+    <string name="student">طالب</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="cannot_read_file">تعذر العثور على الملف</string>
+
+    <string name="classes">الصفوف الدراسية</string>
+    <string name="assignments">الواجبات</string>
+    <string name="chat">الدردشات</string>
+    <string name="settings">الضبط</string>
+    <string name="submit">تقديم</string>
+    <string name="choose_file_error">اختر ملفا</string>
+
+
+    <string name="add_teacher">إضافة معلم</string>
+    <string name="teacher_added">تم إضافة معلم</string>
+    <string name="student_name">اسم الطالب</string>
+
+    <string name="upload_file">رفع ملف</string>
+
+    <string name="add_student">إضافة طالب</string>
+    <string name="student_added">تم إضافة طالب</string>
+
+
+    <string name="add_classroom">إنشاء صف</string>
+    <string name="classroom_added">تم إنشاء صف</string>
+
+    <string name="view_teachers">عرض المدرسين</string>
+    <string name="view_students">عرض الطلاب</string>
+    <string name="view_classes">عرض الصفوف</string>
+    <string name="send">إرسال</string>
+    <string name="send_message">كتابة رسالة</string>
+
+    <string name="manage_classes">إدارة الصفوف</string>
+    <string name="create_classroom">إنشاء صف</string>
+    <string name="classroom_created">تم إنشاء غرفة صفية</string>
+    <string name="classroom_name">اسم الصف/الشعبة</string>
+    <string name="classroom">الصف</string>
+    <string name="description">وصف</string>
+    <string name="description_arg">الوصف: %1$s</string>
+    <string name="classroom_name_arg">اسم الصف: %1$s</string>
+    <string name="members_count">عدد الأعضاء: %1$d</string>
+
+    <string name="files">الملفات</string>
+    <string name="file_selected">تم اختيار ملف</string>
+
+    <string name="submissions_count">عدد التسليمات: %1$d</string>
+
+    <string name="members_arg">%1$d عضو</string>
+    <string name="one_member">عضو واحد</string>
+    <string name="ago_sample">منذ 3 دقائق</string>
+    <string name="members">الأعضاء</string>
+
+    <string name="file_download">سيتم تنزيل الملف</string>
+
+    <string name="instructor">المدرس: %1$s</string>
+    <string name="no_instructor">لم يتم تعيين مدرس</string>
+
+    <string name="user_classes">الصفوف الموجود فيها المستخدم</string>
+    <string name="all_classes">كل الصفوف</string>
+
+    <string name="number_sample">#1</string>
+    <string name="number_arg">#%1$d</string>
+    <string name="new_assignment">واجب جديد</string>
+    <string name="comment_hint">تعليق(اختياري)</string>
+    <string name="new_assignment_arg">هناك واجب جديد في %1$s</string>
+
+
+    <string name="invalid_user">تسجيل الدخول غير صحيح</string>
+    <string name="invalid_email">البريد الالكتروني خاطئ</string>
+    <string name="view">عرض</string>
+    <string name="submissions">التسليمات</string>
+    <string name="submissions_arg">%1$d تسليمات</string>
+
+    <string name="assignment_submission">تسليم الواجب</string>
+    <string name="assignment_name_submission">%1$s تسليم</string>
+
+    <string name="submissions_hint">%1$s\nالمس للتنزيل</string>
+    <string name="tap_to_download_arg">%1$s (المس للتنزيل)</string>
+
+    <string name="download_submission">تنزيل التسليم</string>
+
+    <string name="delete_assignment">حذف الواجب</string>
+    <string name="delete_assignment_confirm">سيتم حذف الواجب مع جميع التسليمات، متابعة؟</string>
+
+    <string name="text_sample">هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربي</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="logout_confirm">هل أنت متأكد من رغبتك في تسجيل الخروج؟</string>
+
+    <string name="delete_user">حذف المستخدم</string>
+    <string name="view_users">عرض المستخدمين</string>
+    <string name="delete_user_confirm">هل أنت متأكد من رغبتك في حذف %1$s؟</string>
+    <string name="delete_classroom">حذف الصف</string>
+
+    <string name="name_details">الاسم: %1$s</string>
+    <string name="subject_details">المادة: %1$s</string>
+    <string name="grade_details">الصف: %1$s</string>
+    <string name="email_details">البريد الإلكتروني: %1$s</string>
+    <string name="password_details">كلمة المرور: %1$s</string>
+    <string name="teachers_count">عدد المدرسين: %1$d</string>
+    <string name="students_count">عدد الطلاب: %1$d</string>
+    <string name="classes_count">عدد الصفوف: %1$d</string>
+
+    <string name="user_profile_arg">الملف الشخصي الخاص بـ %1$s\'s</string>
+
+    <string name="empty_teachers">لا يوجد أي مدرس</string>
+    <string name="empty_students">لا يوجد أي طالب</string>
+    <string name="empty_classes">لا يوجد أي صف</string>
+
+    <string name="login_details">البريد الإلكتروني: %1$s\n كلمة المرور: %2$s</string>
+
+
+    <string name="uploading_pic">يجري رفع الصورة</string>
+    <string name="uploading_file">يجري رفع الملف</string>
+    <string name="cannot_upload">تعذر الرفع</string>
+    <string name="file_sent">تم الرفع</string>
+    <string name="classroom_files">ملفات الصف</string>
+
+
+    <string name="cannot_submit_again">لا يمكنك التسليم مرة أخرى</string>
+
+    <string name="change_img">تغيير الصورة</string>
+    <string name="change_img_confirm">هل أنت متأكد من رغبتك في تغيير الصورة الشخصية؟</string>
+    <string name="single_letter_sample">أ</string>
+
+    <string name="title">العنوان</string>
+    <string name="open_date">تاريخ بدء التسليم</string>
+    <string name="due_date">تاريخ انتهاء التسليم</string>
+
+    <string name="same_day_choose_duration">لا يمكن أن يكون موعد بدء التسليم مثل موعد انتهاء التسليم</string>
+    <string name="assignment_time">الوقت المسموح (ساعات)</string>
+
+    <string name="assignment_file">ملفات إضافية (اختياري)</string>
+    <string name="assignment_sent">تم إنشاء الواجب</string>
+
+    <string name="title_arg">العنوان: %1$s</string>
+    <string name="content_arg">المحتوى: %1$s</string>
+
+    <string name="title_arg_with_class">الصف: %1$s\nعنوان الواجب: %2$s</string>
+
+    <string name="open_date_arg">يبدأ التسليم: %1$s</string>
+    <string name="due_date_arg">ينتهي التسليم: %1$s\nآخر موعد للتسليم: %2$s</string>
+
+    <string name="assignment_due_arg_min">انتهى موعد التسليم منذ %1$d دقائق</string>
+    <string name="assignment_due_arg_hour">انتهى موعد التسليم منذ %1$d ساعات</string>
+    <string name="assignment_due_arg_day">انتهى موعد التسليم منذ %1$d أيام</string>
+
+    <string name="status_online">متصل</string>
+    <string name="status_offline">غير متصل</string>
+    <string name="no_classes">لست موجودًا بأي صف بعد</string>
+    <string name="no_posts">لا يوجد أي رسائل</string>
+    <string name="no_notifications">ليس لديك أي إشعارات</string>
+    <string name="no_files">ينشر مدرس المادة الملفات هنا</string>
+    <string name="private_message">رسالة خاصة</string>
+    <string name="private_chat">دردشة خاصة</string>
+    <string name="no_assignments">لا يوجد واجبات في هذا الصف</string>
+
+    <string name="no_file_assignment">لم يتم إرفاق أي ملفات إضافية</string>
+    <string name="no_assignments_yet">ليس هناك أي واجبات بعد</string>
+
+    <string name="delete_chat">حذف الدردشة</string>
+    <string name="delete_chat_confirm">هل أنت متأكد من رغبتك في حذف هذه الدردشة؟</string>
+
+    <string name="new_submission">هناك تسليم جديد لـ %1$s</string>
+    <string name="new_submission_title">تسليم جديد</string>
+
+
+    <string name="new_mention">ذكرك أحدهم في %1$s</string>
+    <string name="new_mention_title">رسالة جديدة</string>
+    <string name="view_profile_hint">المس لعرض الملف الشخصي</string>
+
+    <string name="new_file">تم إضافة ملف جديد في  %1$s</string>
+    <string name="new_file_title">ملف جديد</string>
+
+
+    <string name="about">حول</string>
+    <string name="clear_cache">حذف البيانات المؤقتة</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="clear_cache_done">تم حذف البيانات المؤقتة</string>
+    <string name="ok">تم</string>
+    <string name="password_changed">تم تغيير كلمة المرور</string>
+
+
+    <string name="about_message">رسالة حول التطبيق هنا</string>
+    <string name="old_password">كلمة المرور القديمة</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+
+    <string name="password_too_short">كلمة السر قصيرة جدا</string>
+
+
+    <string name="notification_delete">حذف الإشعار</string>
+    <string name="notification_delete_confirm">هل أنت متأكد من رغبتك في حذف الإشعار؟</string>
+
+
+    <string name="change_language">تغيير اللغة</string>
+
+    <string-array name="chat_actions">
+        <item>إلغاء</item>
+        <item>حذف الدردشة</item>
+        <item>عرض الملف الشخصي</item>
+    </string-array>
+
+    <string-array name="week_days">
+        <item>الأحد</item>
+        <item>الأثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+    </string-array>
+
+
+    <!-- To add a new question and answer
+         simply add a new item in each array -->
+
+    <string-array name="questions">
+        <item>كيف أسجل الخروج؟</item>
+        <item>كيف يمكنني تغيير كلمة المرور؟</item>
+        <item>لا أعرف كلمة المرور الحالية، كيف أستعيدها؟</item>
+        <item>كيف يمكنني معرفة من هم الأعضاء في الصف؟</item>
+        <item>كيف يمكنني تنبيه شخص في الدردشة الصفية؟</item>
+        <item>من يمكنه رؤية ملفي الشخصي؟</item>
+
+    </string-array>
+
+
+    <string-array name="answers">
+        <item>من إعدادات التطبيق، اختر تسجيل الخروج</item>
+        <item>لتغيير كلمة المرور، توجه إلى الاعدادات، ثم اختر تغيير كلمة المرور، اكتب كلمة المرور الحالية وكلمة المرور الجديدة</item>
+        <item>يجب عليك التواصل مع مسؤول مؤسستك</item>
+        <item>في شاشة الصفوف، انقر نقرة مطولة لعرض أعضاء صف ما. يمكنك أيضا عرض جميع الأعضاء من صفحة ملفات الصف</item>
+        <item>لتنبيه أحدهم، ابدأ بكتابة أول حرف من اسم الشخص بأول الرسالة، ستظهر قائمة تختار منها من تريد تنبيهه، ثم أرسل رسالتك.</item>
+        <item>أعضاء الصفوف التي أنت فيها يمكنهم رؤية ملفك الشخصي</item>
+
+    </string-array>
+</resources>

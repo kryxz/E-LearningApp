@@ -8,6 +8,8 @@ import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,8 +38,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,6 +65,11 @@ public class CommonUtils {
     public static final String DEFAULT_PASSWORD = "elearn123";
     // an object that contains references to database locations
     private static final DatabaseRepository repo = new DatabaseRepository();
+
+
+    // language codes (delete app data if changed)
+    private static final String ARABIC = "AR";
+    private static final String ENGLISH = "EN";
 
     // random colors for list icons
     private static List<Integer> colors = new ArrayList<>(
@@ -251,12 +256,6 @@ public class CommonUtils {
         return drawable;
     }
 
-    public static void recreateFragment(View view, int id) {
-        Navigation.findNavController(view).navigate(id,
-                null,
-                new NavOptions.Builder().setPopUpTo(id, true).build());
-
-    }
 
     // set user online or offline
     // used in OnPause and OnResume in MainActivity
@@ -460,6 +459,38 @@ public class CommonUtils {
         }
 
 
+    }
+
+
+    static void setLocale(String langCode, Activity activity) {
+
+        Configuration config = activity.getResources().getConfiguration();
+        config.locale = new Locale(langCode);
+        activity.getResources().updateConfiguration(config, activity.getResources().getDisplayMetrics());
+
+    }
+
+
+    private static void changeLanguagePref(String langCode, Activity activity) {
+        final SharedPreferences.Editor editor = activity.getSharedPreferences("PREFS", 0).edit();
+        editor.putString("LANG_PREF", langCode);
+        editor.apply();
+        setLocale(langCode, activity);
+        restartApp(activity);
+    }
+
+    public static void changeLanguage(Activity activity) {
+        final String currentLang = getLanguage(activity);
+        if (currentLang.equals(ENGLISH))
+            changeLanguagePref(ARABIC, activity);
+        else
+            changeLanguagePref(ENGLISH, activity);
+
+    }
+
+    static String getLanguage(Activity activity) {
+        final SharedPreferences sharedPreferences = activity.getSharedPreferences("PREFS", 0);
+        return sharedPreferences.getString("LANG_PREF", ENGLISH);
     }
 }
 

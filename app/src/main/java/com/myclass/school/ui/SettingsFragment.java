@@ -63,6 +63,7 @@ public class SettingsFragment extends Fragment {
         model = ((MainActivity) getActivity()).userVM;
 
         adapter.add(new OptionItem(Option.CHANGE_PASSWORD));
+        adapter.add(new OptionItem(Option.CHANGE_LANGUAGE));
         adapter.add(new OptionItem(Option.CLEAR_CACHE));
         adapter.add(new OptionItem(Option.LOGOUT));
         adapter.add(new OptionItem(Option.HELP));
@@ -156,9 +157,14 @@ public class SettingsFragment extends Fragment {
 
     }
 
+    private void changeLanguage() {
+        if (getActivity() != null)
+            CommonUtils.changeLanguage(getActivity());
+    }
+
 
     enum Option {
-        ABOUT, CHANGE_PASSWORD, CLEAR_CACHE, LOGOUT, HELP
+        ABOUT, CHANGE_PASSWORD, CLEAR_CACHE, LOGOUT, HELP, CHANGE_LANGUAGE
     }
 
     private class OptionItem extends Item<GroupieViewHolder> {
@@ -223,7 +229,12 @@ public class SettingsFragment extends Fragment {
                     action = SettingsFragment.this::goToHelpScreen;
                     break;
                 }
-
+                case CHANGE_LANGUAGE: {
+                    text = context.getString(R.string.change_language);
+                    drawable = ContextCompat.getDrawable(context, R.drawable.ic_language);
+                    action = SettingsFragment.this::changeLanguage;
+                    break;
+                }
                 // redundant case
                 default: {
                     text = context.getString(R.string.app_name);

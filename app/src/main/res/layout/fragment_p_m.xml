@@ -60,10 +60,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/more_actions_spinner"
-            style="@style/SpinnerTheme"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center_vertical|end"
+            android:layout_gravity="center|end"
             android:spinnerMode="dropdown" />
 
 

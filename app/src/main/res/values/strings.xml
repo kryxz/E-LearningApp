@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">E-Learning App</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="email">Email Address</string>
     <string name="password">Password</string>
@@ -134,9 +132,9 @@
 
     <string name="user_profile_arg">%1$s\'s Profile</string>
 
-    <string name="empty_teachers">No teachers found! Consider adding some.</string>
-    <string name="empty_students">No students found! Consider adding some.</string>
-    <string name="empty_classes">No Classes found! Consider adding some.</string>
+    <string name="empty_teachers">No teachers found! Consider adding some</string>
+    <string name="empty_students">No students found! Consider adding some</string>
+    <string name="empty_classes">No Classes found! Consider adding some</string>
 
     <string name="login_details">Email: %1$s \n Password: %2$s</string>
 
@@ -222,6 +220,10 @@
     <string name="notification_delete">Delete Notification</string>
     <string name="notification_delete_confirm">Are you sure you want to delete this notification?</string>
 
+
+    <string name="change_language">Change Language</string>
+
+
     <string-array name="chat_actions">
         <item>Cancel</item>
         <item>Delete Chat</item>
@@ -259,7 +261,7 @@
         <item>You should contact your organization administrator</item>
         <item>In your classes page, long tap a class item to view all members of that class</item>
         <item>In the classroom chat, start by typing the first letter of their name, a menu will appear and you can select who you want to mention.</item>
-        <item>Other class members and teachers can see your profile.</item>
+        <item>Other class members can see your profile.</item>
 
     </string-array>
 </resources>

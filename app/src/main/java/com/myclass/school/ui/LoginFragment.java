@@ -3,6 +3,9 @@ package com.myclass.school.ui;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +33,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -107,5 +111,26 @@ public class LoginFragment extends Fragment {
         view.findViewById(R.id.login_progress_bar).setVisibility(View.GONE);
     }
 
+
+    // options menu in action bar
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.language_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    // change language when click
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.changeLanguage)
+            changeLanguage();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void changeLanguage() {
+        if (getActivity() != null)
+            CommonUtils.changeLanguage(getActivity());
+    }
 
 }
